@@ -8,40 +8,39 @@
             <a href="#" class="nav-link">Inicio</a>
         </li>
     </ul>
-
-
-<div class="container">
-    
-    <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    class="nav-link dropdown-toggle"><i class="fas fa-folder-open"></i> Modulos</a>
-                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                    <li><a href="{% url 'app:categoria_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i> Categorías</a></li>
-                    <li><a href="{% url 'app:producto_lista' %}" class="dropdown-item"><i class="fas fa-boxes"></i> Productos</a></li>
-                    <li><a href="{% url 'app:cliente_lista' %}" class="dropdown-item"><i class="fas fa-users"></i> Clientes</a></li>
-                    <li><a href="{% url 'app:venta_lista' %}" class="dropdown-item"><i class="fas fa-shopping-cart"></i> Ventas</a></li>
-                </ul>
-            </li>
-        </ul>
+    <div class="container">
+        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        class="nav-link dropdown-toggle"><i class="fas fa-folder-open"></i> Módulos</a>
+                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                        <li><a href="{% url 'app:categoria_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Categorías</a></li>
+                        <li><a href="{% url 'app:marca_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Marcas</a></li>
+                        <li><a href="{% url 'app:presentacion_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Presentaciones</a></li>
+                        <li><a href="{% url 'app:producto_lista' %}" class="dropdown-item"><i class="fas fa-boxes"></i>Productos</a></li>
+                        <li><a href="{% url 'app:mesero_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Meseros</a></li>
+                        <li><a href="{% url 'app:cliente_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Clientes</a></li>
+                        <li><a href="{% url 'app:plato_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Platos</a></li>
+                        <li><a href="{% url 'app:venta_lista' %}" class="dropdown-item"><i class="fas fa-shopping-cart"></i>Ventas</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-
-</div>
-
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="fas fa-users-cog"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">
-                        Último Acceso: 20 de junio de 2024
-                    </span>
+                <span class="dropdown-header">
+                    Último Acceso: 20 de junio de 2024
+                </span>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
                     <i class="fas fa-edit mr-2"></i> Editar perfil
