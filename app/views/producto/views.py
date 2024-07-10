@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
 from app.models import Producto
 from app.forms import ProductoForm
 
