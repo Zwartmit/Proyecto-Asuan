@@ -365,3 +365,19 @@ class VentaForm(ModelForm):
             )
         }
         
+class FacturaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["fecha_emision_factura"].widget.attrs["autofocus"] = True
+
+    class Meta:
+        model = Venta
+        fields = "__all__"
+        widgets = {
+            "fecha_emision_factura": DateInput(
+                attrs={
+                    "type": "date",
+                    "placeholder": "Fecha de la venta",
+                }
+            )
+        }

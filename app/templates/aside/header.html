@@ -19,14 +19,18 @@
                     <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         class="nav-link dropdown-toggle"><i class="fas fa-folder-open"></i> Módulos</a>
                     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                        <li><a href="{% url 'app:categoria_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Categorías</a></li>
-                        <li><a href="{% url 'app:marca_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Marcas</a></li>
-                        <li><a href="{% url 'app:presentacion_lista' %}" class="dropdown-item"><i class="fas fa-truck-loading"></i>Presentaciones</a></li>
-                        <li><a href="{% url 'app:producto_lista' %}" class="dropdown-item"><i class="fas fa-boxes"></i>Productos</a></li>
-                        <li><a href="{% url 'app:mesero_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Meseros</a></li>
+                        <li><a href="{% url 'app:categoria_lista' %}" class="dropdown-item"><i class="fas fa-tag"></i>Categorías</a></li>
+                        <li><a href="{% url 'app:marca_lista' %}" class="dropdown-item"><i class="fas fa-project-diagram"></i>Marcas</a></li>
+                        <li><a href="{% url 'app:presentacion_lista' %}" class="dropdown-item"><i class="fas fa-shapes"></i>Presentaciones</a></li>
+                        <li><a href="{% url 'app:producto_lista' %}" class="dropdown-item"><i class="fas fa-dolly"></i>Productos</a></li>
+                        <li><a href="{% url 'app:mesero_lista' %}" class="dropdown-item"><i class="fas fa-user-friends"></i>Meseros</a></li>
                         <li><a href="{% url 'app:cliente_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Clientes</a></li>
-                        <li><a href="{% url 'app:plato_lista' %}" class="dropdown-item"><i class="fas fa-users"></i>Platos</a></li>
+                        <li><a href="{% url 'app:plato_lista' %}" class="dropdown-item"><i class="fas fa-hamburger"></i>Platos</a></li>
                         <li><a href="{% url 'app:venta_lista' %}" class="dropdown-item"><i class="fas fa-shopping-cart"></i>Ventas</a></li>
+                        <li><a href="{% url 'app:cuenta_lista' %}" class="dropdown-item"><i class="fas fa-file-invoice"></i>Cuentas</a></li>
+                        <li><a href="{% url 'app:factura_lista' %}" class="dropdown-item"><i class="fas fa-file-invoice-dollar"></i>Facturas</a></li>
+                        <li><a href="{% url 'app:administrador_lista' %}" class="dropdown-item"><i class="fas fa-user-shield"></i>Administrador</a></li>
+                        <li><a href="{% url 'app:operador_lista' %}" class="dropdown-item"><i class="fas fa-user-alt"></i>Operador</a></li>
                     </ul>
                 </li>
             </ul>
