@@ -23,3 +23,4 @@ class logoutRedirect(RedirectView):
     def dispatch(self, request, *args, **kwargs):
         logout(request)
         return super().dispatch(request, *args, **kwargs)
+        return redirect('index')    

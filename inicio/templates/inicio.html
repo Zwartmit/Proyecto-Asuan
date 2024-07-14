@@ -6,20 +6,16 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
   <title>Asuán, parque ecoturístico</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
   <!-- Favicons -->
-  <link href="{%static 'img/favicon.png' %}" rel="icon">
+  <link href="{%static 'img/icon.png' %}" rel="icon">
   <link href="{%static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-
   <!-- Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
     rel="stylesheet">
-
   <!-- Vendor CSS Files -->
   <link href="{%static 'vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -28,10 +24,8 @@
   <link href="{%static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-
   <!-- Template Main CSS File -->
   <link href="{%static 'css/style.css' %}" rel="stylesheet">
-
   <!-- =======================================================
   * Template Name: Bethany
   * Template URL: https://bootstrapmade.com/bethany-free-onepage-bootstrap-theme/
@@ -42,217 +36,124 @@
 </head>
 
 <body>
-
-  <!-- ======= Header ======= -->
+  <!-- ======= Encabezado ======= -->
   <header id="header" class="fixed-top d-flex align-items-center">
     <div class="container">
       <div class="header-container d-flex align-items-center justify-content-between">
         <div class="logo">
-          <!-- <h1 class="text-light"><a href="index.html"><span>Asuán</span></a></h1> -->
-          <!-- Uncomment below if you prefer to use an image logo -->
           <a href="#hero"><img src="{%static 'img/logo_asuan.png' %}" alt="Asuán" class="img-fluid"></a>
         </div>
-
         <nav id="navbar" class="navbar">
           <ul>
             <li><a class="nav-link scrollto active" href="#hero">Inicio</a></li>
             <li><a class="nav-link scrollto" href="#about">Nosotros</a></li>
             <li><a class="nav-link scrollto" href="#services">Actividades</a></li>
-            <li><a class="nav-link scrollto " href="#portfolio">Portafolio</a></li>
+            <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-
-      </div><!-- End Header Container -->
+        </nav>
+      </div>
     </div>
-  </header><!-- End Header -->
+  </header>
+  <!-- Fin de encabezado -->
 
-  <!-- ======= Hero Section ======= -->
+  <!-- ======= Sección principal ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container text-center position-relative" data-aos="fade-in" data-aos-delay="200">
       <h1>Un oasis perfecto para una experiencia natural inolvidable</h1>
       <h2>Sumérgete en la belleza natural de nuestro lago y piérdete en el bosque que nos rodea</h2>
     </div>
-  </section><!-- End Hero -->
+  </section>
+  <!-- Fin de sección principal -->
 
   <main id="main">
-
-    <!-- ======= Clients Section ======= -->
-    <section id="clients" class="clients">
-      <div class="container">
-
-        <div class="row">
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="100">
-            <img src="{%static 'img/clients/client-1.png' %}" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="200">
-            <img src="{%static 'img/clients/client-2.png' %}" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="300">
-            <img src="{%static 'img/clients/client-3.png' %}" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="400">
-            <img src="{%static 'img/clients/client-4.png' %}" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="500">
-            <img src="{%static 'img/clients/client-5.png' %}" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center" data-aos="zoom-in" data-aos-delay="600">
-            <img src="{%static 'img/clients/client-6.png' %}" class="img-fluid" alt="">
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Clients Section -->
-
-    <!-- ======= About Section ======= -->
+    <!-- ======= Sección 'Nosotros' ======= -->
     <section id="about" class="about">
       <div class="container">
-
+        <div class="section-title" data-aos="fade-right">
+          <h2>Nosotros</h2>
+        </div>
         <div class="row content">
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
-            <h2>Eum ipsam laborum deleniti velitena</h2>
-            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assum perenda sruen jonee trave</h3>
+            <img src="{% static 'img/logo_asuan2.png' %}" alt="Logo Asuán" class="">
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+            <h3>Donde la serenidad se encuentra con la aventura, y la sostenibilidad es nuestra prioridad. </h3>
             <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-              voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-            <ul>
-              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequa</li>
-              <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate velit</li>
-              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                aute irure dolor in reprehenderit in</li>
-            </ul>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore
-              magna aliqua.
+              Estamos encantados de darles la bienvenida a nuestro paraíso sostenible y natural.
+              Para garantizar que cada persona que visita este hermoso lugar pueda disfrutar de
+              la misma experiencia mágica en el futuro, les pedimos amablemente que se unan a
+              nosotros en la preservación y cuidado de este entorno único.
             </p>
           </div>
         </div>
-
       </div>
-    </section><!-- End About Section -->
-
-    <!-- ======= Counts Section ======= -->
+    </section>
     <section id="counts" class="counts">
       <div class="container">
-
         <div class="row counters">
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
-              class="purecounter"></span>
-            <p>Clients</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
-              class="purecounter"></span>
-            <p>Projects</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1"
-              class="purecounter"></span>
-            <p>Hours Of Support</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1"
-              class="purecounter"></span>
-            <p>Hard Workers</p>
-          </div>
-
+          <h1>Recomendaciones</h1>
         </div>
-
       </div>
-    </section><!-- End Counts Section -->
-
-    <!-- ======= Why Us Section ======= -->
+    </section>
     <section id="why-us" class="why-us">
       <div class="container">
-
         <div class="row">
-          <div class="col-lg-4 d-flex align-items-stretch" data-aos="fade-right">
-            <div class="content">
-              <h3>Why Choose Bethany for your company website?</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad
-                corporis.
-              </p>
-              <div class="text-center">
-                <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-8 d-flex align-items-stretch">
-            <div class="icon-boxes d-flex flex-column justify-content-center">
-              <div class="row">
-                <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <i class="bx bx-receipt"></i>
-                    <h4>Corporis voluptates sit</h4>
-                    <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
-                  </div>
+          <div class="icon-boxes d-flex flex-column justify-content-center">
+            <div class="row">
+              <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                <div class="icon-box mt-4 mt-xl-0">
+                  <i class="bx bxs-tree"></i>
+                  <h4>Respeto por la Naturaleza</h4>
+                  <p>Caminar en sintonía con la naturaleza es esencial. Les pedimos que eviten dañar la flora y fauna
+                    local, manteniéndose en los senderos designados y respetando la vida silvestre que comparte este
+                    espacio con nosotros.</p>
                 </div>
-                <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+              </div>
+              <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+                <div class="icon-box mt-4 mt-xl-0">
+                  <i class="bx bxs-coffee-togo"></i>
+                  <h4>Manejo de residuos</h4>
+                  <p>Por favor, lleven consigo cualquier residuo que generen durante su visita. Contamos con áreas
+                    designadas para la disposición adecuada de desechos. Contribuir a mantener limpio nuestro entorno es
+                    una manera simple pero efectiva de preservar la belleza del parque.</p>
+                </div>
+              </div>
+              <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                <div class="icon-box mt-4 mt-xl-0">
+                  <i class="bx bx-fork"></i>
+                  <h4>No ingresar bebidas ni alimentos</h4>
+                  <p>Con el objetivo de mantener la integridad de nuestro ecosistema y proteger la vida silvestre, les
+                    solicitamos que eviten ingresar bebidas y alimentos desde fuera del parque. Nuestras instalaciones
+                    cuentan con opciones gastronómicas sostenibles para satisfacer sus necesidades, y esta medida ayuda
+                    a reducir el impacto ambiental.</p>
+                </div>
+              </div>
+              <!-- <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
                   <div class="icon-box mt-4 mt-xl-0">
-                    <i class="bx bx-cube-alt"></i>
-                    <h4>Ullamco laboris ladore pan</h4>
-                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+                    <i class="bx bx-images"></i>
+                    <h4>Objetos personales</h4>
+                    <p>Entendemos que cada visita trae consigo pertenencias valiosas y personales. Sin embargo, deseamos informarles que Asuan Parque Eco Turístico no se hace responsable de la pérdida o daño de objetos personales durante su estadía. Les recomendamos mantener un cuidado diligente de sus pertenencias en todo momento.</p>
                   </div>
                 </div>
                 <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
                   <div class="icon-box mt-4 mt-xl-0">
                     <i class="bx bx-images"></i>
-                    <h4>Labore consequatur</h4>
-                    <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                    <h4>Horarios de uso del Lago</h4>
+                    <p>El lago estará disponible para su disfrute desde las 10:00 a.m. hasta las 6:00 p.m. Durante este período, podrán embarcarse en nuestras actividades acuáticas, explorar la serenidad del agua y sumergirse en la belleza natural que nos rodea.</p>
                   </div>
-                </div>
-              </div>
-            </div><!-- End .content-->
+                </div> -->
+            </div>
           </div>
-        </div>
+    </section>
+    <!-- Fin de sección 'Nosotros' -->
 
-      </div>
-    </section><!-- End Why Us Section -->
-
-    <!-- ======= Cta Section ======= -->
-    <section id="cta" class="cta">
-      <div class="container">
-
-        <div class="text-center" data-aos="zoom-in">
-          <h3>Call To Action</h3>
-          <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-            laborum.</p>
-          <a class="cta-btn" href="#">Call To Action</a>
-        </div>
-
-      </div>
-    </section><!-- End Cta Section -->
-
-    <!-- ======= Services Section ======= -->
+    <!-- ======= Sección 'Actividades' ======= -->
     <section id="services" class="services section-bg">
       <div class="container">
-
         <div class="row">
           <div class="col-lg-4">
             <div class="section-title" data-aos="fade-right">
@@ -268,7 +169,8 @@
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                   <h4><a>Kayak</a></h4>
                   <source><img src="{% static 'img/kayak.png' %}" alt="Kayak">
-                  <p>Ya seas un principiante entusiasta o un experto experimentado, nuestro servicio de kayak se adapta
+                  <p>Ya seas un principiante entusiasta o un experto experimentado, nuestro servicio de kayak se
+                    adapta
                     a todos los niveles. Siente la brisa en tu rostro y la libertad en tus manos mientras te deslizas
                     suavemente sobre las aguas cristalinas de nuestro lago.</p>
                   <br>
@@ -277,12 +179,12 @@
                       3 Personas - 30 minutos - $40.000 COP</b></p>
                 </div>
               </div>
-
               <div class="col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
                   <h4><a>Paddle board</a></h4>
                   <source><img src="{% static 'img/paddle.png' %}" alt="Kayak">
-                  <p>Disfruta de vistas panorámicas espectaculares mientras te desplazas sobre el agua. El paddle board
+                  <p>Disfruta de vistas panorámicas espectaculares mientras te desplazas sobre el agua. El paddle
+                    board
                     te brinda la oportunidad de contemplar la belleza natural que rodea nuestro parque eco turístico
                     desde una perspectiva única.</p>
                   <br>
@@ -290,7 +192,6 @@
                       2 Personas - 30 minutos - $30.000 COP</b></p>
                 </div>
               </div>
-
               <div class="col-md-6 d-flex align-items-stretch mt-4">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
                   <h4><a>Bote</a></h4>
@@ -302,7 +203,6 @@
                   <p><b>1 - 4 Personas - 30 minutos - $40.000 COP</b></p>
                 </div>
               </div>
-
               <div class="col-md-6 d-flex align-items-stretch mt-4">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
                   <div class="icon"><i class="bx bx-world"></i></div>
@@ -310,38 +210,21 @@
                   <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
-
       </div>
-    </section><!-- End Services Section -->
+    </section>
+    <!-- Fin de sección 'Actividades' -->
 
-    <!-- ======= Portfolio Section ======= -->
+    <!-- ======= Sección 'Comidas' ======= -->
     <section id="portfolio" class="portfolio">
       <div class="container">
-
         <div class="section-title" data-aos="fade-left">
-          <h2>Portafolio</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-            consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit
-            in iste officiis commodi quidem hic quas.</p>
+          <h2>Comidas</h2>
+          <p>A continuación encontrarás algunos de los deliciosos platos que ofrecemos en nuestro restaurante.</p>
         </div>
-
-        <div class="row" data-aos="fade-up" data-aos-delay="100">
-          <div class="col-lg-12 d-flex justify-content-center">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-app">App</li>
-              <li data-filter=".filter-card">Card</li>
-              <li data-filter=".filter-web">Web</li>
-            </ul>
-          </div>
-        </div>
-
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
               <img src="{%static 'img/portfolio/portfolio-1.jpg' %}" class="img-fluid" alt="">
@@ -350,13 +233,11 @@
                 <p>App</p>
                 <div class="portfolio-links">
                   <a href="{%static 'img/portfolio/portfolio-1.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                    class="portfolio-lightbox" title="App 1"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="{%static 'img/portfolio/portfolio-2.jpg' %}" class="img-fluid" alt="">
@@ -365,13 +246,11 @@
                 <p>Web</p>
                 <div class="portfolio-links">
                   <a href="{%static 'img/portfolio/portfolio-2.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
               <img src="{%static 'img/portfolio/portfolio-3.jpg' %}" class="img-fluid" alt="">
@@ -380,13 +259,11 @@
                 <p>App</p>
                 <div class="portfolio-links">
                   <a href="{%static 'img/portfolio/portfolio-3.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                    class="portfolio-lightbox" title="App 2"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-card">
             <div class="portfolio-wrap">
               <img src="{%static 'img/portfolio/portfolio-4.jpg' %}" class="img-fluid" alt="">
@@ -395,13 +272,11 @@
                 <p>Card</p>
                 <div class="portfolio-links">
                   <a href="{%static 'img/portfolio/portfolio-4.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Card 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                    class="portfolio-lightbox" title="Card 2"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="{%static 'img/portfolio/portfolio-5.jpg' %}" class="img-fluid" alt="">
@@ -410,83 +285,32 @@
                 <p>Web</p>
                 <div class="portfolio-links">
                   <a href="{%static 'img/portfolio/portfolio-5.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-6.jpg' %}" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 3</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-6.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="App 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-7.jpg' %}" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 1</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-7.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Card 1"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-8.jpg' %}" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 3</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-8.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Card 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-9.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/portfolio/portfolio-5.jpg' %}" class="img-fluid" alt="">
               <div class="portfolio-info">
-                <h4>Web 3</h4>
+                <h4>Web 2</h4>
                 <p>Web</p>
                 <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-9.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                  <a href="{%static 'img/portfolio/portfolio-5.jpg' %}" data-gallery="portfolioGallery"
+                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-images"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
-    <!-- End Portfolio Section -->
+    <!-- Fin de sección 'Comidas' -->
 
-    <!-- ======= Team Section ======= -->
+    <!-- ======= Sección 'Equipo' ======= -->
     <section id="team" class="team">
       <div class="container">
-
         <div class="row">
           <div class="col-lg-4">
             <div class="section-title" data-aos="fade-right">
@@ -496,7 +320,6 @@
           </div>
           <div class="col-lg-8">
             <div class="row">
-
               <div class="col-lg-6">
                 <div class="member" data-aos="zoom-in" data-aos-delay="100">
                   <div class="pic"><img src="{%static 'img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
@@ -513,7 +336,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-6 mt-4 mt-lg-0">
                 <div class="member" data-aos="zoom-in" data-aos-delay="200">
                   <div class="pic"><img src="{%static 'img/team/team-2.jpg' %}" class="img-fluid" alt=""></div>
@@ -528,7 +350,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-6 mt-4">
                 <div class="member" data-aos="zoom-in" data-aos-delay="300">
                   <div class="pic"><img src="{%static 'img/team/team-3.jpg' %}" class="img-fluid" alt=""></div>
@@ -548,9 +369,10 @@
           </div>
         </div>
       </div>
-    </section><!-- End Team Section -->
+    </section>
+    <!-- Fin de sección 'Equipo' -->
 
-    <!-- ======= Contact Section ======= -->
+    <!-- ======= Sección 'Contacto' ======= -->
     <section id="contact" class="contact">
       <div class="container">
         <div class="row">
@@ -562,7 +384,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.55463766328!2d-72.90748367501986!3d4.846256245129339!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e6acd002f16f80f%3A0x995814b133d090f0!2sAsu%C3%A1n%20Parque%20Eco%20Turistico!5e0!3m2!1ses!2sco!4v1719334109950!5m2!1ses!2sco"
@@ -595,7 +416,6 @@
                 </div>
               </div>
             </div>
-
             <form action="{%static 'forms/contact.php' %}" method="post" role="form" class="php-email-form mt-4">
               <div class="row">
                 <div class="col-md-6 form-group">
@@ -620,13 +440,13 @@
             </form>
           </div>
         </div>
-
       </div>
-    </section><!-- End Contact Section -->
+    </section>
+    <!-- Fin de sección 'Contacto' -->
+  </main>
+  <!-- End #main -->
 
-  </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
+  <!-- ======= Pie de página ======= -->
   <footer id="footer">
     <div class="contenedor">
       <div class="footer1">
@@ -635,16 +455,15 @@
       </div>
       <div class="footer2">
         <img
-          src="https://static.wixstatic.com/media/44959e_58f33bff53974365a541cfdfd1f279d6~mv2.png/v1/fill/w_158,h_74,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/44959e_58f33bff53974365a541cfdfd1f279d6~mv2.png"
+          src="{%static 'img/logo_asuan1.png' %}"
           alt="Logo Asuán">
       </div>
     </div>
   </footer>
-  <!-- End Footer -->
+  <!-- Fin del pie de página -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
-
   <!-- Vendor JS Files -->
   <script src="{%static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{%static 'vendor/aos/aos.js' %}"></script>
@@ -653,10 +472,8 @@
   <script src="{%static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{%static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{%static 'vendor/php-email-form/validate.js' %}"></script>
-
   <!-- Template Main JS File -->
   <script src="{%static 'js/main.js' %}"></script>
-
 </body>
 
 </html>
