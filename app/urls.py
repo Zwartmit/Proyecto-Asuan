@@ -10,9 +10,12 @@ from app.views.plato.views import *
 from app.views.cuenta.views import *
 from app.views.administrador.views import *
 from app.views.operador.views import *
+from app.views.venta.views import *
+from app.views.factura.views import *
 
 app_name = 'app'
 urlpatterns = [
+    
     ### CRUD CATEGORÍA ###
     path('categoria/listar/', CategoriaListView.as_view(), name='categoria_lista'),
     path('categoria/crear/', CategoriaCreateView.as_view(), name='categoria_crear'),
@@ -60,7 +63,7 @@ urlpatterns = [
     path('cuenta/crear/', CuentaCreateView.as_view(), name='cuenta_crear'),
     path('cuenta/editar/<int:pk>/', CuentaUpdateView.as_view(), name='cuenta_editar'),
     path('cuenta/eliminar/<int:pk>/', CuentaDeleteView.as_view(), name='cuenta_eliminar'),
-
+    
     ### CRUD ADMINISTRADOR ###
     path('administrador/listar/', AdministradorListView.as_view(), name='administrador_lista'),
     path('administrador/crear/', AdministradorCreateView.as_view(), name='administrador_crear'),
@@ -72,4 +75,16 @@ urlpatterns = [
     path('operador/crear/', OperadorCreateView.as_view(), name='operador_crear'),
     path('operador/editar/<int:pk>/', OperadorUpdateView.as_view(), name='operador_editar'),
     path('operador/eliminar/<int:pk>/', OperadorDeleteView.as_view(), name='operador_eliminar'),
+    
+    ### CRUD VENTA ###
+    path('venta/listar/', VentaListView.as_view(), name='venta_lista'),
+    path('venta/crear/', VentaCreateView.as_view(), name='venta_crear'),
+    path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
+    path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
+
+    ### CRUD FACTURA ###
+    path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
+    path('factura/crear/', FacturaCreateView.as_view(), name='factura_crear'),
+    path('factura/editar/<int:pk>/', FacturaUpdateView.as_view(), name='factura_editar'),
+    path('factura/eliminar/<int:pk>/', FacturaDeleteView.as_view(), name='factura_eliminar'),
 ]

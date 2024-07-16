@@ -1,5 +1,5 @@
 import django
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -24,8 +24,7 @@ class MeseroListView(ListView):
     model = Mesero
     template_name = 'mesero/listar.html'
     
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -49,6 +48,10 @@ class MeseroCreateView(CreateView):
     template_name = 'mesero/crear.html'
     success_url = reverse_lazy('app:mesero_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Agregar mesero'
@@ -56,14 +59,6 @@ class MeseroCreateView(CreateView):
         context['error'] = 'Este mesero ya existe'
         context['listar_url'] = reverse_lazy('app:mesero_lista')
         return context
-    
-    def form_valid(self, form):
-        mesero = form.cleaned_data.get('mesero').lower()
-        
-        if Mesero.objects.filter(mesero__iexact=mesero).exists():
-            form.add_error('mesero', 'Ya existe un mesero con este nombre.')
-            return self.form_invalid(form)
-        return super().form_valid(form)
     
 ###### EDITAR ######
 
@@ -73,6 +68,10 @@ class MeseroUpdateView(UpdateView):
     template_name = 'mesero/crear.html'
     success_url = reverse_lazy('app:mesero_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar mesero'
@@ -80,21 +79,17 @@ class MeseroUpdateView(UpdateView):
         context['error'] = 'Esta mesero ya existe'
         context['listar_url'] = reverse_lazy('app:mesero_lista')
         return context
-    
-    def form_valid(self, form):
-        mesero = form.cleaned_data.get('mesero').lower()
-        
-        if Mesero.objects.filter(mesero__iexact=mesero).exists():
-            form.add_error('mesero', 'Ya existe un mesero con este nombre.')
-            return self.form_invalid(form)
-        return super().form_valid(form)
-    
+
 ###### ELIMINAR ######
 
 class MeseroDeleteView(DeleteView):
     model = Mesero
     template_name = 'mesero/eliminar.html'
     success_url = reverse_lazy('app:mesero_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

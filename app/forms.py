@@ -1,5 +1,6 @@
 from dataclasses import fields
 from django.forms import ModelForm
+from django.core.exceptions import ValidationError
 
 from django import forms
 from django.forms import *
@@ -69,13 +70,11 @@ class ProductoForm(ModelForm):
             ),
             "cantidad": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Cantidad a registrar",
                 }
             ),
             "valor": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Valor del producto",
                 }
             ),
@@ -92,6 +91,18 @@ class ClienteForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
 
+    def validar_num_doc_rep(self):
+        numero_documento = self.cleaned_data.get("numero_documento")
+        if Cliente.objects.filter(numero_documento=numero_documento).exists():
+            raise ValidationError("Ya hay un cliente registrado con este número de documento.")
+        return numero_documento
+            
+    def validar_email_rep(self):
+        email = self.cleaned_data.get("email")
+        if Cliente.objects.filter(email=email).exists():
+            raise ValidationError("Ya hay un cliente registrado con este email.")
+        return email
+    
     class Meta:
         model = Cliente
         fields = "__all__"
@@ -118,7 +129,6 @@ class ClienteForm(ModelForm):
             ),
             "telefono": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Teléfono",
                 }
             )
@@ -128,7 +138,7 @@ class MeseroForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
-
+            
     class Meta:
         model = Mesero
         fields = "__all__"
@@ -145,18 +155,17 @@ class MeseroForm(ModelForm):
             ),
             "numero_documento": NumberInput(
                 attrs={
-                    "min": 8,
                     "placeholder": "Número de documento",
                 }
             ),
             "email": EmailInput(
                 attrs={
+                    
                     "placeholder": "Email",
                 }
             ),
             "telefono": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Teléfono",
                 }
             )
@@ -183,7 +192,6 @@ class PlatoForm(ModelForm):
             ),
             "valor": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Valor del plato",
                 }
             ),
@@ -221,11 +229,21 @@ class CuentaForm(ModelForm):
                 },
             )
         }
-        
+
 class AdministradorForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
+    
+    def clean_password(self):
+        password1 = self.cleaned_data.get("contraseña")
+        password2 = self.cleaned_data.get("conf_contraseña")
+        if not password2:
+            raise forms.ValidationError("Necesitas validar tu contraseña")
+        if password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden")
+        return password2
+
 
     class Meta:
         model = Administrador
@@ -256,6 +274,18 @@ class AdministradorForm(ModelForm):
                 attrs={
                     "min": 1,
                     "placeholder": "Teléfono",
+                }
+            ),
+            "contraseña": PasswordInput(
+                attrs={
+                    "min": 1,
+                    "placeholder": "Contraseña",
+                }
+            ),
+            "conf_contraseña": PasswordInput(
+                attrs={
+                    "min": 1,
+                    "placeholder": "Confirme su contraseña",
                 }
             )
         }
@@ -294,6 +324,60 @@ class OperadorForm(ModelForm):
                 attrs={
                     "min": 1,
                     "placeholder": "Teléfono",
+                }
+            )
+        }
+ 
+class VentaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+
+    class Meta:
+        model = Venta
+        fields = "__all__"
+        widgets = {
+            "cantidad_producto": NumberInput(
+                attrs={
+                    "placeholder": "Cantidad del producto",
+                }
+            ),
+            "total_venta": NumberInput(
+                attrs={
+                    "placeholder": "Total",
+                }
+            ),
+            "total_venta_iva": NumberInput(
+                attrs={
+                    "placeholder": "Total IVA",
+                }
+            ),
+            "metodo_pago": Select(
+                attrs={
+                    "placeholder": "Metodo de pago",
+                }
+            ),
+            "fecha_venta": DateInput(
+                attrs={
+                    "type": "date",
+                    "placeholder": "Fecha de la venta",
+                }
+            )
+        }
+        
+class FacturaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["fecha_emision_factura"].widget.attrs["autofocus"] = True
+
+    class Meta:
+        model = Venta
+        fields = "__all__"
+        widgets = {
+            "fecha_emision_factura": DateInput(
+                attrs={
+                    "type": "date",
+                    "placeholder": "Fecha de la venta",
                 }
             )
         }

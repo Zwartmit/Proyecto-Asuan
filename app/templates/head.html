@@ -3,9 +3,8 @@
 <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
         <a href="../../index3.html" class="navbar-brand">
-            <img src="{% static 'lib/adminlte-3.0.4/img/AdminLTELogo.png'%}" alt="AdminLTE Logo"
-                class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <img src="{% static 'img/logo_asuan1.png' %}"
+                alt="Logo Asuán" class="">
         </a>
 
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -164,6 +163,11 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-power-off" aria-hidden="true"></i>
+                </a>
+            </li>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">

@@ -1,5 +1,5 @@
 import django
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -24,8 +24,7 @@ class CategoriaListView(ListView):
     model = Categoria
     template_name = 'categoria/listar.html'
     
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -35,8 +34,8 @@ class CategoriaListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Listado de Categorías'
-        context['entidad'] = 'Listado de Categorías'
+        context['titulo'] = 'Listado de categorías'
+        context['entidad'] = 'Listado de categorías'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         context['crear_url'] = reverse_lazy('app:categoria_crear')
         return context
@@ -49,6 +48,10 @@ class CategoriaCreateView(CreateView):
     template_name = 'categoria/crear.html'
     success_url = reverse_lazy('app:categoria_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Agregar categoría'
@@ -73,6 +76,10 @@ class CategoriaUpdateView(UpdateView):
     template_name = 'categoria/crear.html'
     success_url = reverse_lazy('app:categoria_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar categoría'
@@ -96,6 +103,10 @@ class CategoriaDeleteView(DeleteView):
     template_name = 'categoria/eliminar.html'
     success_url = reverse_lazy('app:categoria_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar categoría'
