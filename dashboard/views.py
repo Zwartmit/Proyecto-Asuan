@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
-from django.utils.deprecation import MiddlewareMixin
 
+@method_decorator(never_cache, name='dispatch')
 class dashView(TemplateView):
     
     template_name = 'dashboard.html'
@@ -16,6 +17,3 @@ class dashView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Administración'
         return context
-    @login_required
-    def dashboard_view(request):
-        return render(request, 'dashboard.html')

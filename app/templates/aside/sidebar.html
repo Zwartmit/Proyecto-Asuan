@@ -1,127 +1,31 @@
 {% load static %}
-<link href="{% static 'imgs/icon.png' %}" rel="icon">
-<link href="{% static 'css/styleDash.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <aside class="main-sidebar sidebar-light-primary elevation-4">
-    <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="#">
-                        <span class="icon" id="logo">
-                            <img src="{% static 'imgs/icon.png' %}" alt="Logo palmera">
-                        </span>
-                        <span class="icon" id="logo-container">
-                            <img src="{% static 'imgs/logo_asuan.png' %}" alt="Logo Asuán">
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon class="fas fa-home"></ion-icon>
-                        </span>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:categoria_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-tag"></ion-icon>
-                        </span>
-                        <span class="title">Categorías</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:marca_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-project-diagram"></ion-icon>
-                        </span>
-                        <span class="title">Marcas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:presentacion_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-shapes"></ion-icon>
-                        </span>
-                        <span class="title">Presentaciones</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:producto_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-dolly"></ion-icon>
-                        </span>
-                        <span class="title">Productos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:mesero_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-user-friends"></ion-icon>
-                        </span>
-                        <span class="title">Meseros</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:cliente_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-users"></ion-icon>
-                        </span>
-                        <span class="title">Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:plato_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-hamburger"></ion-icon>
-                        </span>
-                        <span class="title">Platos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:venta_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-shopping-cart"></ion-icon>
-                        </span>
-                        <span class="title">Ventas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:cuenta_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-file-invoice"></ion-icon>
-                        </span>
-                        <span class="title">Cuentas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:factura_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-file-invoice-dollar"></ion-icon>
-                        </span>
-                        <span class="title">Facturas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:administrador_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-user-shield"></ion-icon>
-                        </span>
-                        <span class="title">Administrador</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'app:operador_lista' %}">
-                        <span class="icon">
-                            <ion-icon class="fas fa-user-alt"></ion-icon>
-                        </span>
-                        <span class="title">Operador</span>
-                    </a>
-                </li>
+    <a href="#" class="brand-link">
+        <span class="icon" id="logo">
+            <img src="{% static 'img/icon.png' %}" alt="Logo palmera">
+        </span>
+        <span class="icon" id="logo-container">
+            <img src="{% static 'img/logo_asuan.png' %}" alt="Logo Asuán">
+        </span>
+    </a>
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <h1>Módulos</h1>
+                <li class="nav-item"><a href="{% url 'app:categoria_lista' %}" class="nav-link"><i class="nav-icon fas fa-tag"></i><p>Categorías</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:marca_lista' %}" class="nav-link"><i class="nav-icon fas fa-project-diagram"></i><p>Marcas</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:presentacion_lista' %}" class="nav-link"><i class="nav-icon fas fa-shapes"></i><p>Presentaciones</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:producto_lista' %}" class="nav-link"><i class="nav-icon fas fa-dolly"></i><p>Productos</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:mesero_lista' %}" class="nav-link"><i class="nav-icon fas fa-user-friends"></i><p>Meseros</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:cliente_lista' %}" class="nav-link"><i class="nav-icon fas fa-users"></i><p>Clientes</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:plato_lista' %}" class="nav-link"><i class="nav-icon fas fa-hamburger"></i><p>Platos</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:venta_lista' %}" class="nav-link"><i class="nav-icon fas fa-shopping-cart"></i><p>Ventas</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:cuenta_lista' %}" class="nav-link"><i class="nav-icon fas fa-file-invoice"></i><p>Cuentas</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:factura_lista' %}" class="nav-link"><i class="nav-icon fas fa-file-invoice-dollar"></i><p>Facturas</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:administrador_lista' %}" class="nav-link"><i class="nav-icon fas fa-user-shield"></i><p>Administrador</p></a></li>
+                <li class="nav-item"><a href="{% url 'app:operador_lista' %}" class="nav-link"><i class="nav-icon fas fa-user-alt"></i><p>Operador</p></a></li>
             </ul>
-        </div>
+        </nav>
     </div>
 </aside>
-<script src="{% static 'js/mainDash.js' %}"></script>
+

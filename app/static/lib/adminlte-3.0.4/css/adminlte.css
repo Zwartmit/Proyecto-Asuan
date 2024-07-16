@@ -13742,7 +13742,8 @@ body.text-sm .control-sidebar {
 }
 
 .navbar-green {
-  background-color: #28a745;
+  background-color: #04644b;
+  height: 100px;
 }
 
 .navbar-teal {
