@@ -20,19 +20,3 @@ class loginFormView(LoginView):
 
 class logoutRedirect(RedirectView):
     pattern_name = 'login'
-    
-    def dispatch(self, request, *args, **kwargs):
-        logout(request)
-        return super().dispatch(request, *args, **kwargs)
-
-def send_test_email(request):
-    if request.method == 'POST':
-        send_mail(
-            'Asunto del correo',
-            'Aquí está el mensaje.',
-            'davidcubides05@gmail.com',  # Cambia esto por tu dirección de correo de Gmail
-            ['davidcubides05@gmail.com'],  # Cambia esto por la dirección de correo del destinatario
-            fail_silently=False,
-        )
-        return HttpResponse("Correo enviado")
-    return render(request, 'send_email.html')
