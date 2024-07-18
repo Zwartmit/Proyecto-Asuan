@@ -4,9 +4,11 @@ from inicio.views import indexView
 from login.views import *
 from app.views import *
 from dashboard.views import *
+from app.views.venta.views import *
 
 urlpatterns = [
     path('', indexView.as_view(), name='index'),
+    path('ventas/', ventas_view, name='venta_opciones'),
     path('dashboard', dashView.as_view(), name='dashboard'),
     path('login', include('login.urls')),
     path('admin/', admin.site.urls),

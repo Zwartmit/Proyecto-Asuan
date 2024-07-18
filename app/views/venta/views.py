@@ -98,4 +98,5 @@ class VentaDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         return context 
     
-    
+def ventas_view(request):
+    return render(request, 'venta/ventas.html')
