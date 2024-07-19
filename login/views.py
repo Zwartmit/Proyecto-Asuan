@@ -20,3 +20,7 @@ class loginFormView(LoginView):
 
 class logoutRedirect(RedirectView):
     pattern_name = 'login'
+
+    def dispatch(self, request, *args, **kwargs):
+        logout(request)
+        return super().dispatch(request, *args, **kwargs)
