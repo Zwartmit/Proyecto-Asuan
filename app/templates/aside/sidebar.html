@@ -1,7 +1,7 @@
 {% load static %}
 <aside class="main-sidebar elevation-2"
     style="background: linear-gradient(#04644b,#04644b, #6ddbd7); align-content: center">
-    <div class="sidebar">
+    <div class="sidebar" style="min-height: 250px;">
         <nav class="mt-2">
             <a href="#" class="logo-container">
                 <img src="{% static 'img/logo_asuan3.png' %}" alt="Logo Asuán" class="logo-image">
@@ -10,56 +10,94 @@
                 style="align-content: left">
                 <h1 style="font-size: 50px; font-style: oblique; color: white; text-align: center">ㅤ</h1>
                 <li class="nav-item">
-                    <a href="{% url 'app:venta_opciones' %}" class="nav-link" style="color: white; font-size: 20px;">
-                        <i class="nav-icon fas fa-shopping-cart" style="font-size: 25px;"></i>
-                        <p>Gestion de ventas</p>
+                    <a href="#submenu1" class="nav-link d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
+                        <div class="d-flex align-items-center">
+                            <i class="nav-icon fas fa-shopping-cart" style="font-size: 25px; margin-right: 10px;"></i>
+                            <p class="mb-0" style="font-size: 19px;">Gestión de ventas</p>
+                        </div>
                     </a>
+                    <ul class="collapse list-unstyled pl-4" id="submenu1">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:venta_lista' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="fas fa-list" style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Ventas por caja</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:cuenta_lista' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="fas fa-plus" style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Abrir cuenta</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:producto_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
-                        <i class="nav-icon fas fa-dolly" style="font-size: 25px;"></i>
-                        <p>Gestion de productos</p>
+                    <a href="#submenu2" class="nav-link d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
+                        <div class="d-flex align-items-center">
+                            <i class="nav-icon fas fa-dolly" style="font-size: 25px; margin-right: 10px;"></i>
+                            <p class="mb-0" style="font-size: 19px;">Gestión de productos</p>
+                        </div>
                     </a>
+                    <ul class="collapse list-unstyled pl-4" id="submenu2">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:producto_lista' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="fas fa-list" style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Lista de productos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:producto_crear' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="fas fa-plus" style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Crear producto</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:mesero_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:mesero_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-user-friends" style="font-size: 25px;"></i>
                         <p>Meseros</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:cliente_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:cliente_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-users" style="font-size: 25px;"></i>
                         <p>Clientes</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:plato_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:plato_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-hamburger" style="font-size: 25px;"></i>
                         <p>Platos</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:cuenta_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:cuenta_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-file-invoice" style="font-size: 25px;"></i>
                         <p>Cuentas</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:factura_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:factura_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-file-invoice-dollar" style="font-size: 25px;"></i>
                         <p>Facturas</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'app:administrador_lista' %}" class="nav-link"
-                        style="color: white; font-size: 20px;">
+                        style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-user-shield" style="font-size: 25px;"></i>
                         <p>Administrador</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:operador_lista' %}" class="nav-link" style="color: white; font-size: 20px;">
+                    <a href="{% url 'app:operador_lista' %}" class="nav-link" style="color: white; font-size: 19px;">
                         <i class="nav-icon fas fa-user-alt" style="font-size: 25px;"></i>
                         <p>Operador</p>
                     </a>
@@ -75,4 +113,9 @@
             $(".logo-image").toggle();
         });
     });
+    function delayCollapse(id) {
+        setTimeout(function () {
+            $(id).collapse('hide');
+        }, 3000);
+    }    
 </script>
