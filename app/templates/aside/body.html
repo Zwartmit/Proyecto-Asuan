@@ -1,13 +1,11 @@
 {% extends 'home.html' %}
 {% block body %}
-    <body class="hold-transition sidebar-mini layout-fixed">
+
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <!-- Header -->
         {% include 'aside/header.html' %}
-        <!-- Sidebar -->
         {% include 'aside/sidebar.html' %}
-        <!-- Content -->
-        <div class="content-wrapper" style="min-height: 700px;">
+        <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
@@ -30,12 +28,9 @@
                 </div>
             </div>
         </div>
-        <!-- Footer -->
         {% include 'footer.html' %}
     </div>
-    <!-- Block javascript -->
     {% block javascript %}
-
     {% endblock %}
-    </body>
+</body>
 {% endblock %}
