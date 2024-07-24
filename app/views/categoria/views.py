@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Categoria
 from app.forms import CategoriaForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_categoria(request):
     nombre = {
         'titulo': 'Listado de categorias',
@@ -20,6 +22,7 @@ def lista_categoria(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CategoriaListView(ListView):
     model = Categoria
     template_name = 'categoria/listar.html'
@@ -42,6 +45,7 @@ class CategoriaListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CategoriaCreateView(CreateView):
     model = Categoria
     form_class = CategoriaForm
@@ -54,8 +58,8 @@ class CategoriaCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar categoría'
-        context['entidad'] = 'Agregar categoría'
+        context['titulo'] = 'Registrar categoría'
+        context['entidad'] = 'Registrar categoría'
         context['error'] = 'Esta categoría ya existe'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         return context
@@ -70,6 +74,7 @@ class CategoriaCreateView(CreateView):
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CategoriaUpdateView(UpdateView):
     model = Categoria
     form_class = CategoriaForm
@@ -98,6 +103,7 @@ class CategoriaUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CategoriaDeleteView(DeleteView):
     model = Categoria
     template_name = 'categoria/eliminar.html'

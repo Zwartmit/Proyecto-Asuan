@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Plato
 from app.forms import PlatoForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_platos(request):
     nombre = {
         'titulo': 'Listado de platos',
@@ -20,6 +22,7 @@ def lista_platos(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class PlatoListView(ListView):
     model = Plato
     template_name = 'plato/listar.html'
@@ -42,6 +45,7 @@ class PlatoListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class PlatoCreateView(CreateView):
     model = Plato
     form_class = PlatoForm
@@ -54,8 +58,8 @@ class PlatoCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar plato'
-        context['entidad'] = 'Agregar plato'
+        context['titulo'] = 'Registrar plato'
+        context['entidad'] = 'Registrar plato'
         context['error'] = 'Este plato ya existe'
         context['listar_url'] = reverse_lazy('app:plato_lista')
         return context
@@ -71,6 +75,7 @@ class PlatoCreateView(CreateView):
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class PlatoUpdateView(UpdateView):
     model = Plato
     form_class = PlatoForm
@@ -100,6 +105,7 @@ class PlatoUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class PlatoDeleteView(DeleteView):
     model = Plato
     template_name = 'plato/eliminar.html'

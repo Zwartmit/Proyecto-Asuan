@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Venta
 from app.forms import VentaForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_venta(request):
     nombre = {
         'titulo': 'Listado de ventas',
@@ -20,6 +22,7 @@ def lista_venta(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class VentaListView(ListView):
     model = Venta
     template_name = 'venta/listar.html'
@@ -42,6 +45,7 @@ class VentaListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class VentaCreateView(CreateView):
     model = Venta
     form_class = VentaForm
@@ -54,14 +58,15 @@ class VentaCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar venta'
-        context['entidad'] = 'Agregar venta'
+        context['titulo'] = 'Registrar venta'
+        context['entidad'] = 'Registrar venta'
         context['error'] = 'Esta venta ya existe'
         context['listar_url'] = reverse_lazy('app:venta_lista')
         return context
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class VentaUpdateView(UpdateView):
     model = Venta
     form_class = VentaForm
@@ -82,6 +87,7 @@ class VentaUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class VentaDeleteView(DeleteView):
     model = Venta
     template_name = 'venta/eliminar.html'
@@ -98,4 +104,5 @@ class VentaDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         return context 
     
-    
+def ventas_view(request):
+    return render(request, 'venta/ventas.html')

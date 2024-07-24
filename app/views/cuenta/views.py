@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Cuenta
 from app.forms import CuentaForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_cuenta(request):
     nombre = {
         'titulo': 'Listado de cuentas',
@@ -20,6 +22,7 @@ def lista_cuenta(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CuentaListView(ListView):
     model = Cuenta
     template_name = 'cuenta/listar.html'
@@ -42,6 +45,7 @@ class CuentaListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CuentaCreateView(CreateView):
     model = Cuenta
     form_class = CuentaForm
@@ -54,14 +58,15 @@ class CuentaCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar cuenta'
-        context['entidad'] = 'Agregar cuenta'
+        context['titulo'] = 'Registrar cuenta'
+        context['entidad'] = 'Registrar cuenta'
         context['error'] = 'Esta cuenta ya existe'
         context['listar_url'] = reverse_lazy('app:cuenta_lista')
         return context
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CuentaUpdateView(UpdateView):
     model = Cuenta
     form_class = CuentaForm
@@ -82,6 +87,7 @@ class CuentaUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class CuentaDeleteView(DeleteView):
     model = Cuenta
     template_name = 'cuenta/eliminar.html'
