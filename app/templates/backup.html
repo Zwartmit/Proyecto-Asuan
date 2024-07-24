@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+{% endblock %}
+{% block contenido %}
+<h1>Crear copia de seguridad de la base de datos</h1>
+<form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
+    {% csrf_token %}
+    <button type="submit">Crear Copia de Seguridad</button>
+</form>
+<script>
+    $('#backupForm').on('submit', function(event) {
+        event.preventDefault();
+        $.post($(this).attr('action'), $(this).serialize(), function(data) {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: data.message,
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

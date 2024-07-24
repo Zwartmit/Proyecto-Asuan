@@ -1,0 +1,27 @@
+.nav-item {
+    border-radius: 10px;
+}
+
+.nav-item:hover {
+    background-color: white;
+    color: #04644b;
+}
+
+.nav-item:hover .nav-link,
+.nav-item:hover .nav-icon {
+    color: #04644b !important;
+}
+
+.nav-itemm {
+    border-radius: 10px;
+}
+
+.nav-itemm:hover {
+    background-color: rgb(235, 235, 235);
+    color: #04644b;
+}
+
+.nav-itemm:hover .nav-link,
+.nav-itemm:hover .nav-icon {
+    color: #04644b !important;
+}

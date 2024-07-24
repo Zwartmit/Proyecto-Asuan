@@ -12,6 +12,8 @@ from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
+from app.views.backup.views import BackupDatabaseView
+
 
 app_name = 'app'
 urlpatterns = [
@@ -81,11 +83,13 @@ urlpatterns = [
     path('venta/crear/', VentaCreateView.as_view(), name='venta_crear'),
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
-    path('venta/opciones/', ventas_view, name='venta_opciones'),
 
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
     path('factura/crear/', FacturaCreateView.as_view(), name='factura_crear'),
     path('factura/editar/<int:pk>/', FacturaUpdateView.as_view(), name='factura_editar'),
     path('factura/eliminar/<int:pk>/', FacturaDeleteView.as_view(), name='factura_eliminar'),
+
+    ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
+    path('backup/', BackupDatabaseView.as_view(), name='crear_backup'),
 ]
