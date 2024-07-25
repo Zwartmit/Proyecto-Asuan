@@ -2,6 +2,7 @@ from django.db import models
 from .choices import codigos_telefonicos_paises
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.contrib.auth.models import User
 
 class Categoria (models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
@@ -167,6 +168,11 @@ class Cuenta(models.Model):
 
 ########################################################################################################################################
 
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
+from django.db import models
+
 class Administrador(models.Model):
     class TipoDocumento(models.TextChoices):
         CC = 'CC', 'Cédula de Ciudadanía'
@@ -175,28 +181,20 @@ class Administrador(models.Model):
 
     def validar_numero_documento(value):
         if value < 10000000 or value > 9999999999:
-            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos\n")
-        
-    def validar_email(value):
-        value = "foo.bar@baz.qux"
-        try:
-            validate_email(value)
-        except ValidationError:
-            raise ValidationError("Correo rechazado")  
+            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
+
+    # Relación con User
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     
-    def clean_numero_documento(self):
-        numero_documento = self.cleaned_data.get("numero_documento")
-        if Administrador.objects.filter(numero_documento=numero_documento).exists():
-            raise ValidationError("Ya hay un mesero registrado con este número de documento.")
-        return numero_documento
-        
+    # Campos del administrador
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
     numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
-    email = models.EmailField(max_length=50, verbose_name="Email", validators=[validate_email])
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
-    contraseña = models.CharField(max_length=50,verbose_name="Contraseña")
-    conf_contraseña = models.CharField(max_length=50,verbose_name="Confirmación de contraseña", default="")
+    
+    # Campos de contraseña
+    contraseña = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
+    conf_contraseña = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
 
     def clean(self):
         super().clean()
@@ -204,12 +202,13 @@ class Administrador(models.Model):
             raise ValidationError({"conf_contraseña": "Las contraseñas no coinciden"})
 
     def __str__(self):
-        return f"{self.nombre}"
+        return self.nombre
 
     class Meta:
-        verbose_name= "administrador"
-        verbose_name_plural ='administradores'
-        db_table ='Administrador'
+        verbose_name = "Administrador"
+        verbose_name_plural = "Administradores"
+        db_table = 'Administrador'
+
 
 ########################################################################################################################################
 

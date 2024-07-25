@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Mesero
 from app.forms import MeseroForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_mesero(request):
     nombre = {
         'titulo': 'Listado de meseros',
@@ -20,6 +22,7 @@ def lista_mesero(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MeseroListView(ListView):
     model = Mesero
     template_name = 'mesero/listar.html'
@@ -42,6 +45,7 @@ class MeseroListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MeseroCreateView(CreateView):
     model = Mesero
     form_class = MeseroForm
@@ -54,14 +58,15 @@ class MeseroCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar mesero'
-        context['entidad'] = 'Agregar mesero'
+        context['titulo'] = 'Registrar mesero'
+        context['entidad'] = 'Registrar mesero'
         context['error'] = 'Este mesero ya existe'
         context['listar_url'] = reverse_lazy('app:mesero_lista')
         return context
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MeseroUpdateView(UpdateView):
     model = Mesero
     form_class = MeseroForm
@@ -82,6 +87,7 @@ class MeseroUpdateView(UpdateView):
 
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MeseroDeleteView(DeleteView):
     model = Mesero
     template_name = 'mesero/eliminar.html'

@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Factura
 from app.forms import FacturaForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_factura(request):
     nombre = {
         'titulo': 'Listado de facturas',
@@ -20,6 +22,7 @@ def lista_factura(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class FacturaListView(ListView):
     model = Factura
     template_name = 'factura/listar.html'
@@ -42,6 +45,7 @@ class FacturaListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class FacturaCreateView(CreateView):
     model = Factura
     form_class = FacturaForm
@@ -54,8 +58,8 @@ class FacturaCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar factura'
-        context['entidad'] = 'Agregar factura'
+        context['titulo'] = 'Registrar factura'
+        context['entidad'] = 'Registrar factura'
         context['error'] = 'Esta factura ya existe'
         context['listar_url'] = reverse_lazy('app:factura_lista')
         return context
@@ -70,6 +74,7 @@ class FacturaCreateView(CreateView):
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class FacturaUpdateView(UpdateView):
     model = Factura
     form_class = FacturaForm
@@ -98,6 +103,7 @@ class FacturaUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class FacturaDeleteView(DeleteView):
     model = Factura
     template_name = 'factura/eliminar.html'

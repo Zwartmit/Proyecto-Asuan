@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Marca
 from app.forms import MarcaForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_marca(request):
     nombre = {
         'titulo': 'Listado de marcas',
@@ -20,6 +22,7 @@ def lista_marca(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
     model = Marca
     template_name = 'marca/listar.html'
@@ -42,6 +45,7 @@ class MarcaListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaCreateView(CreateView):
     model = Marca
     form_class = MarcaForm
@@ -54,8 +58,8 @@ class MarcaCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar marca'
-        context['entidad'] = 'Agregar marca'
+        context['titulo'] = 'Registrar marca'
+        context['entidad'] = 'Registrar marca'
         context['error'] = 'Esta marca ya existe'
         context['listar_url'] = reverse_lazy('app:marca_lista')
         return context
@@ -70,6 +74,7 @@ class MarcaCreateView(CreateView):
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaUpdateView(UpdateView):
     model = Marca
     form_class = MarcaForm
@@ -98,6 +103,7 @@ class MarcaUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaDeleteView(DeleteView):
     model = Marca
     template_name = 'marca/eliminar.html'

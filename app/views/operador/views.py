@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Operador
 from app.forms import OperadorForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_operador(request):
     nombre = {
         'titulo': 'Listado de operadores',
@@ -20,6 +22,7 @@ def lista_operador(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class OperadorListView(ListView):
     model = Operador
     template_name = 'operador/listar.html'
@@ -42,6 +45,7 @@ class OperadorListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class OperadorCreateView(CreateView):
     model = Operador
     form_class = OperadorForm
@@ -54,14 +58,15 @@ class OperadorCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar operador'
-        context['entidad'] = 'Agregar operador'
+        context['titulo'] = 'Registrar operador'
+        context['entidad'] = 'Registrar operador'
         context['error'] = 'Este operador ya existe'
         context['listar_url'] = reverse_lazy('app:operador_lista')
         return context
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class OperadorUpdateView(UpdateView):
     model = Operador
     form_class = OperadorForm
@@ -82,6 +87,7 @@ class OperadorUpdateView(UpdateView):
     
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class OperadorDeleteView(DeleteView):
     model = Operador
     template_name = 'operador/eliminar.html'

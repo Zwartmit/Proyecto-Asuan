@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
-from django.core.mail import send_mail
 
 class loginFormView(LoginView):
     template_name = "login.html"
@@ -20,7 +19,7 @@ class loginFormView(LoginView):
 
 class logoutRedirect(RedirectView):
     pattern_name = 'login'
-
+    
     def dispatch(self, request, *args, **kwargs):
         logout(request)
         return super().dispatch(request, *args, **kwargs)
