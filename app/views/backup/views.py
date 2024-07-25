@@ -32,17 +32,17 @@ class BackupDatabaseView(View):
 
         try:
             shutil.copy2(database_filepath, backup_filepath)
-            message = f'Copia de seguridad creada exitosamente: {backup_filepath}'
+            message = f'Guardada en {backup_filepath}'
             success = True
         except Exception as e:
-            message = f'Error al crear la copia de seguridad: {str(e)}'
+            message = f'No se pudo crear la copia de seguridad: {str(e)}'
             success = False
 
         return JsonResponse({'message': message, 'success': success})
 
     def get_context_data(self, **kwargs):
         context = {}
-        context['titulo'] = 'Crear Copia de Seguridad'
-        context['entidad'] = 'Copias de Seguridad'
+        context['titulo'] = 'Copia de seguridad'
+        context['entidad'] = 'Copia de Seguridad'
         context['crear_backup_url'] = reverse_lazy('crear_backup')
         return context

@@ -4,25 +4,28 @@
 {% endblock %}
 {% block contenido %}
 <h1>Crear copia de seguridad de la base de datos</h1>
+<img src="{% static 'img/db.png' %}" alt="Database logo" style="width: 200px; height: 190px;">
 <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
     {% csrf_token %}
-    <button type="submit">Crear Copia de Seguridad</button>
+    <button class="btn btn-primary" type="submit">Crear</button>
 </form>
 <script>
-    $('#backupForm').on('submit', function(event) {
+    $('#backupForm').on('submit', function (event) {
         event.preventDefault();
-        $.post($(this).attr('action'), $(this).serialize(), function(data) {
+        $.post($(this).attr('action'), $(this).serialize(), function (data) {
             if (data.success) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Éxito',
+                    title: 'Copia de seguridad creada correctamente',
                     text: data.message,
+                    confirmButtonText: 'Aceptar'
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: data.message,
+                    confirmButtonText: 'Aceptar'
                 });
             }
         });
