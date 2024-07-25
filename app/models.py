@@ -172,6 +172,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 class Administrador(models.Model):
     class TipoDocumento(models.TextChoices):
@@ -193,13 +195,13 @@ class Administrador(models.Model):
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
     
     # Campos de contraseña
-    contraseña = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
-    conf_contraseña = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
+    contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
+    conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
 
     def clean(self):
         super().clean()
-        if self.contraseña != self.conf_contraseña:
-            raise ValidationError({"conf_contraseña": "Las contraseñas no coinciden"})
+        if self.contrasena != self.conf_contrasena:
+            raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
 
     def __str__(self):
         return self.nombre
@@ -208,6 +210,14 @@ class Administrador(models.Model):
         verbose_name = "Administrador"
         verbose_name_plural = "Administradores"
         db_table = 'Administrador'
+
+@receiver(post_delete, sender=Administrador)
+def eliminar_usuario_relacionado(sender, instance, **kwargs):
+    user = instance.user
+    if user:
+        user.delete()
+
+
 
 
 ########################################################################################################################################

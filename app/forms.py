@@ -286,6 +286,8 @@ class AdministradorForm(ModelForm):
         )
         administrador = super().save(commit=False)
         administrador.user = user
+        administrador.contrasena = password  # Asegúrate de guardar la contraseña en el campo correcto
+        administrador.conf_contrasena = cleaned_data.get('conf_password')
         if commit:
             administrador.save()
         return administrador
