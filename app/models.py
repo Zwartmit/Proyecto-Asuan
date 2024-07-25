@@ -185,11 +185,16 @@ class Administrador(models.Model):
         if value < 10000000 or value > 9999999999:
             raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
 
+    # Relación con User
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
+    
+    # Campos del administrador
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
     numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    
+    # Campos de contraseña
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
 
