@@ -25,3 +25,17 @@
 .nav-itemm:hover .nav-icon {
     color: #04644b !important;
 }
+
+.high-contrast {
+    background-color: black;
+    color: white;
+}
+
+.inverted-colors {
+    filter: invert(1);
+}
+
+#fontSizeSlider {
+    width: 100%;
+    margin-top: 10px;
+}

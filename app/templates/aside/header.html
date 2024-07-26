@@ -7,7 +7,8 @@
             </a>
         </li>
         <li class="nav-itemmm d-none d-sm-inline-block ">
-            <a href="{% url 'dashboard' %}" class="nav-link text-white" style="font-size: 20px; font-style: oblique;">Inicio</a>
+            <a href="{% url 'dashboard' %}" class="nav-link text-white"
+                style="font-size: 20px; font-style: oblique;">Inicio</a>
         </li>
     </ul>
     <div class="container">
@@ -25,17 +26,35 @@
         <h1 class="m-0 text-white" style="font-size: 50px; font-style: oblique;">Panel de administración</h1>
     </div>
     <ul class="navbar-nav ml-auto">
+        <li class="nav-itemmm dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                class="nav-link dropdown-toggle"><i class="fas fa-eye" title="Accesibilidad"
+                    style="font-size: 30px; color: white"></i></a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                <li><a href="#" class="dropdown-item" onclick="toggleHighContrast(event)">Alto Contraste</a></li>
+                <li><a href="#" class="dropdown-item" onclick="invertColors(event)">Invertir Colores</a></li>
+                <li class="dropdown-item">
+                    <label for="fontSizeSlider">Tamaño de Fuente:</label>
+                    <input type="range" id="fontSizeSlider" min="10" max="30" value="16" oninput="adjustFontSize(this.value)">
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
         <li class="nav-itemmm">
             <a class="nav-link" href="{% url 'app:crear_backup'%}">
-                <i class="fas fa-database" style="font-size: 30px; color: white" aria-hidden="true"></i>
+                <i class="fas fa-database" title="Copia de seguridad" style="font-size: 30px; color: white"
+                    aria-hidden="true"></i>
             </a>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-itemmm">
             <a class="nav-link" href="{% url 'logout'%}">
-                <i class="fas fa-sign-out-alt" style="font-size: 30px; color: white" aria-hidden="true"></i>
+                <i class="fas fa-sign-out-alt" title="Cerrar Sesión" style="font-size: 30px; color: white"
+                    aria-hidden="true"></i>
             </a>
         </li>
     </ul>
 </nav>
+<script src="scripts.js"></script>
