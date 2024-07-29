@@ -3,12 +3,27 @@
 {% block head %}
 {% endblock %}
 {% block contenido %}
-<h1>Crear copia de seguridad de la base de datos</h1>
-<img src="{% static 'img/db.png' %}" alt="Database logo" style="width: 200px; height: 190px;">
-<form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
-    {% csrf_token %}
-    <button class="btn btn-primary" type="submit">Crear</button>
-</form>
+<h1>Administrar copias de seguridad de la base de datos</h1>
+<p>ㅤ</p>
+<div class="container">
+    <div class="backup-section" style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+        <h2>Crear copia de seguridad</h2>
+        <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">Crear</button>
+        </form>
+    </div>
+
+    <div class="restore-section" style="border: 1px solid #ddd; padding: 20px;">
+        <h2>Restaurar copia de seguridad</h2>
+        <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
+        </form>
+        <button class="btn btn-primary" type="submit">Restaurar</button>
+    </div>
+</div>
+
 <script>
     $('#backupForm').on('submit', function (event) {
         event.preventDefault();
@@ -27,6 +42,35 @@
                     text: data.message,
                     confirmButtonText: 'Aceptar'
                 });
+            }
+        });
+    });
+
+    $('#restoreForm').on('submit', function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Copia de seguridad restaurada correctamente',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
             }
         });
     });

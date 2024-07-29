@@ -41,8 +41,42 @@ class BackupDatabaseView(View):
         return JsonResponse({'message': message, 'success': success})
 
     def get_context_data(self, **kwargs):
-        context = {}
-        context['titulo'] = 'Copia de seguridad'
-        context['entidad'] = 'Copia de Seguridad'
-        context['crear_backup_url'] = reverse_lazy('crear_backup')
+        context = {
+            'titulo': 'Copia de seguridad',
+            'entidad': 'Copia de Seguridad',
+            'crear_backup_url': reverse_lazy('crear_backup'),
+        }
         return context
+
+class RestoreDatabaseView(View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if 'backup_file' not in request.FILES:
+            return JsonResponse({'message': 'No se ha enviado ningún archivo', 'success': False})
+
+        backup_file = request.FILES['backup_file']
+        backup_filename = backup_file.name
+        backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+        backup_filepath = os.path.join(backup_dir, backup_filename)
+        database_filepath = os.path.join(settings.BASE_DIR, 'asuan_db.sqlite3')
+
+        try:
+            with open(backup_filepath, 'wb+') as destination:
+                for chunk in backup_file.chunks():
+                    destination.write(chunk)
+
+            shutil.copy2(backup_filepath, database_filepath)
+            message = f'Base de datos restaurada desde {backup_filepath}'
+            success = True
+        except Exception as e:
+            message = f'No se pudo restaurar la base de datos: {str(e)}'
+            success = False
+        finally:
+            if os.path.exists(backup_filepath):
+                os.remove(backup_filepath)
+
+        return JsonResponse({'message': message, 'success': success})
