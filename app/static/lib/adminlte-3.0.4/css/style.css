@@ -25,3 +25,85 @@
 .nav-itemm:hover .nav-icon {
     color: #04644b !important;
 }
+
+.dark-mode .content-wrapper {
+    background-color: #222222;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .main-header {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .main-sidebar {
+    background: #414141;
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .sidebar {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .main-footer {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .table th,
+.dark-mode .table td {
+    background-color: #303030;
+    border-color: #414141;
+    color: #e0e0e0;
+}
+
+.dark-mode .card-header {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .card-body {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .card-footer {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .backup-section {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .restore-section {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .inicioText {
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .entidadText {
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.main-sidebar {
+    background: linear-gradient(#04644b,#04644b, #6ddbd7); align-content: center;
+}
