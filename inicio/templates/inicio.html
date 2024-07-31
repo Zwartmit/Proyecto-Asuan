@@ -11,7 +11,9 @@
   <meta content="" name="keywords">
   <link href="{%static 'img/icon.png' %}" rel="icon">
   <link href="{%static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
   <link href="{%static 'vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
@@ -41,19 +43,7 @@
             <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
-            <li class="nav-itemmm dropdown">
-                <a id="dropdownAccessibility" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    class="nav-link dropdown-toggle" style="color: black">
-                    <i class="fas fa-eye" title="Accesibilidad" style="font-size: 25px; color: black"></i>
-                </a>
-                <ul aria-labelledby="dropdownAccessibility" class="dropdown-menu border-0 shadow">
-                    <li><a href="#" class="dropdown-item" onclick="changeFontSize('small')">Texto pequeño</a></li>
-                    <li><a href="#" class="dropdown-item" onclick="changeFontSize('medium')">Texto mediano</a></li>
-                    <li><a href="#" class="dropdown-item" onclick="changeFontSize('large')">Texto grande</a></li>
-                    <li><a href="#" class="dropdown-item" onclick="toggleDarkMode()">Modo oscuro</a></li>
-                    <li><a href="#" class="dropdown-item" onclick="resetAccessibility()">Restablecer</a></li>
-                </ul>
-            </li>
+            <li><a class="bx bxs-moon" style="font-size: 30px;" onclick="toggleDarkMode()"></a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
@@ -135,20 +125,6 @@
                     a reducir el impacto ambiental.</p>
                 </div>
               </div>
-              <!-- <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <i class="bx bx-images"></i>
-                    <h4>Objetos personales</h4>
-                    <p>Entendemos que cada visita trae consigo pertenencias valiosas y personales. Sin embargo, deseamos informarles que Asuan Parque Eco Turístico no se hace responsable de la pérdida o daño de objetos personales durante su estadía. Les recomendamos mantener un cuidado diligente de sus pertenencias en todo momento.</p>
-                  </div>
-                </div>
-                <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
-                  <div class="icon-box mt-4 mt-xl-0">
-                    <i class="bx bx-images"></i>
-                    <h4>Horarios de uso del Lago</h4>
-                    <p>El lago estará disponible para su disfrute desde las 10:00 a.m. hasta las 6:00 p.m. Durante este período, podrán embarcarse en nuestras actividades acuáticas, explorar la serenidad del agua y sumergirse en la belleza natural que nos rodea.</p>
-                  </div>
-                </div> -->
             </div>
           </div>
     </section>
@@ -400,10 +376,12 @@
             <div class="info mt-4">
               <i class="bi bi-chat-right-heart-fill"></i>
               <h4 style="margin: 0;">Nuestras redes sociales:</h4>
-                  <a target="_blank" href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d"><i class="bx bxl-facebook"></i></a>
-                  <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/"><i class="bx bxl-instagram"></i></a>
+              <a target="_blank"
+                href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d"><i
+                  class="bx bxl-facebook"></i></a>
+              <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/"><i class="bx bxl-instagram"></i></a>
               <p>ㅤ</p>
-          </div>
+            </div>
             <div class="row">
               <div class="col-lg-6 mt-4">
                 <div class="info">
@@ -448,7 +426,6 @@
     </section>
     <!-- Fin de sección 'Contacto' -->
   </main>
-  <!-- End #main -->
 
   <!-- ======= Pie de página ======= -->
   <footer id="footer">
@@ -466,7 +443,6 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
-  <!-- Vendor JS Files -->
   <script src="{%static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{%static 'vendor/aos/aos.js' %}"></script>
   <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -474,7 +450,6 @@
   <script src="{%static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{%static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{%static 'vendor/php-email-form/validate.js' %}"></script>
-  <!-- Template Main JS File -->
   <script src="{%static 'js/main.js' %}"></script>
 </body>
 

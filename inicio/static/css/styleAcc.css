@@ -10,6 +10,12 @@
     font-size: 18px;
 }
 
+.dark-mode {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
 .dark-mode .about {
     background-color: #414141;
     border-color: #414141;
@@ -33,4 +39,3 @@
     border-color: #414141;
     color: #ffffff;
 }
-
