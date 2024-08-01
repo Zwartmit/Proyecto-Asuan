@@ -19,9 +19,10 @@
         <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
+            <button class="btn btn-primary" type="submit">Restaurar</button>
         </form>
-        <button class="btn btn-primary" type="submit">Restaurar</button>
     </div>
+    
 </div>
 
 <script>
