@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from app.models import Administrador
 from app.forms import AdministradorForm
@@ -17,6 +18,7 @@ class AdministradorListView(ListView):
         context['entidad'] = 'Listado de administradores'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
         context['crear_url'] = reverse_lazy('app:administrador_crear')
+        context['has_permission'] = self.request.user.has_perm('app.view_administrador')
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -32,6 +34,13 @@ class AdministradorCreateView(CreateView):
         context['entidad'] = 'Registrar administrador'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.add_administrador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'administrador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         try:
@@ -54,9 +63,19 @@ class AdministradorUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:administrador_lista')
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.change_administrador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'administrador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):
@@ -70,3 +89,10 @@ class AdministradorDeleteView(DeleteView):
         context['entidad'] = 'Eliminar administrador'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.delete_administrador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'administrador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)

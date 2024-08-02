@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from app.models import Operador
 from app.forms import OperadorForm
@@ -10,6 +11,12 @@ from app.forms import OperadorForm
 class OperadorListView(ListView):
     model = Operador
     template_name = 'operador/listar.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.view_operador'):
+            return JsonResponse({'error': 'No tienes permiso para ver esta página'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -25,6 +32,12 @@ class OperadorCreateView(CreateView):
     form_class = OperadorForm
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.add_operador'):
+            return JsonResponse({'error': 'No tienes permiso para crear un operador'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,6 +60,12 @@ class OperadorUpdateView(UpdateView):
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.change_operador'):
+            return JsonResponse({'error': 'No tienes permiso para editar este operador'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar operador'
@@ -63,6 +82,12 @@ class OperadorDeleteView(DeleteView):
     model = Operador
     template_name = 'operador/eliminar.html'
     success_url = reverse_lazy('app:operador_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.delete_operador'):
+            return JsonResponse({'error': 'No tienes permiso para eliminar este operador'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
