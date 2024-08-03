@@ -3,7 +3,7 @@
 {% block head %}
 {% endblock %}
 {% block contenido %}
-<h1>Administrar copias de seguridad de la base de datos</h1>
+<h1>Administración de copias de seguridad de la base de datos</h1>
 <p>ㅤ</p>
 <div class="container">
     <div class="backup-section" style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
@@ -19,7 +19,7 @@
         <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
-            <button class="btn btn-primary" type="submit">Restaurar</button>
+            <p></p><button class="btn btn-primary" type="submit">Restaurar</button>
         </form>
     </div>
     

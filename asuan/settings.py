@@ -85,8 +85,12 @@ WSGI_APPLICATION = 'asuan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'asuan_db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'asuan_db',
+        'USER': 'root',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
