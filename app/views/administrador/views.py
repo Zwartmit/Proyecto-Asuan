@@ -19,6 +19,12 @@ class AdministradorListView(ListView):
         context['listar_url'] = reverse_lazy('app:administrador_lista')
         context['crear_url'] = reverse_lazy('app:administrador_crear')
         context['has_permission'] = self.request.user.has_perm('app.view_administrador')
+
+        if self.request.user.groups.filter(name='Operador').exists():
+            context['can_add'] = False
+        else:
+            context['can_add'] = self.request.user.has_perm('app.add_administrador')
+
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -36,7 +42,7 @@ class AdministradorCreateView(CreateView):
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.add_administrador'):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.add_administrador'):
             context = self.get_context_data()
             context['has_permission'] = False
             return render(request, 'administrador/listar.html', context)
@@ -64,7 +70,7 @@ class AdministradorUpdateView(UpdateView):
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.change_administrador'):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.change_administrador'):
             context = self.get_context_data()
             context['has_permission'] = False
             return render(request, 'administrador/listar.html', context)
@@ -91,7 +97,7 @@ class AdministradorDeleteView(DeleteView):
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.delete_administrador'):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.delete_administrador'):
             context = self.get_context_data()
             context['has_permission'] = False
             return render(request, 'administrador/listar.html', context)

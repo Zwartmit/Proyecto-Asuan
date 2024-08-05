@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.http import JsonResponse
+from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from app.models import Operador
 from app.forms import OperadorForm
@@ -12,18 +12,19 @@ class OperadorListView(ListView):
     model = Operador
     template_name = 'operador/listar.html'
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.view_operador'):
-            return JsonResponse({'error': 'No tienes permiso para ver esta página'}, status=403)
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Listado de operadores'
         context['entidad'] = 'Listado de operadores'
         context['listar_url'] = reverse_lazy('app:operador_lista')
         context['crear_url'] = reverse_lazy('app:operador_crear')
+        context['has_permission'] = self.request.user.has_perm('app.view_operador')
+
+        if self.request.user.groups.filter(name='Operador').exists():
+            context['can_add'] = False
+        else:
+            context['can_add'] = self.request.user.has_perm('app.add_operador')
+
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -33,18 +34,19 @@ class OperadorCreateView(CreateView):
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.add_operador'):
-            return JsonResponse({'error': 'No tienes permiso para crear un operador'}, status=403)
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Registrar operador'
         context['entidad'] = 'Registrar operador'
         context['listar_url'] = reverse_lazy('app:operador_lista')
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.add_operador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'operador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         try:
@@ -60,12 +62,6 @@ class OperadorUpdateView(UpdateView):
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.change_operador'):
-            return JsonResponse({'error': 'No tienes permiso para editar este operador'}, status=403)
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar operador'
@@ -73,9 +69,19 @@ class OperadorUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:operador_lista')
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.change_operador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'operador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class OperadorDeleteView(DeleteView):
@@ -83,15 +89,16 @@ class OperadorDeleteView(DeleteView):
     template_name = 'operador/eliminar.html'
     success_url = reverse_lazy('app:operador_lista')
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('app.delete_operador'):
-            return JsonResponse({'error': 'No tienes permiso para eliminar este operador'}, status=403)
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar operador'
         context['entidad'] = 'Eliminar operador'
         context['listar_url'] = reverse_lazy('app:operador_lista')
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.delete_operador'):
+            context = self.get_context_data()
+            context['has_permission'] = False
+            return render(request, 'operador/listar.html', context)
+        return super().dispatch(request, *args, **kwargs)
