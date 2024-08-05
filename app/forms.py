@@ -1,10 +1,14 @@
 from dataclasses import fields
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
-
 from django import forms
 from django.forms import *
 from app.models import *
+from django import forms
+from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
+from app.models import Administrador
+from app.models import Operador
 
 class CategoriaForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -230,17 +234,25 @@ class CuentaForm(ModelForm):
             )
         }
 
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
-from app.models import Administrador
-
 class AdministradorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+    username = forms.CharField(
+        label="Nombre de usuario",
+        max_length=150,
+        widget=TextInput(attrs={"placeholder": "Nombre de usuario"})
+    )
+    email = forms.EmailField(
+        label="Email",
+        max_length=150,
+        widget=EmailInput(attrs={"placeholder": "Correo electrónico"})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"})
+    )
+    conf_password = forms.CharField(
+        label="Confirmar contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"})
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -306,13 +318,25 @@ class AdministradorForm(ModelForm):
 
 # -----------------------------------------------------------------------------------------------
 
-from app.models import Operador
-
 class OperadorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+    username = forms.CharField(
+        label="Nombre de usuario",
+        max_length=150,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre de usuario"})
+    )
+    email = forms.EmailField(
+        label="Email",
+        max_length=150,
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"})
+    )
+    conf_password = forms.CharField(
+        label="Confirmar contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"})
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
