@@ -39,13 +39,13 @@ class AdministradorCreateView(CreateView):
         context['titulo'] = 'Registrar administrador'
         context['entidad'] = 'Registrar administrador'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.add_administrador')
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.add_administrador'):
-            context = self.get_context_data()
-            context['has_permission'] = False
-            return render(request, 'administrador/listar.html', context)
+        if not self.request.user.has_perm('app.add_administrador') or self.request.user.groups.filter(name='Operador').exists():
+            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
+            return render(request, 'administrador/listar.html', list_context)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -67,13 +67,13 @@ class AdministradorUpdateView(UpdateView):
         context['titulo'] = 'Editar administrador'
         context['entidad'] = 'Editar administrador'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.change_administrador')
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.change_administrador'):
-            context = self.get_context_data()
-            context['has_permission'] = False
-            return render(request, 'administrador/listar.html', context)
+        if not self.request.user.has_perm('app.change_administrador') or self.request.user.groups.filter(name='Operador').exists():
+            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
+            return render(request, 'administrador/listar.html', list_context)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -94,11 +94,11 @@ class AdministradorDeleteView(DeleteView):
         context['titulo'] = 'Eliminar administrador'
         context['entidad'] = 'Eliminar administrador'
         context['listar_url'] = reverse_lazy('app:administrador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.delete_administrador')
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.groups.filter(name='Operador').exists() or not request.user.has_perm('app.delete_administrador'):
-            context = self.get_context_data()
-            context['has_permission'] = False
-            return render(request, 'administrador/listar.html', context)
+        if not self.request.user.has_perm('app.delete_administrador') or self.request.user.groups.filter(name='Operador').exists():
+            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
+            return render(request, 'administrador/listar.html', list_context)
         return super().dispatch(request, *args, **kwargs)
