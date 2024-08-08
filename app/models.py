@@ -168,12 +168,12 @@ class Cuenta(models.Model):
 
 ########################################################################################################################################
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.core.validators import MinLengthValidator
 
 class Administrador(models.Model):
     class TipoDocumento(models.TextChoices):
@@ -198,6 +198,20 @@ class Administrador(models.Model):
         if self.contrasena != self.conf_contrasena:
             raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
 
+    def save(self, *args, **kwargs):
+        if not self.pk or self.contrasena:
+            user, created = User.objects.get_or_create(username=self.user)
+
+            if created or user.password != self.contrasena:
+                user.set_password(self.contrasena)
+                user.is_superuser = True
+                user.is_staff = True
+                user.save()
+
+            # Asigna el User al campo user
+            self.user = user
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre
 
@@ -211,8 +225,6 @@ def eliminar_usuario_relacionado(sender, instance, **kwargs):
     user = instance.user
     if user:
         user.delete()
-
-
 
 
 ########################################################################################################################################
