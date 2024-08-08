@@ -3,26 +3,30 @@
 {% block head %}
 {% endblock %}
 {% block contenido %}
-<h1>Administración de copias de seguridad de la base de datos</h1>
-<p>ㅤ</p>
-<div class="container">
-    <div class="backup-section" style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
-        <h2>Crear copia de seguridad</h2>
-        <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
-            {% csrf_token %}
-            <button class="btn btn-primary" type="submit">Crear</button>
-        </form>
+<div class="containerBackup">
+    <div class="containerTitle">
+        <h1>Administración de copias de <br>seguridad de la base de datos</h1>
+        <img class="img_db" src="{% static 'img/db_logo.png' %}" alt="Logo database"
+            style="height: 220px; width: 290px;">
     </div>
-
-    <div class="restore-section" style="border: 1px solid #ddd; padding: 20px;">
-        <h2>Restaurar copia de seguridad</h2>
-        <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
-            <p></p><button class="btn btn-primary" type="submit">Restaurar</button>
-        </form>
+    <div class="backup-section">
+        <div class="generate-section">
+            <h2>Crear copia de seguridad</h2>
+            <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
+                {% csrf_token %}
+                <button class="btn_generate" type="submit">Crear</button>
+            </form>
+        </div>
+        <div class="restore-section">
+            <h2>Restaurar copia de seguridad</h2>
+            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
+                <p></p><button class="btn_restore" type="submit">Restaurar</button>
+            </form>
+        </div>
     </div>
-    
 </div>
 
 <script>

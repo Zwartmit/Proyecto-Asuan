@@ -26,8 +26,72 @@
     color: #04644b !important;
 }
 
+.main-footer {
+    background-color: #04644b;
+    border-color: #04644b;
+    color: #ffffff;
+}
+
+.content-wrapper {
+    background-image: url("/static/img/beach.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.main-sidebar {
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    align-content: center;
+}
+
+.containerBackup {
+    text-align: center;
+    color: #ffffff;
+    border-radius: 10px;
+    text-shadow: 3px 3px 2.5px black;
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+}
+
+.containerBackup .backup-section {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.containerBackup .backup-section .generate-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    margin-right: 30px;
+}
+
+.containerBackup .backup-section .restore-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 30px;
+}
+
+.containerBackup .img_db {
+    height: 180px;
+    width: 235px;
+    margin-top: 15px;
+}
+
+.containerBackup .btn_generate {
+    color: #ffffff;
+    background-color: #414141;
+    border-radius: 10px;
+}
+
+.containerBackup .btn_restore {
+    color: #ffffff;
+    background-color: #414141;
+    border-radius: 10px;
+}
+
 .dark-mode .content-wrapper {
-    background-color: #222222;
+    background: #242424;
     border-color: #414141;
     color: #ffffff;
 }
@@ -39,14 +103,14 @@
 }
 
 .dark-mode .main-sidebar {
-    background: #414141;
+    background: linear-gradient(#414141, #414141, #7e7e7e) !important;
     background-color: #414141;
     border-color: #414141;
     color: #ffffff;
 }
 
 .dark-mode .sidebar {
-    background-color: #414141;
+    background: linear-gradient(#414141, #414141, #7e7e7e) !important;
     border-color: #414141;
     color: #ffffff;
 }
@@ -62,6 +126,7 @@
     background-color: #303030;
     border-color: #414141;
     color: #e0e0e0;
+    border-radius: 10px;
 }
 
 .dark-mode .card-header {
@@ -82,14 +147,33 @@
     color: #ffffff;
 }
 
-.dark-mode .backup-section {
+.dark-mode .containerBackup {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.dark-mode .containerTitle {
+    border-color: #414141;
+    background-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerBackup .backup-section {
     background-color: #414141;
     border-color: #414141;
     color: #ffffff;
 }
 
-.dark-mode .restore-section {
-    background-color: #414141;
+.dark-mode .containerBackup .backup-section .generate-section {
+    background-color: #646464;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerBackup .backup-section .restore-section {
+    background-color: #646464;
     border-color: #414141;
     color: #ffffff;
 }
@@ -102,8 +186,4 @@
 .dark-mode .entidadText {
     border-color: #414141;
     color: #ffffff;
-}
-
-.main-sidebar {
-    background: linear-gradient(#04644b,#04644b, #6ddbd7); align-content: center;
 }

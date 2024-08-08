@@ -2,12 +2,15 @@ from django.views.generic import View
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-import os
-import datetime
 from django.conf import settings
+import datetime
+import time
+import os
 
+@method_decorator(never_cache, name='dispatch')
 class BackupDatabaseView(View):
     template_name = 'backup.html'
 
@@ -51,12 +54,8 @@ class BackupDatabaseView(View):
         }
         return context
 
-from django.views.generic import View
-from django.http import JsonResponse
-import os
-import time
-from django.conf import settings
 
+@method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
 
     def post(self, request, *args, **kwargs):

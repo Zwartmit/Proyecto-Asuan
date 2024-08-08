@@ -18,20 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('dark-mode');
     }
     
-    var logo = document.getElementById('logo-asuan');
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        localStorage.setItem('dark-mode', isDarkMode);
-
-        if (isDarkMode) {
-            logo.src = 'static/img/logo_asuanFW.png';
-        } else {
-            logo.src = 'static/img/logo_asuanF.png';
-        }
-    }
-
     window.changeFontSize = changeFontSize;
     window.toggleDarkMode = toggleDarkMode;
     window.resetAccessibility = resetAccessibility;
