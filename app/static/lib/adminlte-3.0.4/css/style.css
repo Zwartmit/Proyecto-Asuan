@@ -46,7 +46,6 @@
 .containerBackup {
     text-align: center;
     color: #ffffff;
-    border-radius: 10px;
     text-shadow: 3px 3px 2.5px black;
     background: linear-gradient(#04644b, #04644b, #6ddbd7);
 }
@@ -73,9 +72,8 @@
 }
 
 .containerBackup .img_db {
-    height: 180px;
-    width: 235px;
-    margin-top: 15px;
+    height: 130px;
+    width: 170px;
 }
 
 .containerBackup .btn_generate {
@@ -186,4 +184,99 @@
 .dark-mode .entidadText {
     border-color: #414141;
     color: #ffffff;
+}
+
+.containerBackup {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.img_db {
+    margin-top: 20px;
+}
+
+.backup-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.generate-section, .restore-section {
+    width: 48%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn_generate, .btn_restore, .btn_delete, .btn_download {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn_restore {
+    background-color: #28a745;
+}
+
+.btn_delete {
+    background-color: #dc3545;
+}
+
+.btn_download {
+    background-color: #17a2b8;
+}
+
+.btn_generate:hover, .btn_restore:hover, .btn_delete:hover, .btn_download:hover {
+    opacity: 0.8;
+}
+
+.backup-list-section {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+td {
+    background-color: #fff;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #f1f1f1;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
 }

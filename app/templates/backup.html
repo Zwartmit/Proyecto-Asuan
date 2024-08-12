@@ -6,8 +6,7 @@
 <div class="containerBackup">
     <div class="containerTitle">
         <h1>Administración de copias de <br>seguridad de la base de datos</h1>
-        <img class="img_db" src="{% static 'img/db_logo.png' %}" alt="Logo database"
-            style="height: 220px; width: 290px;">
+        <img class="img_db" src="{% static 'img/db_logo.png' %}" alt="Logo database">
     </div>
     <div class="backup-section">
         <div class="generate-section">
@@ -27,6 +26,43 @@
             </form>
         </div>
     </div>
+
+    <div class="backup-list-section">
+        <h2>Copias de seguridad guardadas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del archivo</th>
+                    <th>Fecha de creación</th>
+                    <th>Tamaño</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for backup in backups %}
+                <tr>
+                    <td>{{ backup.filename }}</td>
+                    <td>{{ backup.created_at }}</td>
+                    <td>{{ backup.size }}</td>
+                    <td>
+                        <form method="post" action="{% url 'app:eliminar_backup' %}" class="delete-backup-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="filename" value="{{ backup.filename }}">
+                            <button type="submit" class="btn_delete">Eliminar</button>
+                        </form>
+                        <form method="get" action="{% url 'app:descargar_backup' backup.filename %}">
+                            <button type="submit" class="btn_download">Descargar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay copias de seguridad disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
@@ -39,6 +75,8 @@
                     title: 'Copia de seguridad creada correctamente',
                     text: data.message,
                     confirmButtonText: 'Aceptar'
+                }).then(function() {
+                    location.reload();  
                 });
             } else {
                 Swal.fire({
@@ -67,6 +105,8 @@
                         title: 'Copia de seguridad restaurada correctamente',
                         text: data.message,
                         confirmButtonText: 'Aceptar'
+                    }).then(function() {
+                        location.reload(); 
                     });
                 } else {
                     Swal.fire({
@@ -76,6 +116,41 @@
                         confirmButtonText: 'Aceptar'
                     });
                 }
+            }
+        });
+    });
+
+    $('.delete-backup-form').on('submit', function (event) {
+        event.preventDefault();
+        var form = $(this);
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(form.attr('action'), form.serialize(), function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        }).then(function() {
+                            location.reload(); 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                });
             }
         });
     });
