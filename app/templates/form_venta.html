@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+{% load static %}
+<form method="post" action=".">
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{titulo}}
+            </h3>
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="invoice-container">
+                <header>
+                    <div class="header-section">
+                        <img src="{% static 'img/logo_asuan2.png' %}" alt="Logo de la Empresa" class="company-logo">
+                        <div class="inv oice-info">
+                            <p>Número de Factura: <span id="invoice-number">001</span></p>
+                        </div>
+                    </div>
+                    <div class="details-section">
+                        <div class="company-details">
+                            <label for="company-name">Nombre de la Empresa:</label>
+                            <input type="text" id="company-name" value="Asuan parque eco-turistico" readonly>
+        
+                            <label for="company-nit">NIT:</label>
+                            <input type="text" id="company-nit" value="900583340"readonly>
+        
+                            <label for="company-address">Dirección:</label>
+                            <input type="text" id="company-address" value="Vereda Bellavista, KM3 via Monterrey-Yopal"readonly>
+        
+                            <label for="company-email">Correo:</label>
+                            <input type="email" id="company-email" value="asuanparque@gmail.com" readonly>
+        
+                            <label for="company-phone">Teléfono:</label>
+                            <input type="tel" id="company-phone" value="+57 3209668241" readonly>
+                        </div>
+                        <!-- <div class="client-details">
+                            {% for field in cliente_form.visible_fields %}
+                            <div class="form-group">
+                                <label for="text">{{ field.label }}:</label>
+                                {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                            </div>
+                            {% endfor %}
+                            <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
+                        </div> -->
+                    </div>
+                </header>
+                <main>
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Eliminar</th>
+                                <th>Precio Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-rows">
+                            <!-- Las filas de productos se agregarán aquí -->
+                        </tbody>
+                    </table>
+                    <button onclick="addProductRow()">Agregar Producto</button>
+                    <div class="totals">
+                        <p>Total: <span id="subtotal">$0</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="total_venta">{{ venta_form.total_venta.label }}:</label>
+                        {{ venta_form.total_venta|add_class:'form-control'|attr:'readonly:true, autocomplete:off, id:subtotal' }}
+                    </div>
+                    <div class="form-group">
+                        <label for="metodo_pago">{{ venta_form.metodo_pago.label }}:</label>
+                        {{ venta_form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
+                    </div>
+                </main>
+                <div class="buttons">
+                    <button onclick="printInvoice()">Imprimir PDF</button>           
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-info btn-flat" onclick="printInvoice()"><i class="fas fa-plus"></i> Guardar</button>
+        <a href="{{ listar_url }}" class="btn btn-danger btn-flat">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+    </div>
+</form>
+<script>
+    {% if form.errors %}
+    var errors = '';
+    {% for field in form %}
+    {% for error in field.errors %}
+    errors += '{{ error }}';
+    {% endfor %}
+    {% endfor %}
+
+    Swal.fire({
+        title: 'Error!',
+        text: errors,
+        icon: 'error',
+    });
+    {% endif %}
+</script>
+{% endblock %}

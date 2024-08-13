@@ -1,5 +1,6 @@
 import django
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 import os
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -11,6 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Cliente
 from app.forms import ClienteForm
 
+@method_decorator(never_cache, name='dispatch')
 def lista_cliente(request):
     nombre = {
         'titulo': 'Listado de clientes',
@@ -20,12 +22,12 @@ def lista_cliente(request):
 
 ###### LISTAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class ClienteListView(ListView):
     model = Cliente
     template_name = 'cliente/listar.html'
     
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -43,27 +45,37 @@ class ClienteListView(ListView):
 
 ###### CREAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class ClienteCreateView(CreateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'cliente/crear.html'
     success_url = reverse_lazy('app:cliente_lista')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Agregar cliente'
-        context['entidad'] = 'Agregar cliente'
+        context['titulo'] = 'Registrar cliente'
+        context['entidad'] = 'Registrar cliente'
         context['error'] = 'Este cliente ya está registrado'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
     
 ###### EDITAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class ClienteUpdateView(UpdateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'cliente/crear.html'
     success_url = reverse_lazy('app:cliente_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,10 +87,15 @@ class ClienteUpdateView(UpdateView):
 
 ###### ELIMINAR ######
 
+@method_decorator(never_cache, name='dispatch')
 class ClienteDeleteView(DeleteView):
     model = Cliente
     template_name = 'cliente/eliminar.html'
     success_url = reverse_lazy('app:cliente_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

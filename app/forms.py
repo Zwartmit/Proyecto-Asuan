@@ -1,6 +1,7 @@
 from dataclasses import fields
 from django.forms import ModelForm
-
+from django.core.exceptions import ValidationError
+from django_select2.forms import Select2Widget
 from django import forms
 from django.forms import *
 from app.models import *
@@ -69,13 +70,11 @@ class ProductoForm(ModelForm):
             ),
             "cantidad": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Cantidad a registrar",
                 }
             ),
             "valor": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Valor del producto",
                 }
             ),
@@ -92,6 +91,18 @@ class ClienteForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
 
+    def validar_num_doc_rep(self):
+        numero_documento = self.cleaned_data.get("numero_documento")
+        if Cliente.objects.filter(numero_documento=numero_documento).exists():
+            raise ValidationError("Ya hay un cliente registrado con este número de documento.")
+        return numero_documento
+            
+    def validar_email_rep(self):
+        email = self.cleaned_data.get("email")
+        if Cliente.objects.filter(email=email).exists():
+            raise ValidationError("Ya hay un cliente registrado con este email.")
+        return email
+    
     class Meta:
         model = Cliente
         fields = "__all__"
@@ -118,7 +129,6 @@ class ClienteForm(ModelForm):
             ),
             "telefono": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Teléfono",
                 }
             )
@@ -128,7 +138,7 @@ class MeseroForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
-
+            
     class Meta:
         model = Mesero
         fields = "__all__"
@@ -145,18 +155,17 @@ class MeseroForm(ModelForm):
             ),
             "numero_documento": NumberInput(
                 attrs={
-                    "min": 8,
                     "placeholder": "Número de documento",
                 }
             ),
             "email": EmailInput(
                 attrs={
+                    
                     "placeholder": "Email",
                 }
             ),
             "telefono": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Teléfono",
                 }
             )
@@ -183,7 +192,6 @@ class PlatoForm(ModelForm):
             ),
             "valor": NumberInput(
                 attrs={
-                    "min": 1,
                     "placeholder": "Valor del plato",
                 }
             ),
@@ -195,159 +203,232 @@ class PlatoForm(ModelForm):
             )
         }
 
-class CuentaForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["cantidad"].widget.attrs["autofocus"] = True
 
-    class Meta:
-        model = Cuenta
-        fields = "__all__"
-        widgets = {
-            "cantidad": NumberInput(
-                attrs={
-                    "placeholder": "Cantidad a registrar",
-                }
-            ),
-            "subtotal": NumberInput(
-                attrs={
-                    "placeholder": "Subtotal",
-                }
-            ),
-            "estado": Select(
-                choices=[(True, "Activo"), (False, "Inactivo")],
-                attrs={
-                    "placeholder": "Estado del producto",
-                },
-            )
-        }
-        
+from django import forms
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
+from app.models import Administrador
+
 class AdministradorForm(ModelForm):
+    username = forms.CharField(label="Username", max_length=150)
+    email = forms.EmailField(label="Email", max_length=150)
+    password = forms.CharField(label="Password", widget=PasswordInput)
+    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("conf_password")
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso.")
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Este correo electrónico ya está en uso.")
+        
+        if not password2:
+            raise ValidationError("Necesitas validar tu contraseña")
+        
+        if password1 != password2:
+            raise ValidationError("Las contraseñas no coinciden")
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso.")
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Este correo electrónico ya está en uso.")
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        administrador = super().save(commit=False)
+        administrador.user = user
+        administrador.contrasena = password 
+        administrador.conf_contrasena = cleaned_data.get('conf_password')
+        if commit:
+            administrador.save()
+        return administrador
 
     class Meta:
         model = Administrador
-        fields = "__all__"
+        fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
-            "nombre": TextInput(
-                attrs={
-                    "placeholder": "Nombre del administrador",
-                }
-            ),
-            "tipo_documento": Select(
-                attrs={
-                    "placeholder": "Tipo de documento",
-                }
-            ),
-            "numero_documento": NumberInput(
-                attrs={
-                    "min": 8,
-                    "placeholder": "Número de documento",
-                }
-            ),
-            "email": EmailInput(
-                attrs={
-                    "placeholder": "Email",
-                }
-            ),
-            "telefono": NumberInput(
-                attrs={
-                    "min": 1,
-                    "placeholder": "Teléfono",
-                }
-            )
+            "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
+            "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
+            "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
+            "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
+# -----------------------------------------------------------------------------------------------
+
+from app.models import Operador
+
 class OperadorForm(ModelForm):
+    username = forms.CharField(label="Username", max_length=150)
+    email = forms.EmailField(label="Email", max_length=150)
+    password = forms.CharField(label="Password", widget=PasswordInput)
+    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
 
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("conf_password")
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso.")
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Este correo electrónico ya está en uso.")
+        
+        if not password2:
+            raise ValidationError("Necesitas validar tu contraseña")
+        
+        if password1 != password2:
+            raise ValidationError("Las contraseñas no coinciden")
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso.")
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Este correo electrónico ya está en uso.")
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        operador = super().save(commit=False)
+        operador.user = user
+        operador.contrasena = password 
+        operador.conf_contrasena = cleaned_data.get('conf_password')
+        if commit:
+            operador.save()
+        return operador
+
     class Meta:
         model = Operador
-        fields = "__all__"
+        fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
-            "nombre": TextInput(
-                attrs={
-                    "placeholder": "Nombre del operador",
-                }
-            ),
-            "tipo_documento": Select(
-                attrs={
-                    "placeholder": "Tipo de documento",
-                }
-            ),
-            "numero_documento": NumberInput(
-                attrs={
-                    "min": 8,
-                    "placeholder": "Número de documento",
-                }
-            ),
-            "email": EmailInput(
-                attrs={
-                    "placeholder": "Email",
-                }
-            ),
-            "telefono": NumberInput(
-                attrs={
-                    "min": 1,
-                    "placeholder": "Teléfono",
-                }
-            )
+            "nombre": TextInput(attrs={"placeholder": "Nombre del operador"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
+            "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
+            "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
+            "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
+# -------------------------------------------------------------------------------------------
+ 
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+        self.fields["total_venta"].widget.attrs["autofocus"] = True
 
     class Meta:
         model = Venta
         fields = "__all__"
         widgets = {
-            "cantidad_producto": NumberInput(
-                attrs={
-                    "placeholder": "Cantidad del producto",
-                }
-            ),
             "total_venta": NumberInput(
                 attrs={
                     "placeholder": "Total",
                 }
             ),
-            "total_venta_iva": NumberInput(
+            "metodo_pago": Select(
                 attrs={
-                    "placeholder": "Total IVA",
-                }
-            ),
-            "fecha_venta": DateInput(
-                attrs={
-                    "type": "date",
-                    "placeholder": "Fecha de la venta",
+                    "placeholder": "Metodo de pago",
                 }
             )
         }
 
-class Metodo_pagoForm(ModelForm):
+class DetalleVentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["metodo"].widget.attrs["autofocus"] = True
+        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+        self.fields['id_producto'].queryset = Producto.objects.all()
 
     class Meta:
-        model = Metodo_pago
+        model = Detalle_venta
         fields = "__all__"
         widgets = {
-            "metodo":Select(
+            "cantidad_producto": NumberInput(
                 attrs={
-                    "placeholder": "Seleccione metodo",
+                    "placeholder": "Cantidad"
                 }
             ),
-           "estado": Select(
-                choices=[(True, "Activo"), (False, "Inactivo")],
+            "id_producto": Select2Widget(
                 attrs={
-                    "placeholder": "Estado del producto",
-                },
+                    "class": "product-select"
+                }
+            )
+        }
+        
+class DetalleVentaCuentaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+
+    class Meta:
+        model = Detalle_venta_cuenta
+        fields = "__all__"
+        widgets = {
+            "cantidad_producto": NumberInput(
+                attrs={
+                    "placeholder": "Cantidad"
+                }
+            ),
+            "cantidad_plato": NumberInput(
+                attrs={
+                    "placeholder": "Cantidad"
+                }
+            ),
+        }
+        
+class FacturaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["fecha_emision_factura"].widget.attrs["autofocus"] = True
+
+    class Meta:
+        model = Venta
+        fields = "__all__"
+        widgets = {
+            "fecha_emision_factura": DateInput(
+                attrs={
+                    "type": "date",
+                    "placeholder": "Fecha de la venta",
+                }
             )
         }
