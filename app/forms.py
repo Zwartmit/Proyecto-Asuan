@@ -234,6 +234,12 @@ class CuentaForm(ModelForm):
             )
         }
 
+from django import forms
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, NumberInput, Select
+from .models import Administrador
+
 class AdministradorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
@@ -247,15 +253,21 @@ class AdministradorForm(ModelForm):
     )
     password = forms.CharField(
         label="Contraseña",
-        widget=PasswordInput(attrs={"placeholder": "Contraseña"})
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"}),
+        required=False  # Allow empty if not updating the password
     )
     conf_password = forms.CharField(
         label="Confirmar contraseña",
-        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"})
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
+        required=False  # Allow empty if not updating the password
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Ensure we properly handle the initial data
+        if self.instance and self.instance.pk:
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
         self.fields["nombre"].widget.attrs["autofocus"] = True
 
     def clean(self):
@@ -265,16 +277,15 @@ class AdministradorForm(ModelForm):
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
-        if User.objects.filter(username=username).exists():
+        # Check if username or email is already in use by another user
+        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if not password2:
-            raise ValidationError("Necesitas validar tu contraseña")
-        
-        if password1 != password2:
+        # Check password match if both are provided
+        if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
         
         return cleaned_data
@@ -285,21 +296,27 @@ class AdministradorForm(ModelForm):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-        if User.objects.filter(username=username).exists():
-            raise ValidationError("Este nombre de usuario ya está en uso.")
+        if self.instance.pk:
+            # Update existing user
+            user = self.instance.user
+            if username and user.username != username:
+                user.username = username
+            if email and user.email != email:
+                user.email = email
+            if password:
+                user.set_password(password)
+            user.save()
+        else:
+            # Create new user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
         
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Este correo electrónico ya está en uso.")
-
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
+        # Save the administrator instance
         administrador = super().save(commit=False)
         administrador.user = user
-        administrador.contrasena = password 
-        administrador.conf_contrasena = cleaned_data.get('conf_password')
         if commit:
             administrador.save()
         return administrador
@@ -315,6 +332,7 @@ class AdministradorForm(ModelForm):
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
+
 
 # -----------------------------------------------------------------------------------------------
 
