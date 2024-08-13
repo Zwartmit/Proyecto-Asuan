@@ -37,7 +37,7 @@ CREATE TABLE `administrador` (
   CONSTRAINT `Administrador_user_id_949907f5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `administrador_chk_1` CHECK ((`numero_documento` >= 0)),
   CONSTRAINT `administrador_chk_2` CHECK ((`telefono` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,6 @@ CREATE TABLE `administrador` (
 
 LOCK TABLES `administrador` WRITE;
 /*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
-INSERT INTO `administrador` VALUES (1,'Juan','CC',23565615,35115353,'juan','juan',3);
 /*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +150,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +159,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$epLEJmqixjPLE9ersot1GS$KTswIE56CG+2trhEiTVK6f4CaXL+DJjFEtFZye/CoSI=','2024-08-12 21:17:15.012849',1,'admin','','','admin@gmail.com',1,1,'2024-08-12 18:57:42.012927'),(2,'pbkdf2_sha256$870000$kgeNjETGK0iOPCotEOUPgt$C90fJtnfVB/EuCmLvKc3V0i9rOx8+Y9O2iSXANQCa0Y=',NULL,0,'Juan','','','juan@gmail.com',0,1,'2024-08-12 19:58:29.983161'),(3,'pbkdf2_sha256$870000$3OoyUEO6ybCa9FrWLvVZ0p$2fTyVLtPVGCQgus0NIMCXFzOTEqZwFF0wNkUNSnRqdI=',NULL,0,'Camilo','','','camilo@gmail.com',0,1,'2024-08-12 19:59:00.299959');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$1mLeQpGBzrmBj4zDvqoqZO$hOH0EXCG0dnKOh/b7xHHAZhhFqyp5iRucai32mvHLN4=','2024-08-13 20:24:30.889880',1,'admin','','','admin@gmail.com',1,1,'2024-08-13 18:26:36.243641');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +416,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-08-12 18:57:24.016039'),(2,'auth','0001_initial','2024-08-12 18:57:24.483322'),(3,'admin','0001_initial','2024-08-12 18:57:24.596121'),(4,'admin','0002_logentry_remove_auto_add','2024-08-12 18:57:24.602105'),(5,'admin','0003_logentry_add_action_flag_choices','2024-08-12 18:57:24.609058'),(6,'app','0001_initial','2024-08-12 18:57:25.518746'),(7,'app','0002_alter_categoria_categoria','2024-08-12 18:57:25.533698'),(8,'app','0003_rename_nombre_producto_producto_producto_and_more','2024-08-12 18:57:25.585226'),(9,'app','0004_alter_administrador_tipo_documento_and_more','2024-08-12 18:57:25.591211'),(10,'app','0005_alter_administrador_numero_documento_and_more','2024-08-12 18:57:25.608155'),(11,'app','0006_alter_administrador_numero_documento_and_more','2024-08-12 18:57:25.671243'),(12,'app','0007_alter_administrador_numero_documento_and_more','2024-08-12 18:57:25.733956'),(13,'app','0008_rename_nombre_plato_plato_plato','2024-08-12 18:57:25.754863'),(14,'app','0009_alter_cliente_numero_documento_and_more','2024-08-12 18:57:25.776807'),(15,'app','0010_alter_cliente_numero_documento','2024-08-12 18:57:25.781822'),(16,'app','0011_alter_cliente_numero_documento_and_more','2024-08-12 18:57:25.920242'),(17,'app','0012_alter_cliente_numero_documento_and_more','2024-08-12 18:57:26.152294'),(18,'app','0013_alter_cliente_numero_documento','2024-08-12 18:57:26.156902'),(19,'app','0014_alter_administrador_numero_documento_and_more','2024-08-12 18:57:26.165755'),(20,'app','0015_cliente_pais_telefono','2024-08-12 18:57:26.193460'),(21,'app','0016_mesero_pais_telefono_operador_pais_telefono','2024-08-12 18:57:26.244245'),(22,'app','0017_alter_cliente_email','2024-08-12 18:57:26.249128'),(23,'app','0018_alter_administrador_email_alter_mesero_email_and_more','2024-08-12 18:57:26.260070'),(24,'app','0019_remove_factura_id_metodo_alter_producto_id_categoria_and_more','2024-08-12 18:57:26.349223'),(25,'app','0020_venta_metodo_pago_alter_venta_id_admin_and_more','2024-08-12 18:57:26.660152'),(26,'app','0021_administrador_conf_contraseña','2024-08-12 18:57:26.686930'),(27,'app','0022_alter_administrador_conf_contraseña','2024-08-12 18:57:26.692177'),(28,'app','0023_remove_administrador_email_administrador_user','2024-08-12 18:57:26.798996'),(29,'app','0024_alter_administrador_options_and_more','2024-08-12 18:57:26.925997'),(30,'app','0025_rename_conf_contraseña_administrador_conf_contrasena_and_more','2024-08-12 18:57:26.987997'),(31,'app','0026_alter_operador_options_remove_operador_contraseña_and_more','2024-08-12 18:57:27.171359'),(32,'contenttypes','0002_remove_content_type_name','2024-08-12 18:57:27.246479'),(33,'auth','0002_alter_permission_name_max_length','2024-08-12 18:57:27.314185'),(34,'auth','0003_alter_user_email_max_length','2024-08-12 18:57:27.337703'),(35,'auth','0004_alter_user_username_opts','2024-08-12 18:57:27.345594'),(36,'auth','0005_alter_user_last_login_null','2024-08-12 18:57:27.398202'),(37,'auth','0006_require_contenttypes_0002','2024-08-12 18:57:27.401275'),(38,'auth','0007_alter_validators_add_error_messages','2024-08-12 18:57:27.408801'),(39,'auth','0008_alter_user_username_max_length','2024-08-12 18:57:27.469466'),(40,'auth','0009_alter_user_last_name_max_length','2024-08-12 18:57:27.530185'),(41,'auth','0010_alter_group_name_max_length','2024-08-12 18:57:27.552249'),(42,'auth','0011_update_proxy_permissions','2024-08-12 18:57:27.565867'),(43,'auth','0012_alter_user_first_name_max_length','2024-08-12 18:57:27.624776'),(44,'sessions','0001_initial','2024-08-12 18:57:27.655225');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-08-13 18:26:20.457681'),(2,'auth','0001_initial','2024-08-13 18:26:20.976108'),(3,'admin','0001_initial','2024-08-13 18:26:21.095803'),(4,'admin','0002_logentry_remove_auto_add','2024-08-13 18:26:21.102819'),(5,'admin','0003_logentry_add_action_flag_choices','2024-08-13 18:26:21.109801'),(6,'app','0001_initial','2024-08-13 18:26:22.075076'),(7,'app','0002_alter_categoria_categoria','2024-08-13 18:26:22.093910'),(8,'app','0003_rename_nombre_producto_producto_producto_and_more','2024-08-13 18:26:22.148424'),(9,'app','0004_alter_administrador_tipo_documento_and_more','2024-08-13 18:26:22.155442'),(10,'app','0005_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.173063'),(11,'app','0006_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.242112'),(12,'app','0007_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.302514'),(13,'app','0008_rename_nombre_plato_plato_plato','2024-08-13 18:26:22.324380'),(14,'app','0009_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.347347'),(15,'app','0010_alter_cliente_numero_documento','2024-08-13 18:26:22.352071'),(16,'app','0011_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.521628'),(17,'app','0012_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.747724'),(18,'app','0013_alter_cliente_numero_documento','2024-08-13 18:26:22.753072'),(19,'app','0014_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.764051'),(20,'app','0015_cliente_pais_telefono','2024-08-13 18:26:22.790368'),(21,'app','0016_mesero_pais_telefono_operador_pais_telefono','2024-08-13 18:26:22.843789'),(22,'app','0017_alter_cliente_email','2024-08-13 18:26:22.848775'),(23,'app','0018_alter_administrador_email_alter_mesero_email_and_more','2024-08-13 18:26:22.856859'),(24,'app','0019_remove_factura_id_metodo_alter_producto_id_categoria_and_more','2024-08-13 18:26:22.949263'),(25,'app','0020_venta_metodo_pago_alter_venta_id_admin_and_more','2024-08-13 18:26:23.310148'),(26,'app','0021_administrador_conf_contraseña','2024-08-13 18:26:23.333343'),(27,'app','0022_alter_administrador_conf_contraseña','2024-08-13 18:26:23.338069'),(28,'app','0023_remove_administrador_email_administrador_user','2024-08-13 18:26:23.424533'),(29,'app','0024_alter_administrador_options_and_more','2024-08-13 18:26:23.548280'),(30,'app','0025_rename_conf_contraseña_administrador_conf_contrasena_and_more','2024-08-13 18:26:23.614989'),(31,'app','0026_alter_operador_options_remove_operador_contraseña_and_more','2024-08-13 18:26:23.793554'),(32,'contenttypes','0002_remove_content_type_name','2024-08-13 18:26:23.874743'),(33,'auth','0002_alter_permission_name_max_length','2024-08-13 18:26:23.935049'),(34,'auth','0003_alter_user_email_max_length','2024-08-13 18:26:23.959853'),(35,'auth','0004_alter_user_username_opts','2024-08-13 18:26:23.968827'),(36,'auth','0005_alter_user_last_login_null','2024-08-13 18:26:24.024583'),(37,'auth','0006_require_contenttypes_0002','2024-08-13 18:26:24.027023'),(38,'auth','0007_alter_validators_add_error_messages','2024-08-13 18:26:24.035430'),(39,'auth','0008_alter_user_username_max_length','2024-08-13 18:26:24.097904'),(40,'auth','0009_alter_user_last_name_max_length','2024-08-13 18:26:24.172966'),(41,'auth','0010_alter_group_name_max_length','2024-08-13 18:26:24.195152'),(42,'auth','0011_update_proxy_permissions','2024-08-13 18:26:24.208776'),(43,'auth','0012_alter_user_first_name_max_length','2024-08-13 18:26:24.269104'),(44,'sessions','0001_initial','2024-08-13 18:26:24.298827');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -443,7 +442,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('870cz5pnqf0kh9tf04uslbxuthkz8xor','.eJxVjDsOwjAQBe_iGlmJ_6akzxmiXe8GB5AtxUmFuDuJlALamXnvLUbY1jxujZdxJnEVvbj8MoT05HIIekC5V5lqWZcZ5ZHI0zY5VOLX7Wz_DjK0vK990jb4wBAwYj-B1xwtE6gdTZqUcuTRd3001iAm7QJ21gRUZKJybMTnC_E2N-M:1sdcPj:z2HaQefxzvelhjEo_iLqJYgym6vshZ0g9-VzSNpQV4A','2024-08-26 21:17:15.014843'),('nfdxwbfiu2w5l32ae1oh51uf5dh41iql','.eJxVjDsOwjAQBe_iGlmJ_6akzxmiXe8GB5AtxUmFuDuJlALamXnvLUbY1jxujZdxJnEVvbj8MoT05HIIekC5V5lqWZcZ5ZHI0zY5VOLX7Wz_DjK0vK990jb4wBAwYj-B1xwtE6gdTZqUcuTRd3001iAm7QJ21gRUZKJybMTnC_E2N-M:1sdahe:ZU9K26Y_X07pQFUc8fk_GHesbklXXmfCpuVvt3kbVlo','2024-08-26 19:27:38.390444');
+INSERT INTO `django_session` VALUES ('bp52f63e2xmcw6pg46bccz0hmjvgnbi7','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwiv:WtTbC5nkz-xawPnawdBjQ0gpsR5aHC_xTWDwU8ycOGw','2024-08-27 18:58:25.565845'),('g3hlc6xl7lua6rtpnyx6vdjw5jm5m6es','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdy4E:LlOWSazLaUh-if9WnpqxiRY8-fvKMtB5_w4TfeBABCs','2024-08-27 20:24:30.891703'),('xiple7jna7gcz6uom5pcr3s2id73u1el','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwEL:uLSbZhgDKQJASopp1WLgQpdguL6BLwu2UJJc6CAybnk','2024-08-27 18:26:49.421309');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -722,4 +721,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-12 16:57:54
+-- Dump completed on 2024-08-13 17:00:18

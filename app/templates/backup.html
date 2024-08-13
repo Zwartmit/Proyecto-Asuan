@@ -13,55 +13,47 @@
             <h2>Crear copia de seguridad</h2>
             <form id="backupForm" method="post" action="{% url 'app:crear_backup' %}">
                 {% csrf_token %}
-                <button class="btn_generate" type="submit">Crear</button>
+                <button class="btn_generate fas fa-download" type="submit"></button>
             </form>
         </div>
         <div class="restore-section">
             <h2>Restaurar copia de seguridad</h2>
-            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}"
-                enctype="multipart/form-data">
+            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
                 {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del archivo</th>
+                            <th>Fecha de creación</th>
+                            <th>Tamaño</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for backup in page_obj %}
+                        <tr>
+                            <td>{{ backup.filename }}</td>
+                            <td>{{ backup.created_at }}</td>
+                            <td>{{ backup.size }}</td>
+                            <td>
+                                <form method="post" action="{% url 'app:eliminar_backup' %}" class="delete-backup-form">
+                                    {% csrf_token %}
+                                    <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
+                                    <button type="submit" class="btn_delete">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">No hay copias de seguridad disponibles.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 <input type="file" name="backup_file" accept=".sql, .db, .sqlite, .bak" required>
-                <p></p><button class="btn_restore" type="submit">Restaurar</button>
+                <p></p><button class="btn_restore fas fa-upload" type="submit"></button>
             </form>
         </div>
-    </div>
-
-    <div class="backup-list-section">
-        <h2>Copias de seguridad guardadas</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre del archivo</th>
-                    <th>Fecha de creación</th>
-                    <th>Tamaño</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for backup in backups %}
-                <tr>
-                    <td>{{ backup.filename }}</td>
-                    <td>{{ backup.created_at }}</td>
-                    <td>{{ backup.size }}</td>
-                    <td>
-                        <form method="post" action="{% url 'app:eliminar_backup' %}" class="delete-backup-form">
-                            {% csrf_token %}
-                            <input type="hidden" name="filename" value="{{ backup.filename }}">
-                            <button type="submit" class="btn_delete">Eliminar</button>
-                        </form>
-                        <form method="get" action="{% url 'app:descargar_backup' backup.filename %}">
-                            <button type="submit" class="btn_download">Descargar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">No hay copias de seguridad disponibles.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
 

@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views import View
+from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 
 @method_decorator(never_cache, name='dispatch')
@@ -57,64 +58,78 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
-def backup_list(request):
-    backup_dir = settings.BACKUP_DIR
-    backups = []
-    for filename in os.listdir(backup_dir):
-        if filename.endswith('.sql'):
-            file_path = os.path.join(backup_dir, filename)
-            created_at = datetime.fromtimestamp(os.path.getctime(file_path))
-            size = os.path.getsize(file_path)
-            backups.append({
-                'filename': filename,
-                'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                'size': f"{size / 1024 / 1024:.2f} MB"
-            })
-    
-    backups.sort(key=lambda x: x['created_at'], reverse=True)
-    
-    paginator = Paginator(backups, 10) 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    return render(request, 'backup.html', {'page_obj': page_obj})
+@method_decorator(never_cache, name='dispatch')
+class BackupListView(ListView):
+    template_name = 'backup.html'
+    context_object_name = 'backups'
+    paginate_by = None
+
+    @method_decorator(login_required)
+    def get_queryset(self):
+        backup_dir = settings.BACKUP_DIR
+        backups = []
+        for filename in os.listdir(backup_dir):
+            if filename.endswith('.sql'):
+                file_path = os.path.join(backup_dir, filename)
+                created_at = datetime.fromtimestamp(os.path.getctime(file_path))
+                size = os.path.getsize(file_path)
+                backups.append({
+                    'filename': filename,
+                    'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'size': f"{size / 1024 / 1024:.2f} MB"
+                })
+
+        backups.sort(key=lambda x: x['created_at'], reverse=True)
+        return backups
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = Paginator(self.get_queryset(), self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context
+
 
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         success = False
         try:
-            if 'backup_file' not in request.FILES:
-                messages.error(request, "No se ha enviado ningún archivo")
+            backup_file = request.FILES.get('backup_file')
+            if not backup_file:
+                raise Http404("No se especificó un archivo de respaldo")
+
+            filename = backup_file.name
+            backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+            backup_path = os.path.join(backup_dir, filename)
+
+            os.makedirs(backup_dir, exist_ok=True)
+
+            with open(backup_path, 'wb+') as destination:
+                for chunk in backup_file.chunks():
+                    destination.write(chunk)
+
+            db_settings = settings.DATABASES['default']
+            db_name = db_settings['NAME']
+            db_user = db_settings['USER']
+            db_password = db_settings['PASSWORD']
+            db_host = db_settings['HOST']
+            db_port = db_settings['PORT']
+
+            command = ['mysql', '-h', db_host, '-P', db_port, '-u', db_user, f"-p{db_password}", db_name]
+            with open(backup_path, 'r') as input_file:
+                result = subprocess.run(command, stdin=input_file, stderr=subprocess.PIPE, text=True)
+
+            if result.returncode != 0:
+                messages.error(request, f"Error al restaurar la base de datos: {result.stderr}")
             else:
-                file = request.FILES['backup_file']
-                backup_dir = os.path.join(settings.BASE_DIR, 'backups')
-                os.makedirs(backup_dir, exist_ok=True)
-                backup_path = os.path.join(backup_dir, file.name)
-
-                with open(backup_path, 'wb+') as destination:
-                    for chunk in file.chunks():
-                        destination.write(chunk)
-
-                db_settings = settings.DATABASES['default']
-                db_name = db_settings['NAME']
-                db_user = db_settings['USER']
-                db_password = db_settings['PASSWORD']
-                db_host = db_settings['HOST']
-                db_port = db_settings['PORT']
-
-                command = (
-                    f"mysql -h {db_host} -P {db_port} -u {db_user} -p{db_password} "
-                    f"{db_name} < \"{backup_path}\""
-                )
-
-                result = subprocess.run(command, shell=True, capture_output=True, text=True)
-
-                if result.returncode != 0:
-                    messages.error(request, f"Error al restaurar la base de datos: {result.stderr}")
-                else:
-                    messages.success(request, f"Base de datos restaurada desde {file.name}")
-                    success = True
+                messages.success(request, f"Base de datos restaurada desde {filename}")
+                success = True
 
         except Exception as e:
             messages.error(request, f"Error al restaurar la base de datos: {str(e)}")
@@ -123,15 +138,6 @@ class RestoreDatabaseView(View):
         messages_str = [str(message) for message in messages_list]
 
         return JsonResponse({'messages': messages_str, 'success': success})
-
-def download_backup(request, filename):
-    file_path = os.path.join(settings.BASE_DIR, 'backups', filename)
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/octet-stream")
-            response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
-            return response
-    raise Http404
 
 @method_decorator(never_cache, name='dispatch')
 class DeleteBackupView(View):
@@ -154,4 +160,7 @@ class DeleteBackupView(View):
             messages.error(request, "No se especificó un archivo para eliminar")
             success = False
 
-        return JsonResponse({'message': messages, 'success': success})
+        messages_list = list(messages.get_messages(request))
+        messages_str = [str(message) for message in messages_list]
+
+        return JsonResponse({'messages': messages_str, 'success': success})
