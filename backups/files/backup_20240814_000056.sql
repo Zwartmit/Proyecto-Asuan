@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: asuan_db
 -- ------------------------------------------------------
--- Server version	8.0.39
+-- Server version	8.0.38
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -116,7 +116,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add Administrador',7,'add_administrador'),(26,'Can change Administrador',7,'change_administrador'),(27,'Can delete Administrador',7,'delete_administrador'),(28,'Can view Administrador',7,'view_administrador'),(29,'Can add categoria',8,'add_categoria'),(30,'Can change categoria',8,'change_categoria'),(31,'Can delete categoria',8,'delete_categoria'),(32,'Can view categoria',8,'view_categoria'),(33,'Can add cliente',9,'add_cliente'),(34,'Can change cliente',9,'change_cliente'),(35,'Can delete cliente',9,'delete_cliente'),(36,'Can view cliente',9,'view_cliente'),(37,'Can add marca',10,'add_marca'),(38,'Can change marca',10,'change_marca'),(39,'Can delete marca',10,'delete_marca'),(40,'Can view marca',10,'view_marca'),(41,'Can add mesero',11,'add_mesero'),(42,'Can change mesero',11,'change_mesero'),(43,'Can delete mesero',11,'delete_mesero'),(44,'Can view mesero',11,'view_mesero'),(45,'Can add Operador',12,'add_operador'),(46,'Can change Operador',12,'change_operador'),(47,'Can delete Operador',12,'delete_operador'),(48,'Can view Operador',12,'view_operador'),(49,'Can add plato',13,'add_plato'),(50,'Can change plato',13,'change_plato'),(51,'Can delete plato',13,'delete_plato'),(52,'Can view plato',13,'view_plato'),(53,'Can add presentacion',14,'add_presentacion'),(54,'Can change presentacion',14,'change_presentacion'),(55,'Can delete presentacion',14,'delete_presentacion'),(56,'Can view presentacion',14,'view_presentacion'),(57,'Can add cuenta',15,'add_cuenta'),(58,'Can change cuenta',15,'change_cuenta'),(59,'Can delete cuenta',15,'delete_cuenta'),(60,'Can view cuenta',15,'view_cuenta'),(61,'Can add producto',16,'add_producto'),(62,'Can change producto',16,'change_producto'),(63,'Can delete producto',16,'delete_producto'),(64,'Can view producto',16,'view_producto'),(65,'Can add venta',17,'add_venta'),(66,'Can change venta',17,'change_venta'),(67,'Can delete venta',17,'delete_venta'),(68,'Can view venta',17,'view_venta'),(69,'Can add factura',18,'add_factura'),(70,'Can change factura',18,'change_factura'),(71,'Can delete factura',18,'delete_factura'),(72,'Can view factura',18,'view_factura');
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add Administrador',7,'add_administrador'),(26,'Can change Administrador',7,'change_administrador'),(27,'Can delete Administrador',7,'delete_administrador'),(28,'Can view Administrador',7,'view_administrador'),(29,'Can add categoria',8,'add_categoria'),(30,'Can change categoria',8,'change_categoria'),(31,'Can delete categoria',8,'delete_categoria'),(32,'Can view categoria',8,'view_categoria'),(33,'Can add cliente',9,'add_cliente'),(34,'Can change cliente',9,'change_cliente'),(35,'Can delete cliente',9,'delete_cliente'),(36,'Can view cliente',9,'view_cliente'),(37,'Can add marca',10,'add_marca'),(38,'Can change marca',10,'change_marca'),(39,'Can delete marca',10,'delete_marca'),(40,'Can view marca',10,'view_marca'),(41,'Can add mesero',11,'add_mesero'),(42,'Can change mesero',11,'change_mesero'),(43,'Can delete mesero',11,'delete_mesero'),(44,'Can view mesero',11,'view_mesero'),(45,'Can add Operador',12,'add_operador'),(46,'Can change Operador',12,'change_operador'),(47,'Can delete Operador',12,'delete_operador'),(48,'Can view Operador',12,'view_operador'),(49,'Can add plato',13,'add_plato'),(50,'Can change plato',13,'change_plato'),(51,'Can delete plato',13,'delete_plato'),(52,'Can view plato',13,'view_plato'),(53,'Can add presentacion',14,'add_presentacion'),(54,'Can change presentacion',14,'change_presentacion'),(55,'Can delete presentacion',14,'delete_presentacion'),(56,'Can view presentacion',14,'view_presentacion'),(57,'Can add cuenta',15,'add_cuenta'),(58,'Can change cuenta',15,'change_cuenta'),(59,'Can delete cuenta',15,'delete_cuenta'),(60,'Can view cuenta',15,'view_cuenta'),(61,'Can add producto',16,'add_producto'),(62,'Can change producto',16,'change_producto'),(63,'Can delete producto',16,'delete_producto'),(64,'Can view producto',16,'view_producto'),(65,'Can add venta',17,'add_venta'),(66,'Can change venta',17,'change_venta'),(67,'Can delete venta',17,'delete_venta'),(68,'Can view venta',17,'view_venta'),(69,'Can add factura',18,'add_factura'),(70,'Can change factura',18,'change_factura'),(71,'Can delete factura',18,'delete_factura'),(72,'Can view factura',18,'view_factura'),(73,'Can add backup',19,'add_backup'),(74,'Can change backup',19,'change_backup'),(75,'Can delete backup',19,'delete_backup'),(76,'Can view backup',19,'view_backup');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +159,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$1mLeQpGBzrmBj4zDvqoqZO$hOH0EXCG0dnKOh/b7xHHAZhhFqyp5iRucai32mvHLN4=','2024-08-13 20:24:30.889880',1,'admin','','','admin@gmail.com',1,1,'2024-08-13 18:26:36.243641');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$9PxDGqkHvnWbMhx6CGcByA$CPoIzqRlsKBwUnNWCz0lc9SYaarYxaINylGUdbZzldk=','2024-08-14 04:59:48.898127',1,'admin','','','asuan.adso@gmail.com',1,1,'2024-08-06 01:48:49.193061');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,6 +220,31 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `backups_backup`
+--
+
+DROP TABLE IF EXISTS `backups_backup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `backups_backup` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `size` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `backups_backup`
+--
+
+LOCK TABLES `backups_backup` WRITE;
+/*!40000 ALTER TABLE `backups_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `backups_backup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `categoria`
 --
 
@@ -231,7 +256,7 @@ CREATE TABLE `categoria` (
   `categoria` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Categoria_categoria_4061e22a_uniq` (`categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,7 +406,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -390,7 +415,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(7,'app','administrador'),(8,'app','categoria'),(9,'app','cliente'),(15,'app','cuenta'),(18,'app','factura'),(10,'app','marca'),(11,'app','mesero'),(12,'app','operador'),(13,'app','plato'),(14,'app','presentacion'),(16,'app','producto'),(17,'app','venta'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(6,'sessions','session');
+INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(7,'app','administrador'),(8,'app','categoria'),(9,'app','cliente'),(15,'app','cuenta'),(18,'app','factura'),(10,'app','marca'),(11,'app','mesero'),(12,'app','operador'),(13,'app','plato'),(14,'app','presentacion'),(16,'app','producto'),(17,'app','venta'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(19,'backups','backup'),(5,'contenttypes','contenttype'),(6,'sessions','session');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +432,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +441,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-08-13 18:26:20.457681'),(2,'auth','0001_initial','2024-08-13 18:26:20.976108'),(3,'admin','0001_initial','2024-08-13 18:26:21.095803'),(4,'admin','0002_logentry_remove_auto_add','2024-08-13 18:26:21.102819'),(5,'admin','0003_logentry_add_action_flag_choices','2024-08-13 18:26:21.109801'),(6,'app','0001_initial','2024-08-13 18:26:22.075076'),(7,'app','0002_alter_categoria_categoria','2024-08-13 18:26:22.093910'),(8,'app','0003_rename_nombre_producto_producto_producto_and_more','2024-08-13 18:26:22.148424'),(9,'app','0004_alter_administrador_tipo_documento_and_more','2024-08-13 18:26:22.155442'),(10,'app','0005_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.173063'),(11,'app','0006_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.242112'),(12,'app','0007_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.302514'),(13,'app','0008_rename_nombre_plato_plato_plato','2024-08-13 18:26:22.324380'),(14,'app','0009_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.347347'),(15,'app','0010_alter_cliente_numero_documento','2024-08-13 18:26:22.352071'),(16,'app','0011_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.521628'),(17,'app','0012_alter_cliente_numero_documento_and_more','2024-08-13 18:26:22.747724'),(18,'app','0013_alter_cliente_numero_documento','2024-08-13 18:26:22.753072'),(19,'app','0014_alter_administrador_numero_documento_and_more','2024-08-13 18:26:22.764051'),(20,'app','0015_cliente_pais_telefono','2024-08-13 18:26:22.790368'),(21,'app','0016_mesero_pais_telefono_operador_pais_telefono','2024-08-13 18:26:22.843789'),(22,'app','0017_alter_cliente_email','2024-08-13 18:26:22.848775'),(23,'app','0018_alter_administrador_email_alter_mesero_email_and_more','2024-08-13 18:26:22.856859'),(24,'app','0019_remove_factura_id_metodo_alter_producto_id_categoria_and_more','2024-08-13 18:26:22.949263'),(25,'app','0020_venta_metodo_pago_alter_venta_id_admin_and_more','2024-08-13 18:26:23.310148'),(26,'app','0021_administrador_conf_contraseña','2024-08-13 18:26:23.333343'),(27,'app','0022_alter_administrador_conf_contraseña','2024-08-13 18:26:23.338069'),(28,'app','0023_remove_administrador_email_administrador_user','2024-08-13 18:26:23.424533'),(29,'app','0024_alter_administrador_options_and_more','2024-08-13 18:26:23.548280'),(30,'app','0025_rename_conf_contraseña_administrador_conf_contrasena_and_more','2024-08-13 18:26:23.614989'),(31,'app','0026_alter_operador_options_remove_operador_contraseña_and_more','2024-08-13 18:26:23.793554'),(32,'contenttypes','0002_remove_content_type_name','2024-08-13 18:26:23.874743'),(33,'auth','0002_alter_permission_name_max_length','2024-08-13 18:26:23.935049'),(34,'auth','0003_alter_user_email_max_length','2024-08-13 18:26:23.959853'),(35,'auth','0004_alter_user_username_opts','2024-08-13 18:26:23.968827'),(36,'auth','0005_alter_user_last_login_null','2024-08-13 18:26:24.024583'),(37,'auth','0006_require_contenttypes_0002','2024-08-13 18:26:24.027023'),(38,'auth','0007_alter_validators_add_error_messages','2024-08-13 18:26:24.035430'),(39,'auth','0008_alter_user_username_max_length','2024-08-13 18:26:24.097904'),(40,'auth','0009_alter_user_last_name_max_length','2024-08-13 18:26:24.172966'),(41,'auth','0010_alter_group_name_max_length','2024-08-13 18:26:24.195152'),(42,'auth','0011_update_proxy_permissions','2024-08-13 18:26:24.208776'),(43,'auth','0012_alter_user_first_name_max_length','2024-08-13 18:26:24.269104'),(44,'sessions','0001_initial','2024-08-13 18:26:24.298827');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-08-06 01:48:11.149669'),(2,'auth','0001_initial','2024-08-06 01:48:11.500290'),(3,'admin','0001_initial','2024-08-06 01:48:11.621901'),(4,'admin','0002_logentry_remove_auto_add','2024-08-06 01:48:11.626887'),(5,'admin','0003_logentry_add_action_flag_choices','2024-08-06 01:48:11.632872'),(6,'app','0001_initial','2024-08-06 01:48:12.299571'),(7,'app','0002_alter_categoria_categoria','2024-08-06 01:48:12.312555'),(8,'app','0003_rename_nombre_producto_producto_producto_and_more','2024-08-06 01:48:12.352219'),(9,'app','0004_alter_administrador_tipo_documento_and_more','2024-08-06 01:48:12.358204'),(10,'app','0005_alter_administrador_numero_documento_and_more','2024-08-06 01:48:12.374599'),(11,'app','0006_alter_administrador_numero_documento_and_more','2024-08-06 01:48:12.425837'),(12,'app','0007_alter_administrador_numero_documento_and_more','2024-08-06 01:48:12.484913'),(13,'app','0008_rename_nombre_plato_plato_plato','2024-08-06 01:48:12.501826'),(14,'app','0009_alter_cliente_numero_documento_and_more','2024-08-06 01:48:12.524766'),(15,'app','0010_alter_cliente_numero_documento','2024-08-06 01:48:12.528869'),(16,'app','0011_alter_cliente_numero_documento_and_more','2024-08-06 01:48:12.636046'),(17,'app','0012_alter_cliente_numero_documento_and_more','2024-08-06 01:48:12.818183'),(18,'app','0013_alter_cliente_numero_documento','2024-08-06 01:48:12.822143'),(19,'app','0014_alter_administrador_numero_documento_and_more','2024-08-06 01:48:12.832117'),(20,'app','0015_cliente_pais_telefono','2024-08-06 01:48:12.855703'),(21,'app','0016_mesero_pais_telefono_operador_pais_telefono','2024-08-06 01:48:12.894599'),(22,'app','0017_alter_cliente_email','2024-08-06 01:48:12.897623'),(23,'app','0018_alter_administrador_email_alter_mesero_email_and_more','2024-08-06 01:48:12.905597'),(24,'app','0019_remove_factura_id_metodo_alter_producto_id_categoria_and_more','2024-08-06 01:48:12.989581'),(25,'app','0020_venta_metodo_pago_alter_venta_id_admin_and_more','2024-08-06 01:48:13.238399'),(26,'app','0021_administrador_conf_contraseña','2024-08-06 01:48:13.262753'),(27,'app','0022_alter_administrador_conf_contraseña','2024-08-06 01:48:13.266743'),(28,'app','0023_remove_administrador_email_administrador_user','2024-08-06 01:48:13.339934'),(29,'app','0024_alter_administrador_options_and_more','2024-08-06 01:48:13.438420'),(30,'app','0025_rename_conf_contraseña_administrador_conf_contrasena_and_more','2024-08-06 01:48:13.470913'),(31,'app','0026_alter_operador_options_remove_operador_contraseña_and_more','2024-08-06 01:48:13.639219'),(32,'contenttypes','0002_remove_content_type_name','2024-08-06 01:48:13.694784'),(33,'auth','0002_alter_permission_name_max_length','2024-08-06 01:48:13.745293'),(34,'auth','0003_alter_user_email_max_length','2024-08-06 01:48:13.767234'),(35,'auth','0004_alter_user_username_opts','2024-08-06 01:48:13.774215'),(36,'auth','0005_alter_user_last_login_null','2024-08-06 01:48:13.816158'),(37,'auth','0006_require_contenttypes_0002','2024-08-06 01:48:13.817561'),(38,'auth','0007_alter_validators_add_error_messages','2024-08-06 01:48:13.823547'),(39,'auth','0008_alter_user_username_max_length','2024-08-06 01:48:13.873043'),(40,'auth','0009_alter_user_last_name_max_length','2024-08-06 01:48:13.939548'),(41,'auth','0010_alter_group_name_max_length','2024-08-06 01:48:13.960509'),(42,'auth','0011_update_proxy_permissions','2024-08-06 01:48:13.972477'),(43,'auth','0012_alter_user_first_name_max_length','2024-08-06 01:48:14.015609'),(44,'sessions','0001_initial','2024-08-06 01:48:14.032750'),(45,'backups','0001_initial','2024-08-14 03:46:45.123837');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -442,7 +467,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('bp52f63e2xmcw6pg46bccz0hmjvgnbi7','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwiv:WtTbC5nkz-xawPnawdBjQ0gpsR5aHC_xTWDwU8ycOGw','2024-08-27 18:58:25.565845'),('g3hlc6xl7lua6rtpnyx6vdjw5jm5m6es','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdy4E:LlOWSazLaUh-if9WnpqxiRY8-fvKMtB5_w4TfeBABCs','2024-08-27 20:24:30.891703'),('xiple7jna7gcz6uom5pcr3s2id73u1el','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwEL:uLSbZhgDKQJASopp1WLgQpdguL6BLwu2UJJc6CAybnk','2024-08-27 18:26:49.421309');
+INSERT INTO `django_session` VALUES ('8vjgdfvlza7jmxuch7f5c0kv592gf1o3','.eJxVjMsOwiAQRf-FtSG8QZfu_QYyM4BUDSSlXRn_3TbpQrf3nHPfLMK61LiOPMcpsQuT7PS7IdAztx2kB7R759TbMk_Id4UfdPBbT_l1Pdy_gwqjbrXzQouspE4Bsjrb7LxKhYgMEpoShPUITmoZgpG0KSqALMIEp9B769jnC9tkN2k:1se66u:A_9tpLdRDMhS08It7WT-jYAARyFu6GujfN8Rx_VBffM','2024-08-28 04:59:48.900124'),('d1fb3u7mof13qbfbaiiu3pu114wwrs0n','.eJxVjMsOwiAQRf-FtSG8QZfu_QYyM4BUDSSlXRn_3TbpQrf3nHPfLMK61LiOPMcpsQuT7PS7IdAztx2kB7R759TbMk_Id4UfdPBbT_l1Pdy_gwqjbrXzQouspE4Bsjrb7LxKhYgMEpoShPUITmoZgpG0KSqALMIEp9B769jnC9tkN2k:1se5oJ:PY52PSDIafb2VmvMzO28RhYNFhxphJgZa0rcjGSvwvc','2024-08-28 04:40:35.188410'),('rhhqtw0d0lvlwct9ckra3xmfkp4bmo49','.eJxVjMsOwiAQRf-FtSG8QZfu_QYyM4BUDSSlXRn_3TbpQrf3nHPfLMK61LiOPMcpsQuT7PS7IdAztx2kB7R759TbMk_Id4UfdPBbT_l1Pdy_gwqjbrXzQouspE4Bsjrb7LxKhYgMEpoShPUITmoZgpG0KSqALMIEp9B769jnC9tkN2k:1se5qr:e1V8FepW2SCch7kO_qmZZlykifVtzkZZIQpD0tLEbyQ','2024-08-28 04:43:13.941319');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -721,4 +746,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-13 17:00:23
+-- Dump completed on 2024-08-14  0:00:56

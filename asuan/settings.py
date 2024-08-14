@@ -16,9 +16,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BACKUP_DIR = os.path.join(BASE_DIR, 'backups')
-print(os.listdir(BACKUP_DIR))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -48,7 +45,9 @@ INSTALLED_APPS = [
     #index
     'inicio',
     #login
-    'login'
+    'login',
+    #backups
+    'backups',
 ]
 
 MIDDLEWARE = [

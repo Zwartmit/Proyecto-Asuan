@@ -5,7 +5,6 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.contrib import messages
-from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views import View
@@ -32,7 +31,7 @@ class BackupDatabaseView(View):
             db_port = db_settings['PORT']
 
             filename = request.POST.get('filename', f"backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql")
-            backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+            backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
             backup_path = os.path.join(backup_dir, filename)
 
             os.makedirs(backup_dir, exist_ok=True)
@@ -61,35 +60,25 @@ class BackupDatabaseView(View):
 @method_decorator(never_cache, name='dispatch')
 class BackupListView(ListView):
     template_name = 'backup.html'
-    context_object_name = 'backups'
-    paginate_by = None
-
-    @method_decorator(login_required)
-    def get_queryset(self):
-        backup_dir = settings.BACKUP_DIR
-        backups = []
-        for filename in os.listdir(backup_dir):
-            if filename.endswith('.sql'):
-                file_path = os.path.join(backup_dir, filename)
-                created_at = datetime.fromtimestamp(os.path.getctime(file_path))
-                size = os.path.getsize(file_path)
-                backups.append({
-                    'filename': filename,
-                    'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                    'size': f"{size / 1024 / 1024:.2f} MB"
-                })
-
-        backups.sort(key=lambda x: x['created_at'], reverse=True)
-        return backups
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paginator = Paginator(self.get_queryset(), self.paginate_by)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        return context
+        folder_path = os.path.join(settings.BASE_DIR, 'backups/files')
+        backup_files = []
 
+        if os.path.exists(folder_path):
+            for filename in os.listdir(folder_path):
+                if filename.endswith('.sql'):
+                    file_path = os.path.join(folder_path, filename)
+                    if os.path.isfile(file_path):
+                        backup_files.append({
+                            'filename': filename,
+                            'created_at': datetime.fromtimestamp(os.path.getctime(file_path)),
+                            'size': os.path.getsize(file_path)
+                        })
+
+        context['backup_files'] = backup_files
+        return context
 
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
@@ -105,7 +94,7 @@ class RestoreDatabaseView(View):
                 raise Http404("No se especificó un archivo de respaldo")
 
             filename = backup_file.name
-            backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+            backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
             backup_path = os.path.join(backup_dir, filename)
 
             os.makedirs(backup_dir, exist_ok=True)
