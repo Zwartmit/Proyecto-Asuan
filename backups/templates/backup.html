@@ -1,0 +1,151 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+{% endblock %}
+{% block contenido %}
+<div class="containerBackup">
+    <div class="containerTitle">
+        <h1>Administración de copias de <br>seguridad de la base de datos</h1>
+        <img class="img_db" src="{% static 'img/db_logo.png' %}" alt="Logo database">
+    </div>
+    <div class="backup-section">
+        <div class="generate-section">
+            <h2>Crear copia de seguridad</h2>
+            <form id="backupForm" method="post" action="{% url 'app:gestionar_backups' %}">
+                {% csrf_token %}
+                <button class="btn_generate fas fa-download" type="submit"></button>
+            </form>
+        </div>
+        <div class="restore-section">
+            <h2>Restaurar copia de seguridad</h2>
+            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del archivo</th>
+                            <th>Fecha de creación</th>
+                            <th>Tamaño</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if backup_files %}
+                            {% for backup in backup_files %}
+                                <tr>
+                                    <td>{{ backup.filename }}</td>
+                                    <td>{{ backup.created_at }}</td>
+                                    <td>{{ backup.size }} bytes</td>
+                                    <td>
+                                        <form method="post" action="{% url 'app:eliminar_backup' %}" class="delete-backup-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn_delete">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No hay copias de seguridad disponibles.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <input type="file" name="backup_file">
+                <p></p><button class="btn_restore fas fa-upload" type="submit"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#backupForm').on('submit', function (event) {
+        event.preventDefault();
+        $.post($(this).attr('action'), $(this).serialize(), function (data) {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copia de seguridad creada correctamente',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar'
+                }).then(function() {
+                    location.reload();  
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+    });
+
+    $('#restoreForm').on('submit', function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Copia de seguridad restaurada correctamente',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    }).then(function() {
+                        location.reload(); 
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            }
+        });
+    });
+
+    $('.delete-backup-form').on('submit', function (event) {
+        event.preventDefault();
+        var form = $(this);
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(form.attr('action'), form.serialize(), function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        }).then(function() {
+                            location.reload(); 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

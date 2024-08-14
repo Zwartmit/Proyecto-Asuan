@@ -1,4 +1,4 @@
-{% extends 'listar.html' %}
+{% extends 'listar_no.html' %}
 
 {% block columnas %}
 <tr>
@@ -13,22 +13,32 @@
 {% endblock %}
 
 {% block filas %}
-    {% for o in object_list %}
-    <tr>
-        <td>{{ o.id }}</td>
-        <td>{{ o.nombre }}</td>
-        <td>{{ o.tipo_documento }}</td>
-        <td>{{ o.numero_documento }}</td>
-        <td>{{ o.email }}</td>
-        <td>{{ o.telefono }}</td>
-        <td>
-            <a href="{% url 'app:operador_editar' o.id %}" class="btn btn-info btn-sm">
-                <i class="fas fa-edit"></i>
-            </a>
-            <a href="{% url 'app:operador_eliminar' o.id %}" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash"></i>
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
- {% endblock %}
+    {% if not has_permission %}
+        <tr>
+            <td colspan="7">
+                <div class="alert alert-danger" role="alert">
+                    No tienes permiso para ver esta información.
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        {% for o in object_list %}
+        <tr>
+            <td>{{ o.id }}</td>
+            <td>{{ o.nombre }}</td>
+            <td>{{ o.tipo_documento }}</td>
+            <td>{{ o.numero_documento }}</td>
+            <td>{{ o.email }}</td>
+            <td>{{ o.telefono }}</td>
+            <td>
+                <a href="{% url 'app:operador_editar' o.id %}" class="btn btn-info btn-sm">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'app:operador_eliminar' o.id %}" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

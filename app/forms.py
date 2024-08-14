@@ -1,10 +1,14 @@
 from dataclasses import fields
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
-
 from django import forms
 from django.forms import *
 from app.models import *
+from django import forms
+from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
+from app.models import Administrador
+from app.models import Operador
 
 class CategoriaForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -230,20 +234,33 @@ class CuentaForm(ModelForm):
             )
         }
 
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
-from app.models import Administrador
-
 class AdministradorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+    username = forms.CharField(
+        label="Nombre de usuario",
+        max_length=150,
+        widget=TextInput(attrs={"placeholder": "Nombre de usuario"})
+    )
+    email = forms.EmailField(
+        label="Email",
+        max_length=150,
+        widget=EmailInput(attrs={"placeholder": "Correo electrónico"})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"}),
+        required=False  
+    )
+    conf_password = forms.CharField(
+        label="Confirmar contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
+        required=False 
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
         self.fields["nombre"].widget.attrs["autofocus"] = True
 
     def clean(self):
@@ -253,16 +270,13 @@ class AdministradorForm(ModelForm):
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
-        if User.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if not password2:
-            raise ValidationError("Necesitas validar tu contraseña")
-        
-        if password1 != password2:
+        if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
         
         return cleaned_data
@@ -273,21 +287,24 @@ class AdministradorForm(ModelForm):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-        if User.objects.filter(username=username).exists():
-            raise ValidationError("Este nombre de usuario ya está en uso.")
+        if self.instance.pk:
+            user = self.instance.user
+            if username and user.username != username:
+                user.username = username
+            if email and user.email != email:
+                user.email = email
+            if password:
+                user.set_password(password)
+            user.save()
+        else:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
         
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Este correo electrónico ya está en uso.")
-
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
         administrador = super().save(commit=False)
         administrador.user = user
-        administrador.contrasena = password 
-        administrador.conf_contrasena = cleaned_data.get('conf_password')
         if commit:
             administrador.save()
         return administrador
@@ -304,19 +321,39 @@ class AdministradorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
+
 # -----------------------------------------------------------------------------------------------
 
-from app.models import Operador
-
 class OperadorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+    username = forms.CharField(
+        label="Nombre de usuario",
+        max_length=150,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre de usuario"})
+    )
+    email = forms.EmailField(
+        label="Email",
+        max_length=150,
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Contraseña"}),
+        required=False
+    )
+    conf_password = forms.CharField(
+        label="Confirmar contraseña",
+        widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
+        
+        # Pre-popular los campos username y email si existe un usuario asociado
+        if self.instance and self.instance.pk and hasattr(self.instance, 'user'):
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -325,17 +362,15 @@ class OperadorForm(ModelForm):
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
-        if User.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and hasattr(self.instance, 'user') else None).exists():
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and hasattr(self.instance, 'user') else None).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if not password2:
-            raise ValidationError("Necesitas validar tu contraseña")
-        
-        if password1 != password2:
-            raise ValidationError("Las contraseñas no coinciden")
+        if password1 or password2:  # Solo validar si se ingresaron nuevas contraseñas
+            if password1 != password2:
+                raise ValidationError("Las contraseñas no coinciden")
         
         return cleaned_data
 
@@ -345,21 +380,26 @@ class OperadorForm(ModelForm):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-        if User.objects.filter(username=username).exists():
-            raise ValidationError("Este nombre de usuario ya está en uso.")
-        
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Este correo electrónico ya está en uso.")
+        if self.instance.pk and hasattr(self.instance, 'user'):
+            # Si el operador ya existe y tiene un usuario asociado
+            user = self.instance.user
+            user.username = username
+            user.email = email
+            if password:
+                user.set_password(password)
+            user.save()
+        else:
+            # Crear un nuevo usuario si no existe uno asociado
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password or None  # Manejar el caso en que la contraseña es opcional
+            )
+            self.instance.user = user  # Asociar el usuario al operador
 
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
         operador = super().save(commit=False)
-        operador.user = user
-        operador.contrasena = password 
-        operador.conf_contrasena = cleaned_data.get('conf_password')
+        operador.contrasena = password if password else operador.contrasena
+        operador.conf_contrasena = cleaned_data.get('conf_password') if password else operador.conf_contrasena
         if commit:
             operador.save()
         return operador
@@ -375,6 +415,7 @@ class OperadorForm(ModelForm):
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
+
 
 # -------------------------------------------------------------------------------------------
  

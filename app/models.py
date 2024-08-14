@@ -3,6 +3,9 @@ from .choices import codigos_telefonicos_paises
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from django.core.validators import MinLengthValidator
 
 class Categoria (models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
@@ -168,13 +171,6 @@ class Cuenta(models.Model):
 
 ########################################################################################################################################
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator
-from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
-
 class Administrador(models.Model):
     class TipoDocumento(models.TextChoices):
         CC = 'CC', 'Cédula de Ciudadanía'
@@ -198,6 +194,22 @@ class Administrador(models.Model):
         if self.contrasena != self.conf_contrasena:
             raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
 
+    def save(self, *args, **kwargs):
+        if not self.pk or 'user' not in kwargs:
+            user, created = User.objects.get_or_create(username=self.user.username)
+        else:
+            user = self.user
+
+        if self.contrasena:
+            user.set_password(self.contrasena)
+
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+
+        self.user = user
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre
 
@@ -211,9 +223,6 @@ def eliminar_usuario_relacionado(sender, instance, **kwargs):
     user = instance.user
     if user:
         user.delete()
-
-
-
 
 ########################################################################################################################################
 
