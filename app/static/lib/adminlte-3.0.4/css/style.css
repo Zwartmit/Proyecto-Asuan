@@ -177,6 +177,11 @@
     color: #ffffff;
 }
 
+.dark-mode .breadcrumb-item a {
+    border-color: #414141;
+    color: #ffffff;
+}
+
 .img_db {
     margin-top: 20px;
 }
