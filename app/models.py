@@ -212,9 +212,6 @@ def eliminar_usuario_relacionado(sender, instance, **kwargs):
     if user:
         user.delete()
 
-
-
-
 ########################################################################################################################################
 
 class Operador(models.Model):

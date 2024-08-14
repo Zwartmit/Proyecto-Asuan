@@ -110,7 +110,8 @@ class RestoreDatabaseView(View):
             db_host = db_settings['HOST']
             db_port = db_settings['PORT']
 
-            command = ['mysql', '-h', db_host, '-P', db_port, '-u', db_user, f"-p{db_password}", db_name]
+            command = (f"\"{mysqldump_path}\" -h {db_host} -P {db_port} -u {db_user} -p{db_password} "f"--ignore-table={db_name}.administrador --ignore-table={db_name}.operador "f"{db_name} > \"{backup_path}\"")
+
             with open(backup_path, 'r') as input_file:
                 result = subprocess.run(command, stdin=input_file, stderr=subprocess.PIPE, text=True)
 
