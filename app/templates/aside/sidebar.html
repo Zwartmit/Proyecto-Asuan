@@ -1,5 +1,6 @@
 {% load static %}
-<aside class="main-sidebar elevation-2">
+<aside class="main-sidebar elevation-2"
+    style="background: linear-gradient(#04644b,#04644b, #6ddbd7); align-content: center">
     <div class="sidebar">
         <nav class="mt-2">
             <a href="#" class="logo-container">
@@ -203,6 +204,7 @@
                         </li>
                     </ul>
                 </li>
+                {% if perms.app.view_usuario %}
                 <li class="nav-itemm">
                     <a href="#submenu7" class="nav-link d-flex justify-content-between align-items-center"
                         data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
@@ -230,6 +232,7 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
             </ul>
         </nav>
     </div>

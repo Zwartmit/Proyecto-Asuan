@@ -12,7 +12,7 @@ from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
-from backups.views import BackupDatabaseView, BackupListView, RestoreDatabaseView, DeleteBackupView
+from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
 
 app_name = 'app'
 urlpatterns = [
@@ -93,7 +93,9 @@ urlpatterns = [
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
-    path('backups/', BackupListView.as_view(), name='lista_backups'),
+    path('backups/', backup_list, name='lista_backups'),
     path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
 
+    path('backup-list/', backup_list, name='backup_list'),
 ]
+
