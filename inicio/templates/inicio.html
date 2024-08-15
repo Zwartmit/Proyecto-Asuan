@@ -23,11 +23,10 @@
   <link href="{%static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
   <link href="{%static 'css/style.css' %}" rel="stylesheet">
-  <link href="{% static 'css/styleAcc.css' %}" rel="stylesheet">
-  <script src="{% static 'js/mainAcc.js' %}"></script>
+  <script src="{%static 'js/mainAcc.js' %}"></script>
 </head>
 
-<body>
+<body class="dark-mode">
   <!-- ======= Encabezado ======= -->
   <header id="header" class="fixed-top d-flex align-items-center">
     <div class="container">
@@ -43,7 +42,7 @@
             <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
-            <li><a class="bx bxs-moon" style="font-size: 30px;" onclick="toggleDarkMode()"></a></li>
+            <li><a class="btn-dark bx bxs-moon" style="font-size: 30px;" onclick="toggleDarkMode()"></a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
@@ -398,7 +397,7 @@
   </main>
 
   <!-- ======= Pie de página ======= -->
-  <footer id="footer">
+  <footer class="footer">
     <div class="contenedor">
       <div class="footer1">
         <strong>Copyright &copy; 2024-2030 <a href="https://www.asuanparque.com">Asuán</a>.</strong> All rights
