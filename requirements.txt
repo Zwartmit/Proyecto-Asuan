@@ -4,3 +4,4 @@ mysqlclient
 PyMySQL
 cryptography
 django-backup
+django-select2

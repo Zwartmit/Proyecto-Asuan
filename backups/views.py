@@ -35,7 +35,6 @@ class BackupDatabaseView(View):
             backup_path = os.path.join(backup_dir, filename)
 
             os.makedirs(backup_dir, exist_ok=True)
-
             mysqldump_path = r"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe"
 
             command = (
@@ -57,29 +56,25 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
-@method_decorator(never_cache, name='dispatch')
-class BackupListView(ListView):
-    template_name = 'backup.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        folder_path = os.path.join(settings.BASE_DIR, 'backups/files')
-        backup_files = []
-
-        if os.path.exists(folder_path):
-            for filename in os.listdir(folder_path):
-                if filename.endswith('.sql'):
-                    file_path = os.path.join(folder_path, filename)
-                    if os.path.isfile(file_path):
-                        backup_files.append({
-                            'filename': filename,
-                            'created_at': datetime.fromtimestamp(os.path.getctime(file_path)),
-                            'size': os.path.getsize(file_path)
-                        })
-
-        context['backup_files'] = backup_files
-        return context
-
+def backup_list(request):
+    backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
+    backups = []
+    
+    if os.path.exists(backup_dir):
+        for filename in os.listdir(backup_dir):
+            if filename.endswith('.sql'):
+                file_path = os.path.join(backup_dir, filename)
+                created_at = datetime.fromtimestamp(os.path.getctime(file_path))
+                size = os.path.getsize(file_path)
+                backups.append({
+                    'filename': filename,
+                    'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'size': f"{size / 1024 / 1024:.2f} MB"
+                })
+    
+    backups.sort(key=lambda x: x['created_at'], reverse=True)
+    return render(request, 'backup.html', {'page_obj': page_obj})
+    
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
     @method_decorator(login_required)
@@ -94,6 +89,10 @@ class RestoreDatabaseView(View):
                 raise Http404("No se especificó un archivo de respaldo")
 
             filename = backup_file.name
+            
+            if not filename.endswith('.sql'):
+                raise ValueError("El archivo debe tener una extensión .sql")
+
             backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
             backup_path = os.path.join(backup_dir, filename)
 
@@ -120,6 +119,8 @@ class RestoreDatabaseView(View):
                 messages.success(request, f"Base de datos restaurada desde {filename}")
                 success = True
 
+        except ValueError as ve:
+            messages.error(request, str(ve))
         except Exception as e:
             messages.error(request, f"Error al restaurar la base de datos: {str(e)}")
 

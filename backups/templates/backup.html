@@ -30,12 +30,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if backup_files %}
-                            {% for backup in backup_files %}
+                        {% if page_obj %}
+                            {% for backup in page_obj %}
                                 <tr>
                                     <td>{{ backup.filename }}</td>
                                     <td>{{ backup.created_at }}</td>
-                                    <td>{{ backup.size }} bytes</td>
+                                    <td>{{ backup.size }}</td>
                                     <td>
                                         <form method="post" action="{% url 'app:eliminar_backup' %}" class="delete-backup-form">
                                             {% csrf_token %}

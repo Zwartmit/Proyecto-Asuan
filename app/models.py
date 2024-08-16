@@ -153,24 +153,6 @@ class Plato(models.Model):
 
 ########################################################################################################################################
 
-class Cuenta(models.Model):
-    cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
-    subtotal = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Subtotal")
-    estado = models.BooleanField(default=True, verbose_name="Estado")
-    id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
-    id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT)
-    id_plato = models.ManyToManyField(Plato)
-
-    def __str__(self):
-        return f"\nCantidad: {self.cantidad},\nSubtotal: {self.subtotal}\n Estado: {self.estado}\n\n"
-
-    class Meta:
-        verbose_name= "cuenta"
-        verbose_name_plural ='cuentas'
-        db_table ='Cuenta'
-
-########################################################################################################################################
-
 class Administrador(models.Model):
     class TipoDocumento(models.TextChoices):
         CC = 'CC', 'Cédula de Ciudadanía'
@@ -271,23 +253,55 @@ class Venta(models.Model):
         EF = 'EF', 'Efectivo'
         TF = 'TF', 'Transferencia'
 
-    id_producto = models.ManyToManyField(Producto, verbose_name="Producto")
-    cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
+    fecha_venta = models.DateTimeField(auto_now=True)
     total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta")
-    total_venta_iva = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta con iva")
-    fecha_venta = models.DateTimeField(null=False, blank=True, verbose_name="Fecha de venta")
     metodo_pago = models.CharField(max_length=3, choices=MedotoPago.choices, default=MedotoPago.EF, verbose_name="Metodo de Pago")
-    id_admin = models.ForeignKey(Administrador, on_delete=models.PROTECT, null=True, verbose_name="Administrador")
-    id_operador = models.ForeignKey(Operador, on_delete=models.PROTECT, null=True, verbose_name="Operador")
-    id_cuenta = models.ForeignKey(Cuenta, on_delete=models.PROTECT, verbose_name="Cuenta")
 
-    def __str__(self):
-        return f"\nCantidad producto: {self.cantidad_producto}\n Total venta: {self.total_venta}\nTotal venta IVA: {self.total_venta_iva}\nFecha venta: {self.fecha_venta}\n\n"
+    def _str_(self):
+        return str(self.id)
 
     class Meta:
         verbose_name= "venta"
         verbose_name_plural ='ventas'
+        order_with_respect_to = 'fecha_venta'
         db_table ='Venta'
+
+########################################################################################################################################
+
+class Detalle_venta(models.Model):
+    
+    id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
+    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
+    cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
+
+
+    def _str_(self):
+        return self.id_producto
+
+    class Meta:
+        verbose_name= "detalle_de_venta"
+        verbose_name_plural ='detalles_de_ventas'
+        db_table ='Detalle_venta'
+
+########################################################################################################################################
+
+class Detalle_venta_cuenta(models.Model):
+
+    id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
+    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
+    cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
+    id_plato = models.ForeignKey(Plato,on_delete=models.PROTECT)
+    cantidad_plato = models.PositiveIntegerField(verbose_name="Cantidad")
+    id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
+    id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT)
+
+    def _str_(self):
+        return self.id_producto
+
+    class Meta:
+        verbose_name= "detalle_venta_cuenta"
+        verbose_name_plural ='detalles_venta_cuentas'
+        db_table ='Detalle_venta_cuenta'
 
 ########################################################################################################################################
 

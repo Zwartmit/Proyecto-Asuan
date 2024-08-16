@@ -8,6 +8,9 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
+from django.db.models import Q
+from app.models import Venta, Producto
+from app.forms import VentaForm, ClienteForm, DetalleVentaForm
 
 from app.models import Venta
 from app.forms import VentaForm
@@ -43,6 +46,13 @@ class VentaListView(ListView):
         context['crear_url'] = reverse_lazy('app:venta_crear')
         return context
 
+###### API ######
+    
+def productos_api(request):
+    term = request.GET.get('term', '') 
+    productos = Producto.objects.filter(Q(producto__icontains=term)).values('id', 'producto', 'valor')
+    return JsonResponse(list(productos), safe=False)
+
 ###### CREAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -62,6 +72,9 @@ class VentaCreateView(CreateView):
         context['entidad'] = 'Registrar venta'
         context['error'] = 'Esta venta ya existe'
         context['listar_url'] = reverse_lazy('app:venta_lista')
+        context['cliente_form'] = ClienteForm()
+        context['venta_form'] = VentaForm()
+        context['detalleventa_form'] = DetalleVentaForm()
         return context
     
 ###### EDITAR ######
