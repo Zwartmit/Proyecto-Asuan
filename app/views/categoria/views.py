@@ -1,3 +1,4 @@
+from django.contrib import messages
 import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -8,7 +9,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
+from django.db.models import ProtectedError
 from app.models import Categoria
 from app.forms import CategoriaForm
 
@@ -112,12 +113,18 @@ class CategoriaDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar categoría'
         context['entidad'] = 'Eliminar categoría'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         return context
-    
-    
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            return super().delete(request, *args, **kwargs)
+        except ProtectedError as e:
+            messages.error(request, f'Error: No se puede eliminar la categoría porque está relacionada con productos. {e.args[0]}')
+            return self.render_to_response(self.get_context_data()) 

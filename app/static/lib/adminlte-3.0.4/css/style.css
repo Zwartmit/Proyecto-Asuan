@@ -182,6 +182,30 @@
     color: #ffffff;
 }
 
+.dark-mode .invoice-container {
+    background-color: #242424;
+    border-color: #242424;
+    color: #ffffff;
+}
+
+.dark-mode .company-details, .client-details {
+    background-color: #242424;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode .product-table th {
+    background-color: #414141;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode {
+    background-color: #414141;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
 .img_db {
     margin-top: 20px;
 }
@@ -381,7 +405,7 @@ button {
     margin: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #1D816D;
+    background-color: #04644B;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -401,13 +425,12 @@ button:hover {
     color: red;
     font-size: 14px;
     margin-top: 5px;
-    display: block; /* Hacer el mensaje visible */
+    display: block; 
 }
 
-/* Estilos para impresión */
 @media print {
     .buttons {
-        display: none; /* Oculta la sección de botones al imprimir */
+        display: none;
     }
 
     .invoice-container {
@@ -419,13 +442,13 @@ button:hover {
     
     .product-table th, .product-table td {
         padding: 8px;
-        word-wrap: break-word; /* Asegura que el texto se ajuste en la celda */
+        word-wrap: break-word; 
     }
 
     .product-table td.detail {
-        white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-        overflow: visible; /* Asegura que el contenido no se oculte */
-        max-width: none; /* Elimina la restricción de ancho */
+        white-space: normal; 
+        overflow: visible; 
+        max-width: none; 
     }
 
     .product-table th:last-child,
@@ -433,7 +456,6 @@ button:hover {
         display: none;
     }
 
-    /* Estilo para mostrar texto en lugar de campos de entrada */
     input, textarea {
         border: none;
         background: none;

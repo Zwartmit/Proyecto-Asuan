@@ -89,7 +89,7 @@ urlpatterns = [
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
     path('backups/', backup_list, name='lista_backups'),
     path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
+    path('backup_list/', backup_list, name='backup_list'),
 
-    path('backup-list/', backup_list, name='backup_list'),
 ]
 
