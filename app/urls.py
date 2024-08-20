@@ -7,12 +7,11 @@ from app.views.producto.views import *
 from app.views.cliente.views import *
 from app.views.mesero.views import *
 from app.views.plato.views import *
-from app.views.cuenta.views import *
 from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
-from app.views.backup.views import BackupDatabaseView
+from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
 
 app_name = 'app'
 urlpatterns = [
@@ -58,12 +57,6 @@ urlpatterns = [
     path('plato/crear/', PlatoCreateView.as_view(), name='plato_crear'),
     path('plato/editar/<int:pk>/', PlatoUpdateView.as_view(), name='plato_editar'),
     path('plato/eliminar/<int:pk>/', PlatoDeleteView.as_view(), name='plato_eliminar'),
-
-    ### CRUD CUENTA ###
-    path('cuenta/listar/', CuentaListView.as_view(), name='cuenta_lista'),
-    path('cuenta/crear/', CuentaCreateView.as_view(), name='cuenta_crear'),
-    path('cuenta/editar/<int:pk>/', CuentaUpdateView.as_view(), name='cuenta_editar'),
-    path('cuenta/eliminar/<int:pk>/', CuentaDeleteView.as_view(), name='cuenta_eliminar'),
     
     ### CRUD ADMINISTRADOR ###
     path('administrador/listar/', AdministradorListView.as_view(), name='administrador_lista'),
@@ -83,6 +76,7 @@ urlpatterns = [
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
     path('venta/opciones/', ventas_view, name='venta_opciones'),
+    path('venta/productos_api/', productos_api, name='productos_api'),
 
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
@@ -91,5 +85,11 @@ urlpatterns = [
     path('factura/eliminar/<int:pk>/', FacturaDeleteView.as_view(), name='factura_eliminar'),
 
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
-    path('backup/', BackupDatabaseView.as_view(), name='crear_backup'),
+    path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
+    path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
+    path('backups/', backup_list, name='lista_backups'),
+    path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
+    path('backup_list/', backup_list, name='backup_list'),
+
 ]
+
