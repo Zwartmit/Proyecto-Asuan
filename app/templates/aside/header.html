@@ -25,18 +25,10 @@
         <h1 class="m-0" style="font-size: 50px; font-style: oblique; color: white; text-shadow: 3px 3px 2.5px black;">Panel de administración</h1>
     </div>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-itemmm dropdown">
-            <a id="dropdownAccessibility" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                class="nav-link dropdown-toggle" style="color: white">
-                <i class="fas fa-eye" title="Accesibilidad" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;"></i>
+        <li class="nav-itemmm">
+            <a class="nav-link" href="">
+                <i class="fas fa-moon" title="Modo oscuro-claro" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true" onclick="toggleDarkMode()"></i>
             </a>
-            <ul aria-labelledby="dropdownAccessibility" class="dropdown-menu border-0 shadow">
-                <li><a href="#" class="dropdown-item" onclick="changeFontSize('small')">Texto pequeño</a></li>
-                <li><a href="#" class="dropdown-item" onclick="changeFontSize('medium')">Texto mediano</a></li>
-                <li><a href="#" class="dropdown-item" onclick="changeFontSize('large')">Texto grande</a></li>
-                <li><a href="#" class="dropdown-item" onclick="toggleDarkMode()">Modo oscuro</a></li>
-                <li><a href="#" class="dropdown-item" onclick="resetAccessibility()">Restablecer</a></li>
-            </ul>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">

@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function changeFontSize(size) {
-        document.body.style.fontSize = size === 'small' ? '14px' : size === 'medium' ? '16px' : '20px';
-    }
+    
 
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
@@ -18,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('dark-mode');
     }
     
-    window.changeFontSize = changeFontSize;
     window.toggleDarkMode = toggleDarkMode;
-    window.resetAccessibility = resetAccessibility;
 });
 
 document.addEventListener('DOMContentLoaded', function () {
