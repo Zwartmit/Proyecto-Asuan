@@ -2,10 +2,10 @@
 
 {% block columnas %}
 <tr>
-    <th scope="col">id</th>
+    <th scope="col">ID</th>
     <th scope="col">Nombre</th>
-    <th scope="col">Documento</th>
-    <th scope="col"># documento</th>
+    <th scope="col">Tipo Documento</th>
+    <th scope="col">Número Documento</th>
     <th scope="col">Email</th>
     <th scope="col">Teléfono</th>
     <th scope="col">Opciones</th>
@@ -28,7 +28,7 @@
             <td>{{ a.nombre }}</td>
             <td>{{ a.tipo_documento }}</td>
             <td>{{ a.numero_documento }}</td>
-            <td>{{ a.email }}</td>
+            <td>{{ a.user.email }}</td> 
             <td>{{ a.telefono }}</td>
             <td>
                 <a href="{% url 'app:administrador_editar' a.id %}" class="btn btn-info btn-sm">

@@ -3,7 +3,8 @@
 {% block columnas %}
 <tr>
     <th scope="col">id</th>
-    <th scope="col">Marcaㅤ<a href="{% url 'app:marca_crear' %}" class="fas fa-plus"></a></th>
+    <th scope="col">Marca</a></th>
+    <th scope="col">Estado</th>
     <th scope="col">Opciones</th>
 </tr>
 {% endblock %}
@@ -13,6 +14,7 @@
     <tr>
         <td>{{ m.id }}</td>
         <td>{{ m.marca }}</td>
+        <td>{{ m.estado | yesno:"Activo,Inactivo" }}</td>
         <td>
             <a href="{% url 'app:marca_editar' m.id %}" class="btn btn-info btn-sm">
                 <i class="fas fa-edit"></i>

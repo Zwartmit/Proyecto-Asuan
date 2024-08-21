@@ -94,15 +94,6 @@ class PresentacionUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:presentacion_lista')
         return context
     
-    def form_valid(self, form):
-        presentacion = form.cleaned_data.get('presentacion').lower()
-        
-        if Presentacion.objects.filter(presentacion__iexact=presentacion).exists():
-            form.add_error('presentacion', 'Ya existe una presentación con este nombre.')
-            return self.form_invalid(form)
-        
-        return super().form_valid(form)
-    
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')

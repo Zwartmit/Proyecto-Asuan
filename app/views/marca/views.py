@@ -93,14 +93,6 @@ class MarcaUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:marca_lista')
         return context
     
-    def form_valid(self, form):
-        marca = form.cleaned_data.get('marca').lower()
-        
-        if Marca.objects.filter(marca__iexact=marca).exists():
-            form.add_error('marca', 'Ya existe una marca con este nombre.')
-            return self.form_invalid(form)
-        return super().form_valid(form)
-    
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
