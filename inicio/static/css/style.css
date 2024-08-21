@@ -925,7 +925,7 @@ section {
 # Team
 --------------------------------------------------------------*/
 .team {
-  background: #fff;
+  background: #f6f6f7;
 }
 
 .team .member {
@@ -1216,8 +1216,9 @@ section {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-#footer {
-  background-color: #f0f0f0; 
+.footer {
+  background: #f6f6f7;
+  background-color: #f6f6f7;
   padding: 20px 0; 
 }
 
@@ -1341,6 +1342,10 @@ section {
   border-radius: 10px;
 }
 
+.dark-mode .services .icon-box h4 a {
+  color: #ffffff;
+}
+
 .dark-mode .portfolio .portfolio-wrap {
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -1358,19 +1363,27 @@ section {
   color: #ffffff;
 }
 
+.dark-mode .team .member h4 {
+  color: #ffffff;
+}
+
 .dark-mode .contact .info {
   background-color: #2c2c2c;
   border-color: #2c2c2c;
   color: #ffffff;
 }
 
-.dark-mode .contact .php-email-form, .contact .php-email-form input {
+.dark-mode .contact .info h4, .dark-mode .contact .info p {
+  color: #ffffff;
+}
+
+.dark-mode .contact .php-email-form {
   background-color: #2c2c2c;
   border-color: #2c2c2c;
   color: #ffffff;
 }
 
-.dark-mode .contact .php-email-form input, .php-email-form textarea {
+.dark-mode .contact .php-email-form input {
   background-color: #777777;
   border-color: #777777;
   color: #ffffff;
@@ -1379,5 +1392,11 @@ section {
 .dark-mode .footer {
   background-color: #414141;
   border-color: #414141;
+  color: #ffffff;
+}
+
+.dark-mode .contact .php-email-form textarea {
+  background-color: #777777;
+  border-color: #777777;
   color: #ffffff;
 }
