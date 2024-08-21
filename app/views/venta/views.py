@@ -9,7 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app.models import Venta, Producto
+from app.models import Venta, Producto, Detalle_venta
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm
 
 from app.models import Venta

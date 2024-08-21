@@ -273,6 +273,7 @@ class Detalle_venta(models.Model):
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
     id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
+    subtotal_venta = models.PositiveIntegerField(verbose_name="Subtotal", default="0")
 
 
     def _str_(self):
