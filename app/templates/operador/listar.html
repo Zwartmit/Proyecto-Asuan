@@ -2,10 +2,10 @@
 
 {% block columnas %}
 <tr>
-    <th scope="col">id</th>
+    <th scope="col">ID</th>
     <th scope="col">Nombre</th>
-    <th scope="col">Documento</th>
-    <th scope="col"># documento</th>
+    <th scope="col">Tipo Documento</th>
+    <th scope="col">Número Documento</th>
     <th scope="col">Email</th>
     <th scope="col">Teléfono</th>
     <th scope="col">Opciones</th>
@@ -28,7 +28,7 @@
             <td>{{ o.nombre }}</td>
             <td>{{ o.tipo_documento }}</td>
             <td>{{ o.numero_documento }}</td>
-            <td>{{ o.email }}</td>
+            <td>{{ o.user.email }}</td> <!-- Corregido para acceder al email a través de user -->
             <td>{{ o.telefono }}</td>
             <td>
                 <a href="{% url 'app:operador_editar' o.id %}" class="btn btn-info btn-sm">
