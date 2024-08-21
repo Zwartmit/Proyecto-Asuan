@@ -12,6 +12,9 @@ from django.db.models import Q
 from app.models import Venta, Producto
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm
 
+from app.models import Venta
+from app.forms import VentaForm
+
 @method_decorator(never_cache, name='dispatch')
 def lista_venta(request):
     nombre = {
@@ -46,7 +49,7 @@ class VentaListView(ListView):
 ###### API ######
     
 def productos_api(request):
-    term = request.GET.get('term', '')  # 'term' es el nombre que usa Select2 para la consulta
+    term = request.GET.get('term', '') 
     productos = Producto.objects.filter(Q(producto__icontains=term)).values('id', 'producto', 'valor')
     return JsonResponse(list(productos), safe=False)
 
@@ -73,7 +76,7 @@ class VentaCreateView(CreateView):
         context['venta_form'] = VentaForm()
         context['detalleventa_form'] = DetalleVentaForm()
         return context
-
+    
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')

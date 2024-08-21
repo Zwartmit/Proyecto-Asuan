@@ -60,17 +60,17 @@
                             </tr>
                         </thead>
                         <tbody id="product-rows">
-                            <!-- Las filas de productos se agregarán aquí -->
+                            <!-- tabla de productos-->
                         </tbody>
                     </table>
                     <button onclick="addProductRow()">Agregar Producto</button>
                     <div class="totals">
                         <p>Total: <span id="subtotal">$0</span></p>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="total_venta">{{ venta_form.total_venta.label }}:</label>
                         {{ venta_form.total_venta|add_class:'form-control'|attr:'readonly:true, autocomplete:off, id:subtotal' }}
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="metodo_pago">{{ venta_form.metodo_pago.label }}:</label>
                         {{ venta_form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}

@@ -11,7 +11,7 @@ from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
-from app.views.backup.views import BackupDatabaseView, RestoreDatabaseView
+from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
 
 app_name = 'app'
 urlpatterns = [
@@ -57,7 +57,7 @@ urlpatterns = [
     path('plato/crear/', PlatoCreateView.as_view(), name='plato_crear'),
     path('plato/editar/<int:pk>/', PlatoUpdateView.as_view(), name='plato_editar'),
     path('plato/eliminar/<int:pk>/', PlatoDeleteView.as_view(), name='plato_eliminar'),
-
+    
     ### CRUD ADMINISTRADOR ###
     path('administrador/listar/', AdministradorListView.as_view(), name='administrador_lista'),
     path('administrador/crear/', AdministradorCreateView.as_view(), name='administrador_crear'),
@@ -78,7 +78,6 @@ urlpatterns = [
     path('venta/opciones/', ventas_view, name='venta_opciones'),
     path('venta/productos_api/', productos_api, name='productos_api'),
 
-
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
     path('factura/crear/', FacturaCreateView.as_view(), name='factura_crear'),
@@ -86,6 +85,11 @@ urlpatterns = [
     path('factura/eliminar/<int:pk>/', FacturaDeleteView.as_view(), name='factura_eliminar'),
 
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
-    path('backup/', BackupDatabaseView.as_view(), name='crear_backup'),
-    path('restore/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
+    path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
+    path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
+    path('backups/', backup_list, name='lista_backups'),
+    path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
+    path('backup_list/', backup_list, name='backup_list'),
+
 ]
+

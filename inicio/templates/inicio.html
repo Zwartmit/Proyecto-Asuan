@@ -23,8 +23,8 @@
   <link href="{%static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
   <link href="{%static 'css/style.css' %}" rel="stylesheet">
-  <link href="{% static 'css/styleAcc.css' %}" rel="stylesheet">
-  <script src="{% static 'js/mainAcc.js' %}"></script>
+  <script src="{%static 'js/mainAcc.js' %}"></script>
+  <script src="{% static 'lib/sienna/sienna.js' %}"></script>
 </head>
 
 <body>
@@ -43,7 +43,8 @@
             <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
-            <li><a class="bx bxs-moon" style="font-size: 30px;" onclick="toggleDarkMode()"></a></li>
+            <li><a class="btn-dark bx bxs-moon" style="font-size: 30px;" title="Modo oscuro-claro"
+                onclick="toggleDarkMode()"></a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
@@ -182,13 +183,13 @@
                   <p><b>1 - 4 Personas - 30 minutos - $40.000 COP</b></p>
                 </div>
               </div>
-              <div class="col-md-6 d-flex align-items-stretch mt-4">
+              <!-- <div class="col-md-6 d-flex align-items-stretch mt-4">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
                   <div class="icon"><i class="bx bx-world"></i></div>
                   <h4><a href="">Nemo Enim</a></h4>
                   <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -206,79 +207,55 @@
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-1.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/pechuga.png' %}" class="img-fluid" alt="Pechuga a la plancha"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-1.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="App 1"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Pechuga a la plancha</h4>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-2.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/churrasco.jpg' %}" class="img-fluid" alt="Churrasco"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>Web 3</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-2.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 3"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Churrasco</h4>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-3.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/cachama.jpg' %}" class="img-fluid" alt="Cachama frita"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>App 2</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-3.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="App 2"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Cachama frita</h4>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-card">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-4.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/costillas.jpg' %}" class="img-fluid" alt="Costillas de cerdo"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>Card 2</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-4.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Card 2"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Costillas de cerdo</h4>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-5.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/lengua.jpg' %}" class="img-fluid" alt="Lengua en salsa"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>Web 2</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-5.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Lengua en salsa</h4>
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/portfolio/portfolio-5.jpg' %}" class="img-fluid" alt="">
+              <img src="{%static 'img/sancocho.jpg' %}" class="img-fluid" alt="Sancocho"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>Web 2</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="{%static 'img/portfolio/portfolio-5.jpg' %}" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Web 2"><i class="bx bx-images"></i></a>
-                </div>
+                <h4>Sancocho</h4>
               </div>
             </div>
           </div>
@@ -301,45 +278,39 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="member" data-aos="zoom-in" data-aos-delay="100">
-                  <div class="pic"><img src="{%static 'img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
+                  <!-- <div class="pic"><img src="{%static 'img/team/Brandon.png' %}" class="img-fluid" alt="Brandon Urbano"></div> -->
                   <div class="member-info">
                     <h4>Brandon Urbano</h4>
-                    <span>Lider del server</span>
-                    <p>Palabras ciertas 🗣</p>
+                    <p></p>
                     <div class="social">
-                      <a href="https://www.instagram.com/zwart_mit/"><i class="ri-instagram-fill"></i></a>
-                      <a
-                        href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                        <i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/zwart_mit/"><i class="ri-instagram-fill"></i></a>
+                      <a target="_blank" href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-lg-6 mt-4 mt-lg-0">
                 <div class="member" data-aos="zoom-in" data-aos-delay="200">
-                  <div class="pic"><img src="{%static 'img/team/team-2.jpg' %}" class="img-fluid" alt=""></div>
+                  <!-- <div class="pic"><img src="{%static 'img/team/David.jpg' %}" class="img-fluid" alt="David Cubides"></div> -->
                   <div class="member-info">
-                    <h4>David Cúbides</h4>
-                    <span>full stack y papa del negro</span>
-                    <p>De hecho🤓☝</p>
+                    <h4>David Cubides</h4>
+                    <p></p>
                     <div class="social">
-                      <a href="https://www.instagram.com/incogn___/"><i class="ri-instagram-fill"></i></a>
-                      <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/incogn___/"><i class="ri-instagram-fill"></i></a>
+                      <a target="_blank" href="#"><i class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-lg-6 mt-4">
                 <div class="member" data-aos="zoom-in" data-aos-delay="300">
-                  <div class="pic"><img src="{%static 'img/team/team-3.jpg' %}" class="img-fluid" alt=""></div>
+                  <!-- <div class="pic"><img src="{%static 'img/team/Diego.jpg' %}" class="img-fluid" alt="Diego Joya"></div> -->
                   <div class="member-info">
                     <h4>Diego Joya</h4>
-                    <span>Colaborador y diseñador</span>
-                    <p>m h🤫</p>
+                    <p></p>
                     <div class="social">
-                      <a href="https://www.instagram.com/d.z.v.i.o/"><i class="ri-instagram-fill"></i></a>
-                      <a href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"> <i
-                          class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/d.z.v.i.o/"><i class="ri-instagram-fill"></i></a>
+                      <a target="_blank" href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"><i class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -375,12 +346,14 @@
             </div>
             <div class="info mt-4">
               <i class="bi bi-chat-right-heart-fill"></i>
-              <h4 style="margin: 0;">Nuestras redes sociales:</h4>
-              <a target="_blank"
-                href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d"><i
-                  class="bx bxl-facebook"></i></a>
-              <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/"><i class="bx bxl-instagram"></i></a>
-              <p>ㅤ</p>
+              <h4>Nuestras redes sociales:</h4>
+              <div>
+                <p>
+                  <a target="_blank" href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d">Facebook</a>
+                  /
+                  <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/">Instragram</i></a>
+                </p>
+              </div>
             </div>
             <div class="row">
               <div class="col-lg-6 mt-4">
@@ -398,28 +371,28 @@
                 </div>
               </div>
             </div>
-            <form action="{%static 'forms/contact.php' %}" method="post" role="form" class="php-email-form mt-4">
+            <form action="{% static 'forms/contact.php' %}" method="post" role="form" class="php-email-form mt-4">
               <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" required>
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Correo" required>
-                </div>
+                  <div class="col-md-6 form-group">
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" required>
+                  </div>
+                  <div class="col-md-6 form-group mt-3 mt-md-0">
+                      <input type="email" class="form-control" name="email" id="email" placeholder="Correo" required>
+                  </div>
               </div>
               <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required>
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required>
               </div>
               <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Mensaje" required></textarea>
+                  <textarea class="form-control" name="message" rows="5" placeholder="Mensaje" required></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Cargando</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Tu mensaje se ha enviado con éxito. !Gracias¡</div>
+                  <div class="loading">Cargando</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Tu mensaje se ha enviado con éxito. ¡Gracias!</div>
               </div>
               <div class="text-center"><button type="submit">Enviar mensaje</button></div>
-            </form>
+          </form>
           </div>
         </div>
       </div>
@@ -428,11 +401,10 @@
   </main>
 
   <!-- ======= Pie de página ======= -->
-  <footer id="footer">
+  <footer class="footer">
     <div class="contenedor">
       <div class="footer1">
-        <strong>Copyright &copy; 2024-2030 <a href="https://www.asuanparque.com">Asuán</a>.</strong> All rights
-        reserved.
+        <strong>Copyright &copy; 2024-2030 <a href="https://www.asuanparque.com">Asuán</a>.</strong> All rights reserved.
       </div>
       <div class="footer2">
         <img src="{%static 'img/logo_asuan1.png' %}" alt="Logo Asuán">
@@ -441,8 +413,7 @@
   </footer>
   <!-- Fin del pie de página -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script src="{%static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{%static 'vendor/aos/aos.js' %}"></script>
   <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

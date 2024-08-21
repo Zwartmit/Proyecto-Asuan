@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function changeFontSize(size) {
-        document.body.style.fontSize = size === 'small' ? '14px' : size === 'medium' ? '16px' : '20px';
-    }
+    
 
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
@@ -18,23 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('dark-mode');
     }
     
-    var logo = document.getElementById('logo-asuan');
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        localStorage.setItem('dark-mode', isDarkMode);
-
-        if (isDarkMode) {
-            logo.src = 'static/img/logo_asuanFW.png';
-        } else {
-            logo.src = 'static/img/logo_asuanF.png';
-        }
-    }
-
-    window.changeFontSize = changeFontSize;
     window.toggleDarkMode = toggleDarkMode;
-    window.resetAccessibility = resetAccessibility;
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -55,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <td><span class="product-total">$0.00</span></td>
         `;
     
-        // Inicializar el Select2 en el input de producto
         $(row.querySelector('.product-select')).select2({
             placeholder: 'Seleccione un producto',
             ajax: {
@@ -64,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 delay: 250,
                 data: function (params) {
                     return {
-                        term: params.term  // Término de búsqueda que se envía al servidor
+                        term: params.term 
                     };
                 },
                 processResults: function (data) {
@@ -83,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const priceInput = row.querySelector('.product-price');
             priceInput.value = data.valor || 0;
 
-            // Cambiar el placeholder al producto seleccionado
             const selectElement = $(this);
             selectElement.data('select2').$container.find('.select2-selection__placeholder').text(data.text);
 
@@ -92,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         productRows.appendChild(row);
     
-        // Event listeners for inputs
         row.querySelector('.product-quantity').addEventListener('input', validateInputs);
         row.querySelector('.product-price').addEventListener('input', validateInputs);
     
@@ -114,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const quantity = row.querySelector('.product-quantity').value;
             const price = row.querySelector('.product-price').value;
     
-            // Check for duplicate IDs
+            // validacion de ids
             if (ids.has(select)) {
                 $(row.querySelector('.product-select')).next().addClass('error');
                 isValid = false;
@@ -123,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ids.add(select);
             }
     
-            // Check for negative values
+            // validacion de negativos
             if (quantity <= 0) {
                 row.querySelector('.product-quantity').classList.add('error');
                 isValid = false;
@@ -138,18 +117,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.querySelector('.product-price').classList.remove('error');
             }
     
-            // Calculate total price
             const total = (quantity * price).toFixed(2);
             row.querySelector('.product-total').textContent = `$${total}`;
     
-            // Accumulate subtotal
             subtotal += parseFloat(total);
         });
     
-        // Update subtotal in the HTML
         document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
     
-        // Update the form field with the subtotal
         const totalVentaField = document.getElementById('total_venta');
         if (totalVentaField) {
             totalVentaField.value = subtotal.toFixed(2);
@@ -166,12 +141,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Add event listener for inputs to validate dynamically
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', validateInputs);
     });
 
-    // Automatically add a product row when the page loads
     addProductRow();
 
     window.addProductRow = addProductRow;

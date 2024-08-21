@@ -26,8 +26,61 @@
     color: #04644b !important;
 }
 
+.main-footer {
+    background-color: #04644b;
+    border-color: #04644b;
+    color: #ffffff;
+}
+
+.content-wrapper {
+    background-image: url("/static/img/beach.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.main-sidebar {
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    align-content: center;
+}
+
+.containerBackup {
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+}
+
+.containerBackup .backup-section {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 20px;
+    text-shadow: 3px 3px 2.5px black;
+}
+
+.containerBackup .generate-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    margin-right: 30px;
+    text-shadow: 3px 3px 2.5px black;
+}
+
+.containerBackup .backup-section .restore-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    width: 1000px;
+    margin-left: 30px;
+}
+
+.containerBackup .img_db {
+    height: 130px;
+    width: 170px;
+}
+
 .dark-mode .content-wrapper {
-    background-color: #222222;
+    background: #242424;
     border-color: #414141;
     color: #ffffff;
 }
@@ -39,14 +92,14 @@
 }
 
 .dark-mode .main-sidebar {
-    background: #414141;
+    background: linear-gradient(#414141, #414141, #7e7e7e) !important;
     background-color: #414141;
     border-color: #414141;
     color: #ffffff;
 }
 
 .dark-mode .sidebar {
-    background-color: #414141;
+    background: linear-gradient(#414141, #414141, #7e7e7e) !important;
     border-color: #414141;
     color: #ffffff;
 }
@@ -62,6 +115,7 @@
     background-color: #303030;
     border-color: #414141;
     color: #e0e0e0;
+    border-radius: 10px;
 }
 
 .dark-mode .card-header {
@@ -82,14 +136,33 @@
     color: #ffffff;
 }
 
-.dark-mode .backup-section {
+.dark-mode .containerBackup {
+    background-color: #414141;
+    border-color: #414141;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.dark-mode .containerTitle {
+    border-color: #414141;
+    background-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerBackup .backup-section {
     background-color: #414141;
     border-color: #414141;
     color: #ffffff;
 }
 
-.dark-mode .restore-section {
-    background-color: #414141;
+.dark-mode .containerBackup .backup-section .generate-section {
+    background-color: #646464;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerBackup .backup-section .restore-section {
+    background-color: #646464;
     border-color: #414141;
     color: #ffffff;
 }
@@ -104,16 +177,110 @@
     color: #ffffff;
 }
 
-.main-sidebar {
-    background: linear-gradient(#04644b,#04644b, #6ddbd7); align-content: center;
+.dark-mode .breadcrumb-item a {
+    border-color: #414141;
+    color: #ffffff;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
+.dark-mode .invoice-container {
+    background-color: #242424;
+    border-color: #242424;
+    color: #ffffff;
+}
+
+.dark-mode .company-details, .client-details {
+    background-color: #242424;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode .product-table th {
+    background-color: #414141;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode {
+    background-color: #414141;
+    border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.img_db {
+    margin-top: 20px;
+}
+
+.backup-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.generate-section, .restore-section {
+    width: 48%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn_generate {
+    margin-top: 50px;
+}
+
+.btn_generate, .btn_restore, .btn_delete, .btn_download {
+    font-size: 40px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.backup-list-section {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    color: black;
+    text-shadow: none;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+td {
+    background-color: #fff;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #f1f1f1;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
 }
 
 .invoice-container {
@@ -238,7 +405,7 @@ button {
     margin: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #1D816D;
+    background-color: #04644B;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -258,13 +425,12 @@ button:hover {
     color: red;
     font-size: 14px;
     margin-top: 5px;
-    display: block; /* Hacer el mensaje visible */
+    display: block; 
 }
 
-/* Estilos para impresión */
 @media print {
     .buttons {
-        display: none; /* Oculta la sección de botones al imprimir */
+        display: none;
     }
 
     .invoice-container {
@@ -276,13 +442,13 @@ button:hover {
     
     .product-table th, .product-table td {
         padding: 8px;
-        word-wrap: break-word; /* Asegura que el texto se ajuste en la celda */
+        word-wrap: break-word; 
     }
 
     .product-table td.detail {
-        white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-        overflow: visible; /* Asegura que el contenido no se oculte */
-        max-width: none; /* Elimina la restricción de ancho */
+        white-space: normal; 
+        overflow: visible; 
+        max-width: none; 
     }
 
     .product-table th:last-child,
@@ -290,7 +456,6 @@ button:hover {
         display: none;
     }
 
-    /* Estilo para mostrar texto en lugar de campos de entrada */
     input, textarea {
         border: none;
         background: none;
