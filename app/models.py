@@ -204,7 +204,7 @@ class Administrador(models.Model):
 def eliminar_usuario_relacionado(sender, instance, **kwargs):
     user = instance.user
     if user:
-        user.delete() 
+        user.delete()
 
 ########################################################################################################################################
 

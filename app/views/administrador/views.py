@@ -33,7 +33,7 @@ class AdministradorCreateView(CreateView):
     form_class = AdministradorForm
     template_name = 'administrador/crear.html'
     success_url = reverse_lazy('app:administrador_lista')
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Registrar administrador'
