@@ -160,7 +160,7 @@ class Administrador(models.Model):
         PSP = 'PSP', 'Pasaporte'
 
     def validar_numero_documento(value):
-        if value < 10000000 or value > 9999999999:
+        if value < 10000000 or value > 99999999999:
             raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')

@@ -1,7 +1,8 @@
 {% extends 'layout.html' %}
 {% load widget_tweaks %}
 {% block contenido %}
-<form method="post" action=".">
+{% load static %}
+<form method="post" action="." id="deleteForm">
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -18,12 +19,27 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn btn-danger swalDefaultSuccess">
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
             <i class="fas fa-trash-alt"></i> Sí, eliminar
         </button>
         <a href="{{ listar_url }}" class="btn btn-info btn-flat">
             <i class="fas fa-times"></i> Cancelar
         </a>
     </div>
+<script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    function confirmDelete() {
+        Swal.fire({
+            title: '¡Éxito!',
+            text: 'Se eliminó correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6',
+            timer: 2000 // 2 segundos
+        }).then(() => {
+            document.getElementById('deleteForm').submit(); // Envía el formulario después de mostrar la alerta
+        });
+    }
+</script>
 </form>
 {% endblock %}
