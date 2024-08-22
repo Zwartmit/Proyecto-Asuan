@@ -192,6 +192,7 @@
     background-color: #242424;
     border-color: #c4c4c4;
     color: #ffffff;
+    margin-right: 5px;
 }
 
 .dark-mode .product-table th {
@@ -326,6 +327,7 @@ tr:hover td {
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;
+    margin-right: 5px;
 }
 
 .company-details label, .client-details label {
@@ -380,7 +382,6 @@ tr:hover td {
 }
 
 .delete-row {
-    background: url("/static/img/trash.png") no-repeat center center;
     background-size: contain;
     width: 24px;
     height: 24px;
@@ -464,4 +465,9 @@ button:hover {
         line-height: inherit;
         color: inherit;
     }
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f8f9fa;
+    opacity: 1;
 }

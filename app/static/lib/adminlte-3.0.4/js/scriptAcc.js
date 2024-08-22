@@ -21,10 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function () {
     const productRows = document.getElementById('product-rows');
+    const subtotalElement = document.getElementById('subtotal');
+    const totalVentaField = document.getElementById('total_venta');
 
     function addProductRow() {
         const row = document.createElement('tr');
-    
         row.innerHTML = `
             <td>
                 <input class="product-id product-select" style="width: 100%;" required />
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 delay: 250,
                 data: function (params) {
                     return {
-                        term: params.term 
+                        term: params.term
                     };
                 },
                 processResults: function (data) {
@@ -63,23 +64,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = e.params.data;
             const priceInput = row.querySelector('.product-price');
             priceInput.value = data.valor || 0;
-
-            const selectElement = $(this);
-            selectElement.data('select2').$container.find('.select2-selection__placeholder').text(data.text);
-
+            $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
             validateInputs();
         });
 
         productRows.appendChild(row);
-    
+
         row.querySelector('.product-quantity').addEventListener('input', validateInputs);
         row.querySelector('.product-price').addEventListener('input', validateInputs);
-    
         row.querySelector('.delete-row').addEventListener('click', function () {
             row.remove();
             validateInputs();
         });
-    
+
         validateInputs();
     }
 
@@ -87,13 +84,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let isValid = true;
         let ids = new Set();
         let subtotal = 0;
-    
+
         document.querySelectorAll('#product-rows tr').forEach(row => {
             const select = $(row.querySelector('.product-select')).val();
             const quantity = row.querySelector('.product-quantity').value;
             const price = row.querySelector('.product-price').value;
-    
-            // validacion de ids
+
             if (ids.has(select)) {
                 $(row.querySelector('.product-select')).next().addClass('error');
                 isValid = false;
@@ -101,35 +97,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 $(row.querySelector('.product-select')).next().removeClass('error');
                 ids.add(select);
             }
-    
-            // validacion de negativos
+
             if (quantity <= 0) {
                 row.querySelector('.product-quantity').classList.add('error');
                 isValid = false;
             } else {
                 row.querySelector('.product-quantity').classList.remove('error');
             }
-    
+
             if (price < 0) {
                 row.querySelector('.product-price').classList.add('error');
                 isValid = false;
             } else {
                 row.querySelector('.product-price').classList.remove('error');
             }
-    
+
             const total = (quantity * price).toFixed(2);
             row.querySelector('.product-total').textContent = `$${total}`;
-    
+
             subtotal += parseFloat(total);
         });
-    
-        document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-    
-        const totalVentaField = document.getElementById('total_venta');
+
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
         if (totalVentaField) {
             totalVentaField.value = subtotal.toFixed(2);
         }
-    
+
         return isValid;
     }
 
@@ -141,9 +134,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', validateInputs);
-    });
+    function prepareForm() {
+        const detallesVenta = [];
+        document.querySelectorAll('#product-rows tr').forEach(row => {
+            const idProducto = $(row.querySelector('.product-select')).val();
+            const cantidadProducto = row.querySelector('.product-quantity').value;
+            const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
+    
+            detallesVenta.push({
+                id_producto: idProducto,
+                cantidad_producto: cantidadProducto,
+                subtotal_venta: subtotalVenta.replace('$', '')  // Elimina el símbolo $ para el backend
+            });
+        });
+        
+        const detallesVentaJSON = JSON.stringify(detallesVenta);
+        document.getElementById('detalles_venta').value = JSON.stringify(detallesVenta);
+
+        console.log("Detalles de Venta JSON:", detallesVentaJSON);
+    }
+    
+    document.querySelector('form').addEventListener('submit', prepareForm);
+
+    productRows.addEventListener('input', validateInputs);
 
     addProductRow();
 

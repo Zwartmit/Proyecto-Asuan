@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from app.models import Venta, Producto, Detalle_venta
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm
-
+import json
 from app.models import Venta
 from app.forms import VentaForm
 
@@ -73,9 +73,40 @@ class VentaCreateView(CreateView):
         context['error'] = 'Esta venta ya existe'
         context['listar_url'] = reverse_lazy('app:venta_lista')
         context['cliente_form'] = ClienteForm()
-        context['venta_form'] = VentaForm()
         context['detalleventa_form'] = DetalleVentaForm()
         return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        venta = self.object
+        
+        # Extrae los detalles de venta del formulario
+        detalles_venta_json = self.request.POST.get('detalles_venta')
+        if detalles_venta_json:
+            detalles_venta = json.loads(detalles_venta_json)
+        else:
+            detalles_venta = []
+
+        print("Detalles de Venta:", detalles_venta)  # Agrega esta línea para depuración
+        
+        # Guarda los detalles de venta asociados con esta venta
+        for detalle in detalles_venta:
+            id_producto = detalle.get('id_producto')
+            cantidad_producto = detalle.get('cantidad_producto')
+            subtotal_venta = detalle.get('subtotal_venta')
+
+            Detalle_venta.objects.create(
+                id_venta=venta,
+                id_producto=id_producto,
+                cantidad_producto=cantidad_producto,
+                subtotal_venta=subtotal_venta
+            )
+
+        # Actualiza el total de la venta
+        venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
+        venta.save()
+
+        return response
     
 ###### EDITAR ######
 

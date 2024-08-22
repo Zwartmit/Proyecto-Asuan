@@ -10,6 +10,7 @@ from app.views.plato.views import *
 from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
+from app.views.detalle_venta.views import *
 from app.views.factura.views import *
 from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
 
@@ -77,6 +78,9 @@ urlpatterns = [
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
     path('venta/opciones/', ventas_view, name='venta_opciones'),
     path('venta/productos_api/', productos_api, name='productos_api'),
+
+    ### CRUD DETALLE VENTA ###
+    path('detalle_venta/listar/', DetalleVentaListView.as_view(), name='detalle_venta_lista'),
 
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),

@@ -3,6 +3,7 @@
 {% block contenido %}
 {% load static %}
 <form method="post" action=".">
+    {% csrf_token %}
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -11,7 +12,6 @@
             </h3>
         </div>
         <div class="card-body">
-            {% csrf_token %}
             <div class="invoice-container">
                 <header>
                     <div class="header-section">
@@ -19,6 +19,10 @@
                         <div class="inv oice-info">
                             <p>Número de Factura: <span id="invoice-number">001</span></p>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.fecha_venta.id_for_label }}">{{ form.fecha_venta.label }}:</label>
+                        {{ form.fecha_venta|add_class:'form-control'|attr:'autocomplete:off'|attr:'readonly' }}
                     </div>
                     <div class="details-section">
                         <div class="company-details">
@@ -46,51 +50,45 @@
                             {% endfor %}
                             <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
                         </div> -->
+                        <main>
+                            <table class="product-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Eliminar</th>
+                                        <th>Precio Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-rows">
+                                    <!-- tabla de productos-->
+                                </tbody>
+                            </table>
+                            <button onclick="addProductRow()">Agregar Producto</button>
+                            <div class="totals">
+                                <p>Total: <span id="subtotal">$0</span></p>
+                            </div>
+                        </main>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
+                        {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
                     </div>
                 </header>
-                <main>
-                    <table class="product-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Eliminar</th>
-                                <th>Precio Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="product-rows">
-                            <!-- tabla de productos-->
-                        </tbody>
-                    </table>
-                    <button onclick="addProductRow()">Agregar Producto</button>
-                    <div class="totals">
-                        <p>Total: <span id="subtotal">$0</span></p>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label for="total_venta">{{ venta_form.total_venta.label }}:</label>
-                        {{ venta_form.total_venta|add_class:'form-control'|attr:'readonly:true, autocomplete:off, id:subtotal' }}
-                    </div> -->
-                    <div class="form-group">
-                        <label for="metodo_pago">{{ venta_form.metodo_pago.label }}:</label>
-                        {{ venta_form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
-                    </div>
-                </main>
-                <div class="buttons">
-                    <button onclick="printInvoice()">Imprimir PDF</button>           
-                </div>
             </div>
         </div>
     </div>
+    <input type="hidden" id="detalles_venta" name="detalles_venta">
     <div class="card-footer">
-        <button class="btn btn-info btn-flat" onclick="printInvoice()"><i class="fas fa-plus"></i> Guardar</button>
+        <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
         <a href="{{ listar_url }}" class="btn btn-danger btn-flat">
             <i class="fas fa-times"></i> Cancelar
         </a>
     </div>
     </div>
 </form>
-<script>
+<!-- <script>
     {% if form.errors %}
     var errors = '';
     {% for field in form %}
@@ -105,5 +103,5 @@
         icon: 'error',
     });
     {% endif %}
-</script>
+</script> -->
 {% endblock %}

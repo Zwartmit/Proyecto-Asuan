@@ -1,0 +1,23 @@
+{% extends 'listar.html' %}
+
+{% block columnas %}
+<tr>
+    <th scope="col">id</th>
+    <th scope="col">id_venta</th>
+    <th scope="col">Producto</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Subtotal</th>
+</tr>
+{% endblock %}
+
+{% block filas %}
+    {% for d in object_list %}
+    <tr>
+        <td>{{ d.id }}</td>
+        <td>{{ d.id_venta }}</td>
+        <td>{{ d.id_producto }}</td>
+        <td>{{ d.cantidad_producto }}</td>
+        <td>{{ d.subtotal_venta }}</td>
+    </tr>
+    {% endfor %}
+{% endblock %}

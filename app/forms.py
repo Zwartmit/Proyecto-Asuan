@@ -7,7 +7,7 @@ from django.forms import *
 from app.models import *
 from django import forms
 from django.contrib.auth.models import User
-from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
+from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput, DateInput
 from app.models import Administrador
 from app.models import Operador
 
@@ -393,15 +393,21 @@ class OperadorForm(ModelForm):
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["total_venta"].widget.attrs["autofocus"] = True
 
     class Meta:
         model = Venta
         fields = "__all__"
-        widgets = {
-            "total_venta": NumberInput(
+        widgets = { 
+            "fecha_venta": DateInput(
                 attrs={
-                    "placeholder": "Total",
+                    "type": "date",
+                    "autocomplete": "off",
+                    "readonly": "readonly" 
+                }
+            ),
+            "fecha_venta": DateInput(
+                attrs={
+                    "placeholder": "YYYY-MM-DD",
                 }
             ),
             "metodo_pago": Select(

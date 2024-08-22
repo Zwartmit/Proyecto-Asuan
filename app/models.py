@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from .choices import codigos_telefonicos_paises
 from django.core.exceptions import ValidationError
@@ -253,18 +254,17 @@ class Venta(models.Model):
         EF = 'EF', 'Efectivo'
         TF = 'TF', 'Transferencia'
 
-    fecha_venta = models.DateTimeField(auto_now=True)
+    fecha_venta = models.DateTimeField(default=timezone.now, verbose_name="Fecha de la venta")
     total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta")
     metodo_pago = models.CharField(max_length=3, choices=MedotoPago.choices, default=MedotoPago.EF, verbose_name="Metodo de Pago")
 
-    def _str_(self):
+    def __str__(self):
         return str(self.id)
 
     class Meta:
-        verbose_name= "venta"
+        verbose_name= "enta"
         verbose_name_plural ='ventas'
-        order_with_respect_to = 'fecha_venta'
-        db_table ='Venta'
+        db_table ='Venta' 
 
 ########################################################################################################################################
 
@@ -273,10 +273,10 @@ class Detalle_venta(models.Model):
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
     id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
-    subtotal_venta = models.PositiveIntegerField(verbose_name="Subtotal", default="0")
+    subtotal_venta = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
 
 
-    def _str_(self):
+    def __str__(self):
         return self.id_producto
 
     class Meta:
@@ -296,7 +296,7 @@ class Detalle_venta_cuenta(models.Model):
     id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT)
 
-    def _str_(self):
+    def __str__(self):
         return self.id_producto
 
     class Meta:
