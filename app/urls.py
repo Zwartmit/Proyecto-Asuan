@@ -12,7 +12,7 @@ from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
 from app.views.reportes.views import *
-from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
+from backups.views import BackupDatabaseView, RestoreDatabaseView, DeleteBackupView, BackupListView
 
 app_name = 'app'
 urlpatterns = [
@@ -88,12 +88,11 @@ urlpatterns = [
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
-    path('backups/', backup_list, name='lista_backups'),
     path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
-    path('backup_list/', backup_list, name='backup_list'),
+    path('backup_list/', BackupListView.as_view(), name='backup_list'),
 
     ### REPORTES ###
-    path('reporte_selector/', reporte_selector, name='reporte_selector'),
+    path('gestion_reportes/', reporte_selector, name='gestion_reportes'),
     path('reportes/categorias/excel/', export_categorias_excel, name='export_categorias_excel'),
     path('reportes/categorias/pdf/', export_categorias_pdf, name='export_categorias_pdf'),
     path('reportes/marcas/excel/', export_marcas_excel, name='export_marcas_excel'),

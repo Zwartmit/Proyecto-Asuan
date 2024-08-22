@@ -47,6 +47,7 @@
     text-align: center;
     color: #ffffff;
     background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    border-radius: 15px;
 }
 
 .containerBackup .backup-section {
@@ -80,34 +81,31 @@
 }
 
 .containerReport {
+    display: block;
     text-align: center;
     color: #ffffff;
     background: linear-gradient(#04644b, #04644b, #6ddbd7);
-}
-
-.containerReport .backup-section {
-    display: flex;
-    align-content: center;
-    justify-content: center;
+    border-radius: 15px;
     padding: 20px;
-    text-shadow: 3px 3px 2.5px black;
 }
 
-.containerReport .generate-section {
+.containerReport .format-section {
     background: #04644b;
     border-radius: 10px;
     padding: 20px;
     width: 250px;
     margin-right: 30px;
     text-shadow: 3px 3px 2.5px black;
+    border: 1px solid #ddd;
 }
 
-.containerReport .backup-section .restore-section {
-    background: #04644b;
+.containerReport .report-section {
     border-radius: 10px;
     padding: 20px;
-    width: 1000px;
     margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
 
 .h1, h1 {
@@ -150,7 +148,6 @@
     background-color: #303030;
     border-color: #414141;
     color: #e0e0e0;
-    border-radius: 10px;
 }
 
 .dark-mode .card-header {
@@ -173,9 +170,7 @@
 
 .dark-mode .containerBackup {
     background-color: #414141;
-    border-color: #414141;
     color: #ffffff;
-    border-radius: 10px;
 }
 
 .dark-mode .containerTitle {
@@ -238,6 +233,24 @@
 .dark-mode {
     background-color: #414141;
     border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport {
+    background: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .format-section {
+    background: #646464;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .report-section {
+    background: #414141;
+    border-color: #414141;
     color: #ffffff;
 }
 

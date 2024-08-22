@@ -6,7 +6,18 @@ import openpyxl
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
 
+def get(self, request, *args, **kwargs):
+    contexto = {
+        'titulo': 'Gestión de bases de datos'
+    }
+    return render(request, 'backup.html', contexto)
+
+@login_required
+@never_cache
 def reporte_selector(request):
     if request.method == 'POST':
         tipo_reporte = request.POST.get('tipo_reporte')
@@ -53,8 +64,12 @@ def reporte_selector(request):
     else:
         form = ReporteForm() 
 
+    contexto = {
+        'titulo': 'Generar reportes',
+    }
+    
+    return render(request, 'reportes.html', contexto)
     return render(request, 'reportes.html', {'form': form})
-
 
 ################################################## Categorias ##################################################
 def export_categorias_excel(request):

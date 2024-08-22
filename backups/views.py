@@ -1,15 +1,14 @@
 import os
 import subprocess
-from datetime import datetime
-from django.conf import settings
-from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404
-from django.contrib import messages
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views import View
-from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from datetime import datetime
+from django.http import JsonResponse
+from django.contrib import messages
 
 @method_decorator(never_cache, name='dispatch')
 class BackupDatabaseView(View):
@@ -18,7 +17,10 @@ class BackupDatabaseView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'backup.html')
+        contexto = {
+            'titulo': 'Gestión de bases de datos'
+        }
+        return render(request, 'backup.html', contexto)
 
     def post(self, request, *args, **kwargs):
         success = False
@@ -56,24 +58,31 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
-def backup_list(request):
-    backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
-    backups = []
-    
-    if os.path.exists(backup_dir):
-        for filename in os.listdir(backup_dir):
-            if filename.endswith('.sql'):
-                file_path = os.path.join(backup_dir, filename)
-                created_at = datetime.fromtimestamp(os.path.getctime(file_path))
-                size = os.path.getsize(file_path)
-                backups.append({
-                    'filename': filename,
-                    'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                    'size': f"{size / 1024 / 1024:.2f} MB"
-                })
-    
-    backups.sort(key=lambda x: x['created_at'], reverse=True)
-    return render(request, 'backup.html', {'page_obj': page_obj})
+
+@method_decorator(never_cache, name='dispatch')
+class BackupListView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
+        backups = []
+
+        if os.path.exists(backup_dir):
+            for filename in os.listdir(backup_dir):
+                if filename.endswith('.sql'):
+                    file_path = os.path.join(backup_dir, filename)
+                    created_at = datetime.fromtimestamp(os.path.getctime(file_path))
+                    size = os.path.getsize(file_path)
+                    backups.append({
+                        'filename': filename,
+                        'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                        'size': f"{size / 1024 / 1024:.2f} MB"
+                    })
+        
+        backups.sort(key=lambda x: x['created_at'], reverse=True)
+        return render(request, 'backup.html', {'backups': backups})
     
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
