@@ -225,11 +225,12 @@
                     </ul>
                 </li>
                 <li class="nav-itemm">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'app:gestion_reportes' %}"
-                        style="font-size: 19px; color: white;">
-                        <i class="nav-icon fas fa-file-pdf" style="font-size: 25px; margin-right: 10px; color: white;"></i>
-                        <span>Reportes</span>
-                    </a>
+                    <a href="{% url 'app:gestion_reportes' %}" class="nav-link d-flex justify-content-between align-items-center" style="color: white; font-size: 13px;">
+                        <div class="d-flex align-items-center">
+                            <i class="nav-icon fas fa-file-pdf" style="font-size: 25px; margin-right: 10px;"></i>
+                            <p class="mb-0" style="font-size: 19px;">Reportes</p>
+                        </div>
+                    </a>                    
                 </li>
             </ul>
         </nav>

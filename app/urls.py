@@ -16,7 +16,6 @@ from backups.views import BackupDatabaseView, RestoreDatabaseView, DeleteBackupV
 
 app_name = 'app'
 urlpatterns = [
-    
     ### CRUD CATEGORÍA ###
     path('categoria/listar/', CategoriaListView.as_view(), name='categoria_lista'),
     path('categoria/crear/', CategoriaCreateView.as_view(), name='categoria_crear'),
@@ -111,4 +110,3 @@ urlpatterns = [
     path('reportes/operadores/excel/', export_operadores_excel, name='export_operadores_excel'),
     path('reportes/operadores/pdf/', export_operadores_pdf, name='export_operadores_pdf'),
 ]
-

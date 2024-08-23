@@ -38,9 +38,9 @@ class Marca (models.Model):
 class Presentacion (models.Model):
 
     class unidadMedida(models.TextChoices):
-        L = 'litros', 'litros'
-        ML = 'mililitros', 'mililitros'
-        G = 'gramos', 'gramos'
+        L = 'litro(s)', 'litro(s)'
+        ML = 'mililitro(s)', 'mililitro(s)'
+        G = 'gramo(s)', 'gramo(s)'
 
     presentacion = models.CharField(max_length=50, verbose_name="Presentación", unique=True)
     unidad_medida = models.CharField(max_length=12, choices=unidadMedida.choices, default="", verbose_name="Unidad de medida")

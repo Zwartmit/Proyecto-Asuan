@@ -7,7 +7,8 @@
             </a>
         </li>
         <li class="nav-itemmm d-none d-sm-inline-block ">
-            <a href="{% url 'dashboard' %}" class="nav-link text-white" style="font-size: 20px; font-style: oblique; text-shadow: 3px 3px 2.5px black;">Inicio</a>
+            <a href="{% url 'dashboard' %}" class="nav-link text-white"
+                style="font-size: 20px; font-style: oblique; text-shadow: 3px 3px 2.5px black;">Inicio</a>
         </li>
     </ul>
     <div class="container">
@@ -22,34 +23,63 @@
         <img src="{% static 'img/icon.png' %}" alt="Logo palmera">
     </span>
     <div class="col-sm-6">
-        <h1 class="m-0" style="font-size: 50px; font-style: oblique; color: white; text-shadow: 3px 3px 2.5px black;">Panel de administración</h1>
+        <h1 class="m-0" style="font-size: 50px; font-style: oblique; color: white; text-shadow: 3px 3px 2.5px black;">
+            Panel de administración</h1>
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-itemmm">
             <a class="nav-link" href="">
-                <i class="fas fa-moon" title="Modo oscuro-claro" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true" onclick="toggleDarkMode()"></i>
+                <i class="fas fa-moon" title="Modo oscuro-claro"
+                    style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"
+                    onclick="toggleDarkMode()"></i>
             </a>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-itemmm">
             <a class="nav-link" href="{% static 'resources/manual_de_uso.pdf' %}" target="_blank">
-                <i class="fas fa-question" title="Ayuda" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
+                <i class="fas fa-question" title="Ayuda"
+                    style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
             </a>
         </li>
-    </ul>    
+    </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-itemmm">
             <a class="nav-link" href="{% url 'app:gestionar_backups'%}">
-                <i class="fas fa-database" title="Administrar copias de seguridad" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
+                <i class="fas fa-database" title="Administrar copias de seguridad"
+                    style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
             </a>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-itemmm">
-            <a class="nav-link" href="{% url 'logout'%}">
-                <i class="fas fa-sign-out-alt" title="Cerrar sesión" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
+        <li class="nav-itemmm dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user" style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;"></i>
             </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <span class="dropdown-item">Usuario:<br>{{ user.username }}</span>
+                <a class="dropdown-item" href="#" onclick="confirmLogout(event)">Cerrar sesión</a>
+            </div>
         </li>
     </ul>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmLogout(event) {
+    event.preventDefault(); 
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Deseas cerrar sesión?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#04644b',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'logout' %}";
+        }
+    });
+}
+</script>

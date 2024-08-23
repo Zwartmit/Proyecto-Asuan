@@ -321,9 +321,6 @@ class AdministradorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
-
-# -----------------------------------------------------------------------------------------------
-
 class OperadorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
@@ -413,9 +410,6 @@ class OperadorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
-
-# -------------------------------------------------------------------------------------------
- 
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

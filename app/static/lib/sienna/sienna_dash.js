@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     const h = function (e, s) {
         let a = !1;
-        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.8), s = Math.min(s, 1.2), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h1,h2,h3,h4,h5,h6,dl,dt,li,ol,th,td").forEach((function (t) {
+        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.7), s = Math.min(s, 1.3), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h1,h2,h3,h4,h5,h6,dl,dt,li,ol,th,td").forEach((function (t) {
             if (!t.classList.contains("material-icons")) {
                 let e = t.getAttribute("data-asw-orgFontSize");
                 e || (e = parseInt(window.getComputedStyle(t, null).getPropertyValue("font-size")), t.setAttribute("data-asw-orgFontSize", e));

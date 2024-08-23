@@ -513,3 +513,13 @@ button:hover {
         color: inherit;
     }
 }
+
+.filter-container {
+    margin-bottom: 10px;
+}
+
+.filter-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
