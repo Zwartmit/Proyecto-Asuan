@@ -83,7 +83,10 @@ class VentaCreateView(CreateView):
         # Extrae los detalles de venta del formulario
         detalles_venta_json = self.request.POST.get('detalles_venta')
         if detalles_venta_json:
-            detalles_venta = json.loads(detalles_venta_json)
+            try:
+                detalles_venta = json.loads(detalles_venta_json)
+            except json.JSONDecodeError:
+                detalles_venta = []
         else:
             detalles_venta = []
 

@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
             detallesVenta.push({
                 id_producto: idProducto,
                 cantidad_producto: cantidadProducto,
-                subtotal_venta: subtotalVenta.replace('$', '')  // Elimina el símbolo $ para el backend
+                subtotal_venta: parseFloat(subtotalVenta.replace('$', '')) || 0
             });
         });
         
