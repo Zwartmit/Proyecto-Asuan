@@ -77,39 +77,48 @@ class VentaCreateView(CreateView):
         return context
     
     def form_valid(self, form):
-        response = super().form_valid(form)
-        venta = self.object
-        
-        # Extrae los detalles de venta del formulario
-        detalles_venta_json = self.request.POST.get('detalles_venta')
-        if detalles_venta_json:
-            try:
-                detalles_venta = json.loads(detalles_venta_json)
-            except json.JSONDecodeError:
+        try:
+            response = super().form_valid(form)
+            venta = self.object
+            
+            # Extrae los detalles de venta del formulario
+            detalles_venta_json = self.request.POST.get('detalles_venta')
+            if detalles_venta_json:
+                try:
+                    detalles_venta = json.loads(detalles_venta_json)
+                except json.JSONDecodeError:
+                    detalles_venta = []
+            else:
                 detalles_venta = []
-        else:
-            detalles_venta = []
 
-        print("Detalles de Venta:", detalles_venta)  # Agrega esta línea para depuración
-        
-        # Guarda los detalles de venta asociados con esta venta
-        for detalle in detalles_venta:
-            id_producto = detalle.get('id_producto')
-            cantidad_producto = detalle.get('cantidad_producto')
-            subtotal_venta = detalle.get('subtotal_venta')
+            # Guarda los detalles de venta asociados con esta venta
+            for detalle in detalles_venta:
+                id_producto = detalle.get('id_producto')
+                cantidad_producto = detalle.get('cantidad_producto')
+                subtotal_venta = detalle.get('subtotal_venta')
 
-            Detalle_venta.objects.create(
-                id_venta=venta,
-                id_producto=id_producto,
-                cantidad_producto=cantidad_producto,
-                subtotal_venta=subtotal_venta
-            )
+                # Aquí obtenemos la instancia del producto en lugar de asignar el id directamente
+                try:
+                    producto_instance = Producto.objects.get(pk=id_producto)
+                except Producto.DoesNotExist:
+                    # Maneja el caso donde el producto no existe
+                    continue
 
-        # Actualiza el total de la venta
-        venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
-        venta.save()
+                Detalle_venta.objects.create(
+                    id_venta=venta,
+                    id_producto=producto_instance,  # Aquí pasamos la instancia de Producto
+                    cantidad_producto=cantidad_producto,
+                    subtotal_venta=subtotal_venta
+                )
 
-        return response
+            # Actualiza el total de la venta
+            venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
+            venta.save()
+
+            return response
+        except Exception as e:
+            print(f"Error al guardar la venta: {e}")
+            return self.form_invalid(form)
     
 ###### EDITAR ######
 
