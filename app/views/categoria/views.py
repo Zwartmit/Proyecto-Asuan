@@ -113,10 +113,10 @@ class CategoriaDeleteView(DeleteView):
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         return context
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
-            return super().delete(request, *args, **kwargs)
-        except ProtectedError as e:
-            messages.error(request, f'Error: No se puede eliminar la categoría porque está relacionada con productos. {e.args[0]}')
-            return self.render_to_response(self.get_context_data()) 
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Categoría eliminada con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar la categoría porque está asociada a un producto.'})
