@@ -76,11 +76,11 @@ urlpatterns = [
     path('venta/crear/', VentaCreateView.as_view(), name='venta_crear'),
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
-    path('venta/opciones/', ventas_view, name='venta_opciones'),
     path('venta/productos_api/', productos_api, name='productos_api'),
 
-    ### CRUD DETALLE VENTA ###
+    ### DETALLE VENTA ###
     path('detalle_venta/listar/', DetalleVentaListView.as_view(), name='detalle_venta_lista'),
+    path('detalleventa/eliminar/<int:pk>/', DetalleVentaDeleteView.as_view(), name='detalle_venta_eliminar'),
 
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),

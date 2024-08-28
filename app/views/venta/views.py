@@ -50,7 +50,8 @@ class VentaListView(ListView):
     
 def productos_api(request):
     term = request.GET.get('term', '') 
-    productos = Producto.objects.filter(Q(producto__icontains=term)).values('id', 'producto', 'valor')
+    productos = Producto.objects.filter(Q(producto__icontains=term) & Q(estado=True)
+    ).values('id', 'producto', 'valor', 'cantidad')
     return JsonResponse(list(productos), safe=False)
 
 ###### CREAR ######
@@ -81,7 +82,6 @@ class VentaCreateView(CreateView):
             response = super().form_valid(form)
             venta = self.object
             
-            # Extrae los detalles de venta del formulario
             detalles_venta_json = self.request.POST.get('detalles_venta')
             if detalles_venta_json:
                 try:
@@ -91,33 +91,32 @@ class VentaCreateView(CreateView):
             else:
                 detalles_venta = []
 
-            # Guarda los detalles de venta asociados con esta venta
             for detalle in detalles_venta:
                 id_producto = detalle.get('id_producto')
                 cantidad_producto = detalle.get('cantidad_producto')
                 subtotal_venta = detalle.get('subtotal_venta')
 
-                # Aquí obtenemos la instancia del producto en lugar de asignar el id directamente
                 try:
                     producto_instance = Producto.objects.get(pk=id_producto)
                 except Producto.DoesNotExist:
-                    # Maneja el caso donde el producto no existe
                     continue
+
+                producto_instance.cantidad -= int(cantidad_producto)
+                producto_instance.save()
 
                 Detalle_venta.objects.create(
                     id_venta=venta,
-                    id_producto=producto_instance,  # Aquí pasamos la instancia de Producto
+                    id_producto=producto_instance, 
                     cantidad_producto=cantidad_producto,
                     subtotal_venta=subtotal_venta
                 )
 
-            # Actualiza el total de la venta
             venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
             venta.save()
 
             return response
         except Exception as e:
-            print(f"Error al guardar la venta: {e}")
+            print(f"Error al guardar la venta: {e}")    
             return self.form_invalid(form)
     
 ###### EDITAR ######

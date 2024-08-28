@@ -7,6 +7,7 @@
     <th scope="col">Producto</th>
     <th scope="col">Cantidad</th>
     <th scope="col">Subtotal</th>
+    <th scope="col">Eliminar</th>
 </tr>
 {% endblock %}
 
@@ -18,6 +19,11 @@
         <td>{{ d.id_producto }}</td>
         <td>{{ d.cantidad_producto }}</td>
         <td>{{ d.subtotal_venta }}</td>
+        <td>
+            <a href="{% url 'app:detalle_venta_eliminar' d.id %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
     </tr>
-    {% endfor %}
+    {% endfor %} 
 {% endblock %}

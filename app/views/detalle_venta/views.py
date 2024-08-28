@@ -40,3 +40,25 @@ class DetalleVentaListView(ListView):
         context['listar_url'] = reverse_lazy('app:detalle_venta_lista')
         context['crear_url'] = reverse_lazy('app:producto_crear')
         return context
+    
+    ###### ELIMINAR ######
+
+@method_decorator(never_cache, name='dispatch')
+class DetalleVentaDeleteView(DeleteView):
+    model = Detalle_venta
+    template_name = 'detalle_venta/eliminar.html'
+    success_url = reverse_lazy('app:venta_lista')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Eliminar venta'
+        context['entidad'] = 'Eliminar venta'
+        context['listar_url'] = reverse_lazy('app:detalle_venta_lista')
+        return context 
+    
+def ventas_view(request):
+    return render(request, 'venta/ventas.html')

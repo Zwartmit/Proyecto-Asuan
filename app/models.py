@@ -254,15 +254,15 @@ class Venta(models.Model):
         EF = 'EF', 'Efectivo'
         TF = 'TF', 'Transferencia'
 
-    fecha_venta = models.DateTimeField(default=timezone.now, verbose_name="Fecha de la venta")
-    total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta")
+    fecha_venta = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la venta")
+    total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta", null=True, blank=True)
     metodo_pago = models.CharField(max_length=3, choices=MedotoPago.choices, default=MedotoPago.EF, verbose_name="Metodo de Pago")
 
     def __str__(self):
         return str(self.id)
 
     class Meta:
-        verbose_name= "enta"
+        verbose_name= "venta"
         verbose_name_plural ='ventas'
         db_table ='Venta' 
 
@@ -277,7 +277,7 @@ class Detalle_venta(models.Model):
 
 
     def __str__(self):
-        return self.id_producto
+        return str(self.id_producto)
 
     class Meta:
         verbose_name= "detalle_de_venta"

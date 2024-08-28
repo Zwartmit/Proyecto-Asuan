@@ -397,19 +397,8 @@ class VentaForm(ModelForm):
     class Meta:
         model = Venta
         fields = "__all__"
+        exclude = ['fecha_venta']
         widgets = { 
-            "fecha_venta": DateInput(
-                attrs={
-                    "type": "date",
-                    "autocomplete": "off",
-                    "readonly": "readonly" 
-                }
-            ),
-            "fecha_venta": DateInput(
-                attrs={
-                    "placeholder": "YYYY-MM-DD",
-                }
-            ),
             "metodo_pago": Select(
                 attrs={
                     "placeholder": "Metodo de pago",
