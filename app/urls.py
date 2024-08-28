@@ -87,7 +87,7 @@ urlpatterns = [
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
-    path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
+    path('eliminar-backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
     path('backup_list/', BackupListView.as_view(), name='backup_list'),
 
     ### REPORTES ###

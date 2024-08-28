@@ -1,9 +1,11 @@
 import os
 import subprocess
+from django.http import Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_POST
 from django.views import View
 from django.conf import settings
 from datetime import datetime
@@ -58,7 +60,6 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
-
 @method_decorator(never_cache, name='dispatch')
 class BackupListView(View):
     @method_decorator(login_required)
@@ -66,24 +67,22 @@ class BackupListView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
-        backups = []
+        try:
+            backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
+            files = [f for f in os.listdir(backup_dir) if f.endswith('.sql')]
+            file_data = []
+            for file in files:
+                file_path = os.path.join(backup_dir, file)
+                file_info = {
+                    'filename': file,
+                    'created_at': os.path.getmtime(file_path),
+                    'size': os.path.getsize(file_path)
+                }
+                file_data.append(file_info)
+            return JsonResponse({'files': file_data})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
 
-        if os.path.exists(backup_dir):
-            for filename in os.listdir(backup_dir):
-                if filename.endswith('.sql'):
-                    file_path = os.path.join(backup_dir, filename)
-                    created_at = datetime.fromtimestamp(os.path.getctime(file_path))
-                    size = os.path.getsize(file_path)
-                    backups.append({
-                        'filename': filename,
-                        'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                        'size': f"{size / 1024 / 1024:.2f} MB"
-                    })
-        
-        backups.sort(key=lambda x: x['created_at'], reverse=True)
-        return render(request, 'backup.html', {'backups': backups})
-    
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
     @method_decorator(login_required)
@@ -93,23 +92,18 @@ class RestoreDatabaseView(View):
     def post(self, request, *args, **kwargs):
         success = False
         try:
-            backup_file = request.FILES.get('backup_file')
-            if not backup_file:
+            filename = request.POST.get('backup_file')
+            if not filename:
                 raise Http404("No se especificó un archivo de respaldo")
 
-            filename = backup_file.name
-            
             if not filename.endswith('.sql'):
                 raise ValueError("El archivo debe tener una extensión .sql")
 
             backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
             backup_path = os.path.join(backup_dir, filename)
 
-            os.makedirs(backup_dir, exist_ok=True)
-
-            with open(backup_path, 'wb+') as destination:
-                for chunk in backup_file.chunks():
-                    destination.write(chunk)
+            if not os.path.exists(backup_path):
+                raise Http404("El archivo de respaldo no existe")
 
             db_settings = settings.DATABASES['default']
             db_name = db_settings['NAME']
@@ -125,7 +119,7 @@ class RestoreDatabaseView(View):
             if result.returncode != 0:
                 messages.error(request, f"Error al restaurar la base de datos: {result.stderr}")
             else:
-                messages.success(request, f"Base de datos restaurada desde {filename}")
+                messages.success(request, f"Base de datos restaurada desde: {filename}")
                 success = True
 
         except ValueError as ve:
@@ -146,18 +140,17 @@ class DeleteBackupView(View):
 
     def post(self, request, *args, **kwargs):
         filename = request.POST.get('filename')
+        success = False
         if filename:
-            file_path = os.path.join(settings.BASE_DIR, 'backups', filename)
+            file_path = os.path.join(settings.BASE_DIR, 'backups/files', filename)
             if os.path.exists(file_path):
                 os.remove(file_path)
-                messages.success(request, f"Respaldo {filename} eliminado exitosamente")
+                messages.success(request, f"Copia: {filename} eliminada exitosamente")
                 success = True
             else:
-                messages.error(request, f"El archivo {filename} no existe")
-                success = False
+                messages.error(request, f"El archivo: {filename} no existe")
         else:
             messages.error(request, "No se especificó un archivo para eliminar")
-            success = False
 
         messages_list = list(messages.get_messages(request))
         messages_str = [str(message) for message in messages_list]
