@@ -18,12 +18,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-danger swalDefaultSuccess">
-                <i class="fas fa-trash-alt"></i> Sí, eliminar
-            </button>
-            <a href="{{ listar_url }}" class="btn btn-info btn-flat">
-                <i class="fas fa-times"></i> Cancelar
-            </a>
+            <button type="button" class="btn btn-primary swalDefaultSuccess"><i class="fas fa-trash-alt"></i> Sí, eliminar</button>
+            <a href="{{ listar_url }}" class="btn btn-danger btn-flat"><i class="fas fa-times"></i> Cancelar</a>
         </div>
     </div>
 </form>
@@ -45,7 +41,8 @@
                       icon: 'success',
                       title: 'Éxito',
                       text: data.message,
-                      confirmButtonText: 'Aceptar'
+                      confirmButtonText: 'Aceptar',
+                      confirmButtonColor: '#04644b'
                   }).then(() => {
                       window.location.href = "{{ listar_url }}";
                   });
@@ -54,7 +51,8 @@
                       icon: 'error',
                       title: 'Error',
                       text: data.message,
-                      confirmButtonText: 'Aceptar'
+                      confirmButtonText: 'Aceptar',
+                      confirmButtonColor: '#04644b'
                   });
               }
           });

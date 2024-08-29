@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="card-footer">
-        <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
+        <button class="btn btn-primary btn-flat"><i class="fas fa-plus"></i> Guardar</button>
         <a href="{{ listar_url }}" class="btn btn-danger btn-flat">
             <i class="fas fa-times"></i> Cancelar
         </a>
@@ -37,9 +37,11 @@
     {% endfor %}
 
     Swal.fire({
-        title: 'Error!',
+        title: 'Error',
         text: 'Ya existe una categoría con este nombre.',
         icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
     });
     {% endif %}
 </script>

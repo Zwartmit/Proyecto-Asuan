@@ -16,12 +16,8 @@
     <td>{{ p.presentacion }} {{ p.get_unidad_medida_display }}</td>
     <td>{{ p.estado | yesno:"Activo,Inactivo" }}</td>
     <td>
-        <a href="{% url 'app:presentacion_editar' p.id %}" class="btn btn-info btn-sm">
-            <i class="fas fa-edit"></i>
-        </a>
-        <a href="{% url 'app:presentacion_eliminar' p.id %}" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i>
-        </a>
+        <a href="{% url 'app:presentacion_editar' p.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'app:presentacion_eliminar' p.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}

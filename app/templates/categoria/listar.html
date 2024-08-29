@@ -16,12 +16,8 @@
     <td>{{ c.categoria }}</td>
     <td>{{ c.estado | yesno:"Activo,Inactivo" }}</td>
     <td>
-        <a href="{% url 'app:categoria_editar' c.id %}" class="btn btn-info btn-sm">
-            <i class="fas fa-edit"></i>
-        </a>
-        <a href="{% url 'app:categoria_eliminar' c.id %}" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i>
-        </a>
+        <a href="{% url 'app:categoria_editar' c.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+        <a href="{% url 'app:categoria_eliminar' c.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}
