@@ -18,7 +18,8 @@
         </div>
         <div class="restore-section">
             <h2>Restaurar copia de seguridad</h2>
-            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}" enctype="multipart/form-data">
+            <form id="restoreForm" method="post" action="{% url 'app:restaurar_backup' %}"
+                enctype="multipart/form-data">
                 {% csrf_token %}
                 <table id="backupTable">
                     <thead>
@@ -35,19 +36,19 @@
                 </table>
                 <input type="hidden" id="selectedFile" name="backup_file">
             </form>
-        </div>        
+        </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('#backupTable tbody');
-    
+
         function formatDateTime(timestamp) {
             const date = new Date(timestamp * 1000);
-            return date.toLocaleString(); 
+            return date.toLocaleString();
         }
-    
+
         function loadBackupFiles() {
             fetch('{% url "app:backup_list" %}')
                 .then(response => response.json())
@@ -72,7 +73,7 @@
                                 <td>${(file.size / (1024 * 1024)).toFixed(2)} MB</td>
                                 <td>
                                     <button type="button" class="select-file" data-filename="${file.filename}">Seleccionar</button>
-                                    <button type="button" class="delete-file" data-filename="${file.filename}">Eliminar</button>
+                                    <button type="button" class="delete-file" style="background-color: #d33" data-filename="${file.filename}">Eliminar</button>
                                 </td>
                             `;
                             tableBody.appendChild(row);
@@ -83,36 +84,75 @@
                     console.error('Error:', error);
                 });
         }
-    
+
         loadBackupFiles();
-    
-        tableBody.addEventListener('click', function(e) {
+
+        tableBody.addEventListener('click', function (e) {
             if (e.target.classList.contains('select-file')) {
                 const filename = e.target.getAttribute('data-filename');
                 document.getElementById('selectedFile').value = filename;
-    
+
                 Swal.fire({
                     title: 'Archivo Seleccionado',
                     text: `¿Deseas restaurar el archivo: ${filename}?`,
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, restaurar',
-                    cancelButtonText: 'Cancelar'
+                    confirmButtonColor: '#04644b',
+                    cancelButtonText: 'Cancelar',
+                    cancelButtonColor: '#d33'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('restoreForm').submit(); 
+                        const formData = new FormData();
+                        formData.append('backup_file', filename);
+                        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+                        fetch('{% url "app:restaurar_backup" %}', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Éxito',
+                                        text: data.messages.join(' '),
+                                        icon: 'success',
+                                        confirmButtonText: 'Aceptar',
+                                        confirmButtonColor: '#04644b',
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: data.messages.join(' '),
+                                        icon: 'error',
+                                        confirmButtonText: 'Aceptar',
+                                        confirmButtonColor: '#04644b',
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ocurrió un error inesperado.',
+                                    icon: 'error'
+                                });
+                            });
                     }
                 });
             } else if (e.target.classList.contains('delete-file')) {
                 const filename = e.target.getAttribute('data-filename');
-    
+
                 Swal.fire({
                     title: 'Confirmar Eliminación',
                     text: `¿Desea eliminar el archivo: ${filename}?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
+                    confirmButtonColor: '#04644b',
+                    cancelButtonText: 'Cancelar',
+                    cancelButtonColor: '#d33'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch('{% url "app:eliminar_backup" %}', {
@@ -123,75 +163,69 @@
                             },
                             body: new URLSearchParams({ 'filename': filename })
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
+                            .then(response => response.json())
+                            .then(data => {
                                 Swal.fire({
-                                    title: 'Eliminado',
-                                    text: data.messages[0], 
-                                    icon: 'success'
+                                    title: data.success ? 'Eliminado' : 'Error',
+                                    text: data.messages.join(' '),
+                                    icon: data.success ? 'success' : 'error',
+                                    confirmButtonText: 'Aceptar',
+                                    confirmButtonColor: '#04644b',
                                 });
-                                loadBackupFiles(); 
-                            } else {
+
+                                if (data.success) {
+                                    loadBackupFiles();
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
                                 Swal.fire({
                                     title: 'Error',
-                                    text: data.messages[0], 
+                                    text: 'Ocurrió un error al intentar eliminar el archivo.',
                                     icon: 'error'
                                 });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Error al eliminar el archivo.',
-                                icon: 'error'
                             });
-                        });
                     }
                 });
             }
         });
-    
-        document.getElementById('restoreForm').addEventListener('submit', function(e) {
+
+        document.getElementById('backupForm').addEventListener('submit', function (e) {
             e.preventDefault();
-    
+
             let formData = new FormData(this);
-    
-            fetch('{% url "app:restaurar_backup" %}', {
+
+            fetch('{% url "app:gestionar_backups" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+                .then(response => response.json())
+                .then(data => {
+                    const message = data.messages.join(" ");
                     Swal.fire({
-                        title: 'Éxito',
-                        text: data.messages.join(', '), 
-                        icon: 'success'
+                        title: data.success ? 'Éxito' : 'Error',
+                        text: message,
+                        icon: data.success ? 'success' : 'error',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#04644b'
                     });
-                    loadBackupFiles(); 
-                } else {
+                    loadBackupFiles();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     Swal.fire({
                         title: 'Error',
-                        text: data.messages.join(', '),
-                        icon: 'error'
+                        text: 'Error al crear el respaldo.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#04644b'
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Error al restaurar la base de datos.',
-                    icon: 'error'
                 });
-            });
         });
     });
-    
+
 </script>
 {% endblock %}

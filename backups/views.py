@@ -48,12 +48,12 @@ class BackupDatabaseView(View):
 
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             if result.returncode != 0:
-                messages.error(request, f"Error al crear el respaldo: {result.stderr}")
+                messages.error(request, f"Error al crear la copia de seguridad: {result.stderr}.")
             else:
-                messages.success(request, f"Respaldo creado exitosamente: {filename}")
+                messages.success(request, f"Copia de seguridad: {filename} creada exitosamente.")
                 success = True
         except Exception as e:
-            messages.error(request, f"Error al crear el respaldo: {str(e)}")
+            messages.error(request, f"Error al crear la copia de seguridad: {str(e)}.")
 
         messages_list = list(messages.get_messages(request))
         messages_str = [str(message) for message in messages_list]
@@ -94,7 +94,7 @@ class RestoreDatabaseView(View):
         try:
             filename = request.POST.get('backup_file')
             if not filename:
-                raise Http404("No se especificó un archivo de respaldo")
+                raise Http404("No se especificó un archivo de respaldo.")
 
             if not filename.endswith('.sql'):
                 raise ValueError("El archivo debe tener una extensión .sql")
@@ -119,7 +119,7 @@ class RestoreDatabaseView(View):
             if result.returncode != 0:
                 messages.error(request, f"Error al restaurar la base de datos: {result.stderr}")
             else:
-                messages.success(request, f"Base de datos restaurada desde: {filename}")
+                messages.success(request, f"Base de datos: {filename} restaurada correctamente.")
                 success = True
 
         except ValueError as ve:
@@ -145,12 +145,12 @@ class DeleteBackupView(View):
             file_path = os.path.join(settings.BASE_DIR, 'backups/files', filename)
             if os.path.exists(file_path):
                 os.remove(file_path)
-                messages.success(request, f"Copia: {filename} eliminada exitosamente")
+                messages.success(request, f"Copia: {filename} eliminada correctamente.")
                 success = True
             else:
-                messages.error(request, f"El archivo: {filename} no existe")
+                messages.error(request, f"El archivo: {filename} no existe.")
         else:
-            messages.error(request, "No se especificó un archivo para eliminar")
+            messages.error(request, "No se especificó un archivo para eliminar.")
 
         messages_list = list(messages.get_messages(request))
         messages_str = [str(message) for message in messages_list]
