@@ -41,6 +41,30 @@
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#04644b'
     });
+    {% elif request.GET.created %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Producto creado con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:producto_lista' %}";
+        }
+    });
+    {% elif request.GET.updated %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Producto editado con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:producto_lista' %}";
+        }
+    });
     {% endif %}
 </script>
 {% endblock %}

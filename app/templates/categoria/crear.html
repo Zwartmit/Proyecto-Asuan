@@ -43,6 +43,30 @@
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#04644b'
     });
+    {% elif request.GET.created %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Categoría creada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:categoria_lista' %}";
+        }
+    });
+    {% elif request.GET.updated %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Categoría editada con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:categoria_lista' %}";
+        }
+    });
     {% endif %}
 </script>
 {% endblock %}

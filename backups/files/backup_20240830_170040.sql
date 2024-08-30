@@ -160,7 +160,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$1mLeQpGBzrmBj4zDvqoqZO$hOH0EXCG0dnKOh/b7xHHAZhhFqyp5iRucai32mvHLN4=','2024-08-29 19:50:02.119524',1,'admin','','','admin@gmail.com',1,1,'2024-08-13 18:26:36.243641'),(2,'pbkdf2_sha256$870000$83wvbCfSVXtezifPHtRcBc$HaGvxD/298USz8omvQRYZg213IZFVKws5iF7VZxfwYE=','2024-08-14 20:04:09.750985',1,'juan','','','juan@gmail.com',1,1,'2024-08-14 20:02:58.110221'),(8,'pbkdf2_sha256$870000$g00vHxMFkxpYclpR0jdQw5$XcjfOTzQPN6LKHwsLWqvJ3Ulptxo+hFzRnnfuVtu4LU=',NULL,1,'asd','','','asd@gmail.com',1,1,'2024-08-23 22:46:07.606369'),(9,'pbkdf2_sha256$870000$LPXQSJgQNKv1e3HHhnXDaz$f+PMhpQ+x/sW5qZlM/uDbokzBM/rPGGDfHOrEUMJ1RQ=','2024-08-26 19:45:00.910767',0,'juanes','','','juanes@gmail.com',0,1,'2024-08-23 22:50:50.704874');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$1mLeQpGBzrmBj4zDvqoqZO$hOH0EXCG0dnKOh/b7xHHAZhhFqyp5iRucai32mvHLN4=','2024-08-30 21:50:01.789527',1,'admin','','','admin@gmail.com',1,1,'2024-08-13 18:26:36.243641'),(2,'pbkdf2_sha256$870000$83wvbCfSVXtezifPHtRcBc$HaGvxD/298USz8omvQRYZg213IZFVKws5iF7VZxfwYE=','2024-08-14 20:04:09.750985',1,'juan','','','juan@gmail.com',1,1,'2024-08-14 20:02:58.110221'),(8,'pbkdf2_sha256$870000$g00vHxMFkxpYclpR0jdQw5$XcjfOTzQPN6LKHwsLWqvJ3Ulptxo+hFzRnnfuVtu4LU=',NULL,1,'asd','','','asd@gmail.com',1,1,'2024-08-23 22:46:07.606369'),(9,'pbkdf2_sha256$870000$ix4MealsquifKqs3bNgfvK$bu0Y2WgWVd9pTO2Xhqm9u8kobLsBBqlwwJrjADFub8s=','2024-08-26 19:45:00.910767',0,'juanes','','','juanes@gmail.com',0,1,'2024-08-23 22:50:50.704874');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +242,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (10,'Galguerías',1),(12,'dasd',1),(13,'sdfg',1),(14,'dasdf',1);
+INSERT INTO `categoria` VALUES (10,'Galguerías',1),(12,'Lacteos',1),(13,'Bebidas',1);
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,7 +457,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('aetlw66sav9j3vc4y8me7z2jk98oa9mj','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seJbV:STWuJ6OctY84WacT_HcaOcQXOMR8cmchNafX9epYZ_Q','2024-08-28 19:24:17.572202'),('bp52f63e2xmcw6pg46bccz0hmjvgnbi7','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwiv:WtTbC5nkz-xawPnawdBjQ0gpsR5aHC_xTWDwU8ycOGw','2024-08-27 18:58:25.565845'),('edxutbrwdqnub58brypu8e8xnt09ckk6','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seMnW:U9rsVvWIRCCS7lVcrFdUhoj7657lh6GleEK0K2VfMmM','2024-08-28 22:48:54.996629'),('ff55ouxl4lx21rbvbgtrxubi9dj4cvo1','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seKEr:kM0HEE-ytBt4AsnKRYkdt7zJudHI2yBPQZofPg0Fa9w','2024-08-28 20:04:57.099911'),('g3hlc6xl7lua6rtpnyx6vdjw5jm5m6es','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdy4E:LlOWSazLaUh-if9WnpqxiRY8-fvKMtB5_w4TfeBABCs','2024-08-27 20:24:30.891703'),('g4cshwwp2onugdt30zob8msye7icds9i','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1shDuF:4fUyOwPaXuxrFFJyciVxDJL9vY7tTetgslpBAF-Gkwc','2024-09-05 19:55:39.512246'),('giafrtu0rxvmp13er04e8h5nhzf1744l','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sjl9e:uX8XQ-cCLPUVlS2xXLFyYd4Xxi9NG2LcmWoO5AQDw1c','2024-09-12 19:50:02.124897'),('kevid5ahn2jhfcuhhhmmxxn2jay6ll5f','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sjNDd:_goy3v1DKJeBRyifGxJNUyIjvBcNGwRJnmbZ60-opZ8','2024-09-11 18:16:33.798778');
+INSERT INTO `django_session` VALUES ('2nvr3vnsyg80kaa5ve1vszhke4zftrgo','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sk9VJ:slzODdnyWVFywvVgcMn32tuMtPPh--g8AtT7kRtOnXE','2024-09-13 21:50:01.794314'),('aetlw66sav9j3vc4y8me7z2jk98oa9mj','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seJbV:STWuJ6OctY84WacT_HcaOcQXOMR8cmchNafX9epYZ_Q','2024-08-28 19:24:17.572202'),('bp52f63e2xmcw6pg46bccz0hmjvgnbi7','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdwiv:WtTbC5nkz-xawPnawdBjQ0gpsR5aHC_xTWDwU8ycOGw','2024-08-27 18:58:25.565845'),('edxutbrwdqnub58brypu8e8xnt09ckk6','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seMnW:U9rsVvWIRCCS7lVcrFdUhoj7657lh6GleEK0K2VfMmM','2024-08-28 22:48:54.996629'),('ff55ouxl4lx21rbvbgtrxubi9dj4cvo1','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1seKEr:kM0HEE-ytBt4AsnKRYkdt7zJudHI2yBPQZofPg0Fa9w','2024-08-28 20:04:57.099911'),('g3hlc6xl7lua6rtpnyx6vdjw5jm5m6es','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sdy4E:LlOWSazLaUh-if9WnpqxiRY8-fvKMtB5_w4TfeBABCs','2024-08-27 20:24:30.891703'),('g4cshwwp2onugdt30zob8msye7icds9i','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1shDuF:4fUyOwPaXuxrFFJyciVxDJL9vY7tTetgslpBAF-Gkwc','2024-09-05 19:55:39.512246'),('giafrtu0rxvmp13er04e8h5nhzf1744l','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sjl9e:uX8XQ-cCLPUVlS2xXLFyYd4Xxi9NG2LcmWoO5AQDw1c','2024-09-12 19:50:02.124897'),('kevid5ahn2jhfcuhhhmmxxn2jay6ll5f','.eJxVjMEOwiAQRP-FsyEsLGA9evcbCOxSqRpISnsy_rtt0oMe5jLvzbxFiOtSwtrzHCYWFwHi9NulSM9cd8CPWO9NUqvLPCW5K_KgXd4a59f1cP8OSuxlWzvr0hZENtqg09papVCPnj0ph-yVccCegRN5GG3iswYABRmHPFgSny-emjZ1:1sjNDd:_goy3v1DKJeBRyifGxJNUyIjvBcNGwRJnmbZ60-opZ8','2024-09-11 18:16:33.798778');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +500,7 @@ CREATE TABLE `marca` (
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Marca_marca_706bdc27_uniq` (`marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,7 +509,7 @@ CREATE TABLE `marca` (
 
 LOCK TABLES `marca` WRITE;
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (3,'CocaCola',1),(8,'Colombina',1);
+INSERT INTO `marca` VALUES (3,'CocaCola',1),(10,'Bavaria',1);
 /*!40000 ALTER TABLE `marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -575,7 +575,7 @@ CREATE TABLE `operador` (
 
 LOCK TABLES `operador` WRITE;
 /*!40000 ALTER TABLE `operador` DISABLE KEYS */;
-INSERT INTO `operador` VALUES (3,'juanes','CC',212332314,12341413,'asuan','asuan',9);
+INSERT INTO `operador` VALUES (3,'juanes','CC',212332314,12341413,'asd','asd',9);
 /*!40000 ALTER TABLE `operador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,7 +619,7 @@ CREATE TABLE `presentacion` (
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Presentacion_presentacion_0e222490_uniq` (`presentacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -628,7 +628,7 @@ CREATE TABLE `presentacion` (
 
 LOCK TABLES `presentacion` WRITE;
 /*!40000 ALTER TABLE `presentacion` DISABLE KEYS */;
-INSERT INTO `presentacion` VALUES (13,'350','mililitro(s)',1),(14,'1','litro(s)',1),(15,'50','gramo(s)',1);
+INSERT INTO `presentacion` VALUES (13,'350','mililitro(s)',1),(14,'1','litro(s)',1),(18,'24','litro(s)',1);
 /*!40000 ALTER TABLE `presentacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -703,4 +703,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-29 16:55:44
+-- Dump completed on 2024-08-30 17:00:40
