@@ -112,6 +112,11 @@
     text-shadow: 3px 3px 2.5px black;
 }
 
+.dropdown-item:hover {
+    background-color: #043b2e;
+    border-radius: 10px;
+}
+
 .dark-mode .content-wrapper {
     background: #242424;
     border-color: #414141;
