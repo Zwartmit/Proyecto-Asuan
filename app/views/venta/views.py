@@ -79,10 +79,10 @@ class VentaCreateView(CreateView):
     
     def form_valid(self, form):
         try:
-            response = super().form_valid(form)
-            venta = self.object
-            
+            venta = form.save(commit=False)
             detalles_venta_json = self.request.POST.get('detalles_venta')
+            dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
+            
             if detalles_venta_json:
                 try:
                     detalles_venta = json.loads(detalles_venta_json)
@@ -90,6 +90,12 @@ class VentaCreateView(CreateView):
                     detalles_venta = []
             else:
                 detalles_venta = []
+
+            venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
+            venta.dinero_recibido = dinero_recibido
+            venta.cambio = dinero_recibido - venta.total_venta
+
+            venta.save()
 
             for detalle in detalles_venta:
                 id_producto = detalle.get('id_producto')
@@ -111,10 +117,7 @@ class VentaCreateView(CreateView):
                     subtotal_venta=subtotal_venta
                 )
 
-            venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
-            venta.save()
-
-            return response
+            return super().form_valid(form)
         except Exception as e:
             print(f"Error al guardar la venta: {e}")    
             return self.form_invalid(form)

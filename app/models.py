@@ -256,6 +256,8 @@ class Venta(models.Model):
 
     fecha_venta = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la venta")
     total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta", null=True, blank=True)
+    dinero_recibido = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Dinero recibido", null=True, blank=True)
+    cambio = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Cambio", null=True, blank=True)
     metodo_pago = models.CharField(max_length=3, choices=MedotoPago.choices, default=MedotoPago.EF, verbose_name="Metodo de Pago")
 
     def __str__(self):

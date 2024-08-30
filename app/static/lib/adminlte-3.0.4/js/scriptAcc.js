@@ -23,20 +23,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const productRows = document.getElementById('product-rows');
     const subtotalElement = document.getElementById('subtotal');
     const totalVentaField = document.getElementById('total_venta');
+    const dineroRecibidoInput = document.getElementById('dinero_recibido');
+    const cambioElement = document.getElementById('cambio');
     let validationTimeout = null;
 
     function addProductRow() {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>
+            <td class="product-column">
                 <input class="product-id product-select" style="width: 100%;" required />
             </td>
-            <td><input type="number" class="product-quantity" min="1" required></td>
-            <td><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
-            <td><span class="product-stock">0</span></td>
-            <td><i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
-                onmouseover="this.style.color='#ff0000';"
-                onmouseout="this.style.color='#04644B';"></i></td>
+            <td class="quantity-column"><input type="number" class="product-quantity" min="1" required></td>
+            <td class="price-column"><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
+            <td class="stock-column"><span class="product-stock">0</span></td>
+            <td class="delete-column">
+                <i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
+                    onmouseover="this.style.color='#ff0000';"
+                    onmouseout="this.style.color='#04644B';"></i>
+            </td>
             <td><span class="product-total">$0.00</span></td>
         `;
     
@@ -174,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         document.querySelectorAll('#product-rows tr').forEach(row => {
             const idProducto = $(row.querySelector('.product-select')).val();
-            const productoText = $(row.querySelector('.product-select')).text(); // Obtener el texto del producto
+            const productoText = $(row.querySelector('.product-select')).text();
             const cantidadProducto = row.querySelector('.product-quantity').value;
             const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
     
@@ -200,13 +204,23 @@ document.addEventListener('DOMContentLoaded', function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                isConfirmed = true; // Marcar como confirmado
-                document.querySelector('form').submit(); // Enviar el formulario
+                isConfirmed = true;
+                document.querySelector('form').submit();
             }
         });
 
         console.log("Detalles de Venta JSON:", detallesVentaJSON);
     }
+
+    function calculateChange() {
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+        const cambio = dineroRecibido - subtotal;
+
+        cambioElement.value = cambio.toFixed(2);
+    }
+
+    dineroRecibidoInput.addEventListener('input', calculateChange);
     
     document.querySelector('form').addEventListener('submit', prepareForm);
 
