@@ -29,13 +29,9 @@
     </div>
     <div class="card-footer">
         {% if crear_url and can_add %}
-            <a href="{{ crear_url }}" class="btn btn-primary btn-flat">
-                <i class="fas fa-plus"></i> Agregar
-            </a>
+            <a href="{{ crear_url }}" class="btn btn-primary btn-flat"> <i class="fas fa-plus"></i> Agregar </a>
         {% elif crear_url %}
-            <button class="btn btn-primary btn-flat" disabled>
-                <i class="fas fa-plus"></i> Agregar
-            </button>
+            <button class="btn btn-primary btn-flat" disabled> <i class="fas fa-plus"></i> Agregar </button>
         {% endif %}
     </div>
 </div>

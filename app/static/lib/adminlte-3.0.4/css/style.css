@@ -47,6 +47,7 @@
     text-align: center;
     color: #ffffff;
     background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    border-radius: 15px;
 }
 
 .containerBackup .backup-section {
@@ -77,6 +78,43 @@
 .containerBackup .img_db {
     height: 130px;
     width: 170px;
+}
+
+.containerReport {
+    display: block;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.containerReport .format-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    margin-right: 30px;
+    text-shadow: 3px 3px 2.5px black;
+    border: 1px solid #ddd;
+}
+
+.containerReport .report-section {
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.h1, h1 {
+    text-shadow: 3px 3px 2.5px black;
+}
+
+.dropdown-item:hover {
+    background-color: #043b2e;
+    border-radius: 10px;
 }
 
 .dark-mode .content-wrapper {
@@ -115,7 +153,6 @@
     background-color: #303030;
     border-color: #414141;
     color: #e0e0e0;
-    border-radius: 10px;
 }
 
 .dark-mode .card-header {
@@ -138,9 +175,7 @@
 
 .dark-mode .containerBackup {
     background-color: #414141;
-    border-color: #414141;
     color: #ffffff;
-    border-radius: 10px;
 }
 
 .dark-mode .containerTitle {
@@ -203,6 +238,24 @@
 .dark-mode {
     background-color: #414141;
     border-color: #c4c4c4;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport {
+    background: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .format-section {
+    background: #646464;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .report-section {
+    background: #414141;
+    border-color: #414141;
     color: #ffffff;
 }
 
@@ -464,4 +517,14 @@ button:hover {
         line-height: inherit;
         color: inherit;
     }
+}
+
+.filter-container {
+    margin-bottom: 10px;
+}
+
+.filter-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
 }

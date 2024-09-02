@@ -25,7 +25,7 @@
 }
 
 .btn-group-vertical .btn.btn-flat:first-of-type, .btn-group-vertical .btn.btn-flat:last-of-type {
-  border-radius: 0;
+  border-radius: 10px;
 }
 
 .form-control-feedback.fa, .form-control-feedback.fas, .form-control-feedback.far, .form-control-feedback.fab, .form-control-feedback.glyphicon, .form-control-feedback.ion {
@@ -4831,7 +4831,7 @@ html.maximized-card {
 }
 
 .btn.btn-flat {
-  border-radius: 0;
+  border-radius: 10px;
   border-width: 1px;
   box-shadow: none;
 }

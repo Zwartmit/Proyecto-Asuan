@@ -9,6 +9,7 @@ from django.core.validators import MinLengthValidator
 
 class Categoria (models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
         return f"{self.categoria}"
@@ -22,6 +23,7 @@ class Categoria (models.Model):
     
 class Marca (models.Model):
     marca = models.CharField(max_length=50, verbose_name="Marca", unique=True)
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
         return f"{self.marca}"
@@ -34,10 +36,18 @@ class Marca (models.Model):
 ########################################################################################################################################
 
 class Presentacion (models.Model):
+
+    class unidadMedida(models.TextChoices):
+        L = 'litro(s)', 'litro(s)'
+        ML = 'mililitro(s)', 'mililitro(s)'
+        G = 'gramo(s)', 'gramo(s)'
+
     presentacion = models.CharField(max_length=50, verbose_name="Presentación", unique=True)
+    unidad_medida = models.CharField(max_length=12, choices=unidadMedida.choices, default="", verbose_name="Unidad de medida")
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
-        return f"{self.presentacion}"
+        return f"{self.presentacion} {self.get_unidad_medida_display()}"
 
     class Meta:
         verbose_name= "presentacion"
@@ -160,7 +170,7 @@ class Administrador(models.Model):
         PSP = 'PSP', 'Pasaporte'
 
     def validar_numero_documento(value):
-        if value < 10000000 or value > 99999999999:
+        if value < 10000000 or value > 9999999999:
             raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')

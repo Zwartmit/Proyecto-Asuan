@@ -11,11 +11,11 @@ from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.factura.views import *
-from backups.views import BackupDatabaseView, backup_list, RestoreDatabaseView, DeleteBackupView
+from app.views.reportes.views import *
+from backups.views import BackupDatabaseView, RestoreDatabaseView, DeleteBackupView, BackupListView
 
 app_name = 'app'
 urlpatterns = [
-    
     ### CRUD CATEGORÍA ###
     path('categoria/listar/', CategoriaListView.as_view(), name='categoria_lista'),
     path('categoria/crear/', CategoriaCreateView.as_view(), name='categoria_crear'),
@@ -87,9 +87,26 @@ urlpatterns = [
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
     path('restaurar_backup/', RestoreDatabaseView.as_view(), name='restaurar_backup'),
-    path('backups/', backup_list, name='lista_backups'),
-    path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
-    path('backup_list/', backup_list, name='backup_list'),
+    path('eliminar-backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
+    path('backup_list/', BackupListView.as_view(), name='backup_list'),
 
+    ### REPORTES ###
+    path('gestion_reportes/', reporte_selector, name='gestion_reportes'),
+    path('reportes/categorias/excel/', export_categorias_excel, name='export_categorias_excel'),
+    path('reportes/categorias/pdf/', export_categorias_pdf, name='export_categorias_pdf'),
+    path('reportes/marcas/excel/', export_marcas_excel, name='export_marcas_excel'),
+    path('reportes/marcas/pdf/', export_marcas_pdf, name='export_marcas_pdf'),
+    path('reportes/presentaciones/excel/', export_presentaciones_excel, name='export_presentaciones_excel'),
+    path('reportes/presentaciones/pdf/', export_presentaciones_pdf, name='export_presentaciones_pdf'),
+    path('reportes/productos/excel/', export_productos_excel, name='export_productos_excel'),
+    path('reportes/productos/pdf/', export_productos_pdf, name='export_productos_pdf'),
+    path('reportes/platos/excel/', export_platos_excel, name='export_platos_excel'),
+    path('reportes/platos/pdf/', export_platos_pdf, name='export_platos_pdf'),
+    path('reportes/meseros/excel/', export_meseros_excel, name='export_meseros_excel'),
+    path('reportes/meseros/pdf/', export_meseros_pdf, name='export_meseros_pdf'),
+    path('reportes/clientes/excel/', export_clientes_excel, name='export_clientes_excel'),
+    path('reportes/clientes/pdf/', export_clientes_pdf, name='export_clientes_pdf'),
+    path('reportes/administradores/excel/', export_administradores_excel, name='export_administradores_excel'),
+    path('reportes/operadores/excel/', export_operadores_excel, name='export_operadores_excel'),
+    path('reportes/operadores/pdf/', export_operadores_pdf, name='export_operadores_pdf'),
 ]
-

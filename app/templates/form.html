@@ -1,8 +1,7 @@
 {% extends 'layout.html' %}
-{% load static %}
 {% load widget_tweaks %}
 {% block contenido %}
-<form method="post" action="." id="myForm">
+<form method="post" action=".">
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -21,126 +20,12 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary btn-s" style="background-color: #04644b; border-color: #04644b;" onclick="validateForm()">
-            <i class="fas fa-plus"></i> Guardar
-        </button>
-        <button type="button" class="btn btn-secondary btn-s" style="background-color: #dc3545; border-color: #dc3545;" onclick="confirmCancel()">
-            <i class="fas fa-times"></i> Cancelar 
-        </button>
+        <button class="btn btn-primary btn-flat"><i class="fas fa-plus" style="border-radius: 10px;"></i> Guardar</button>
+        <a href="{{ listar_url }}" class="btn btn-danger btn-flat"> <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
     </div>
 </form>
-<script src="{% static 'lib/sweetalert2/ValidateForm.js' %}"></script>
-<script>
-    function validateForm() {
-        const form = document.getElementById('myForm');
-        const formData = new FormData(form);
-        let valid = true;
-
-        document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
-
-        formData.forEach((value, key) => {
-            const field = form.querySelector(`[name="${key}"]`);
-            if (field) {
-                const fieldValue = value.trim();
-
-                if (!fieldValue) {
-                    valid = false;
-                    field.classList.add('is-invalid');
-                    const feedback = field.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback')) {
-                        feedback.textContent = 'Este campo es obligatorio.';
-                    }
-                } else if (key === 'numero_documento') {
-                    // Validación para número de documento
-                    if (fieldValue.length < 8 || fieldValue.length > 10) {
-                        valid = false;
-                        field.classList.add('is-invalid');
-                        const feedback = field.nextElementSibling;
-                        if (feedback && feedback.classList.contains('invalid-feedback')) {
-                            feedback.textContent = 'El número de documento debe tener entre 8 y 10 dígitos.';
-                        }
-                    } else if (parseInt(fieldValue, 10) > 4294967295) {
-                        valid = false;
-                        field.classList.add('is-invalid');
-                        const feedback = field.nextElementSibling;
-                        if (feedback && feedback.classList.contains('invalid-feedback')) {
-                            feedback.textContent = 'El número de documento debe ser menor o igual a 4294967295.';
-                        }
-                    }
-                } else if (key === 'cantidad' && parseInt(fieldValue, 10) < 0) {
-                    valid = false;
-                    field.classList.add('is-invalid');
-                    const feedback = field.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback')) {
-                        feedback.textContent = 'El valor no puede ser negativo.';
-                    }
-                } else if (key === 'precio') {
-                    const precioValue = parseFloat(fieldValue);
-                    if (isNaN(precioValue) || precioValue <= 0) {
-                        valid = false;
-                        field.classList.add('is-invalid');
-                        const feedback = field.nextElementSibling;
-                        if (feedback && feedback.classList.contains('invalid-feedback')) {
-                            feedback.textContent = 'El precio debe ser un número positivo.';
-                        }
-                    }
-                }
-            }
-        });
-
-        if (valid) {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Se agregó correctamente.',
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#04644b'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        } else {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Por favor, corrija los errores en el formulario.',
-                icon: 'error',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#dc3545'
-            });
-        }
-    }
-
-    function confirmCancel() {
-        Swal.fire({
-            title: '¿Está seguro que desea cancelar?',
-            text: "Los cambios no guardados se perderán.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#04644b',
-            cancelButtonColor: '#dc3545',
-            confirmButtonText: 'Sí, cancelar',
-            cancelButtonText: 'No, volver'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.history.back(); 
-            }
-        });
-    }
-</script>
-
-{% if form.errors %}
-<script>
-    Swal.fire({
-        title: 'Error!',
-        text: 'Ha ocurrido un error al intentar guardar el dato.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#dc3545'
-    });
-</script>
-{% endif %}
-
 <script>
     {% if form.errors %}
     var errors = '';
@@ -154,7 +39,6 @@
         title: 'Error!',
         text: errors,
         icon: 'error',
-        confirmButtonColor: '#dc3545'
     });
     {% endif %}
 </script>

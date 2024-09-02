@@ -28,3 +28,40 @@
     </tr>
     {% endfor %}
  {% endblock %}
+ {% block javascript %}
+ <script type="application/javascript">
+     $(document).ready(function () {
+         $("#tabla").DataTable({
+             responsive: true,
+             initComplete: function () {
+                 var api = this.api();
+                 var columnNames = ['id', 'Fecha', 'Total', 'Metodo de pago', 'Opciones'];
+                 var excludedColumnIndex = columnNames.indexOf('Opciones'); 
+                api.columns().every(function (index) {
+                    var column = this;
+                    var header = $(column.header());
+                    if (index !== excludedColumnIndex) {
+                        var filterContainer = $('<div class="filter-container"></div>').appendTo(header.empty());
+                        $('<label>' + columnNames[index] + '</label>').appendTo(filterContainer);
+                        var select = $('<select><option value="">Todos</option></select>')
+                            .appendTo(filterContainer)
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    } else {
+                        $('<label>' + columnNames[index] + '</label>').appendTo(header.empty());
+                    }
+                });
+            }
+        });
+    });
+</script>
+ {% endblock %}

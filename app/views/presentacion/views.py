@@ -1,3 +1,4 @@
+from django.contrib import messages
 import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -8,7 +9,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
+from django.db.models import ProtectedError
 from app.models import Presentacion
 from app.forms import PresentacionForm
 
@@ -94,15 +95,6 @@ class PresentacionUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:presentacion_lista')
         return context
     
-    def form_valid(self, form):
-        presentacion = form.cleaned_data.get('presentacion').lower()
-        
-        if Presentacion.objects.filter(presentacion__iexact=presentacion).exists():
-            form.add_error('presentacion', 'Ya existe una presentación con este nombre.')
-            return self.form_invalid(form)
-        
-        return super().form_valid(form)
-    
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -121,3 +113,11 @@ class PresentacionDeleteView(DeleteView):
         context['entidad'] = 'Eliminar presentación'
         context['listar_url'] = reverse_lazy('app:presentacion_lista')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Presentación eliminada con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar la presentación porque está asociada a un producto.'})

@@ -22,7 +22,13 @@ class CategoriaForm(ModelForm):
         widgets = {
             "categoria": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la categoria",
+                    "placeholder": "Categoría",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la categoría",
                 }
             )
         }
@@ -38,7 +44,13 @@ class MarcaForm(ModelForm):
         widgets = {
             "marca": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la marca",
+                    "placeholder": "Marca",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la marca",
                 }
             )
         }
@@ -54,7 +66,18 @@ class PresentacionForm(ModelForm):
         widgets = {
             "presentacion": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la presentacion",
+                    "placeholder": "Presentación",
+                }
+            ),
+            "unidad_medida": Select(
+                attrs={
+                    "placeholder": "Unidad de medida",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la presentación",
                 }
             )
         }
@@ -62,7 +85,10 @@ class PresentacionForm(ModelForm):
 class ProductoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["producto"].widget.attrs["autofocus"] = True
+        
+        self.fields["id_categoria"].queryset = Categoria.objects.filter(estado=True)
+        self.fields["id_marca"].queryset = Marca.objects.filter(estado=True)
+        self.fields["id_presentacion"].queryset = Presentacion.objects.filter(estado=True)
 
     class Meta:
         model = Producto
@@ -87,7 +113,7 @@ class ProductoForm(ModelForm):
                 choices=[(True, "Activo"), (False, "Inactivo")],
                 attrs={
                     "placeholder": "Estado del producto",
-                },
+                }
             )
         }
 
@@ -208,12 +234,6 @@ class PlatoForm(ModelForm):
             )
         }
 
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, NumberInput, Select
-from app.models import Administrador
-
 class AdministradorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
@@ -233,7 +253,7 @@ class AdministradorForm(ModelForm):
     conf_password = forms.CharField(
         label="Confirmar contraseña",
         widget=PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
-        required=False  
+        required=False 
     )
 
     def __init__(self, *args, **kwargs):
@@ -249,24 +269,16 @@ class AdministradorForm(ModelForm):
         email = cleaned_data.get('email')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
-    
-        errors = {}
 
         if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            errors['username'] = "Este nombre de usuario ya está en uso."
+            raise ValidationError("Este nombre de usuario ya está en uso.")
         
         if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            errors['email'] = "Este correo electrónico ya está en uso."
+            raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if password1 or password2:
-            if password1 != password2:
-                errors['password'] = "Las contraseñas no coinciden."
-            if not password1:
-                errors['password'] = "La contraseña es obligatoria para guardar los cambios."
-    
-        if errors:
-            raise ValidationError(errors)
-    
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Las contraseñas no coinciden")
+        
         return cleaned_data
 
     def save(self, commit=True):
@@ -309,10 +321,6 @@ class AdministradorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
-
-
-# -----------------------------------------------------------------------------------------------
-
 class OperadorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
@@ -349,21 +357,17 @@ class OperadorForm(ModelForm):
         email = cleaned_data.get('email')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
-    
-        errors = {}
 
-        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            errors['username'] = "Este nombre de usuario ya está en uso.  "
+        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and hasattr(self.instance, 'user') else None).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso.")
         
-        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            errors['email'] = "Este correo electrónico ya está en uso."
+        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and hasattr(self.instance, 'user') else None).exists():
+            raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if password1 and password2 and password1 != password2:
-            errors['password'] = "Las contraseñas no coinciden."
-    
-        if errors:
-            raise ValidationError(errors)
-    
+        if password1 or password2:
+            if password1 != password2:
+                raise ValidationError("Las contraseñas no coinciden")
+        
         return cleaned_data
 
     def save(self, commit=True):
@@ -406,9 +410,6 @@ class OperadorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
-
-# -------------------------------------------------------------------------------------------
- 
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -489,3 +490,10 @@ class FacturaForm(ModelForm):
                 }
             )
         }
+
+class ReporteForm(forms.Form):
+    FORMATO_CHOICES = [
+        ('excel', 'Excel'),
+        ('pdf', 'PDF'),
+    ]
+    formato = forms.ChoiceField(choices=FORMATO_CHOICES, label='Formato del Reporte')

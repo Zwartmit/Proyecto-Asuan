@@ -4,8 +4,8 @@
 <tr>
     <th scope="col">ID</th>
     <th scope="col">Nombre</th>
-    <th scope="col">Tipo Documento</th>
-    <th scope="col">Número Documento</th>
+    <th scope="col">Tipo de documento</th>
+    <th scope="col">Número de documento</th>
     <th scope="col">Email</th>
     <th scope="col">Teléfono</th>
     <th scope="col">Opciones</th>
@@ -28,7 +28,7 @@
             <td>{{ o.nombre }}</td>
             <td>{{ o.tipo_documento }}</td>
             <td>{{ o.numero_documento }}</td>
-            <td>{{ o.user.email }}</td> <!-- Corregido para acceder al email a través de user -->
+            <td>{{ o.user.email }}</td>
             <td>{{ o.telefono }}</td>
             <td>
                 <a href="{% url 'app:operador_editar' o.id %}" class="btn btn-info btn-sm">
@@ -41,4 +41,41 @@
         </tr>
         {% endfor %}
     {% endif %}
+{% endblock %}
+{% block javascript %}
+<script type="application/javascript">
+    $(document).ready(function () {
+        $("#tabla").DataTable({
+            responsive: true,
+            initComplete: function () {
+                var api = this.api();
+                var columnNames = ['id', 'Nombre', 'Tipo de documento', 'Número de documento', 'Email', 'Teléfono', 'Opciones'];
+                var excludedColumnIndex = columnNames.indexOf('Opciones'); 
+                api.columns().every(function (index) {
+                    var column = this;
+                    var header = $(column.header());
+                    if (index !== excludedColumnIndex) {
+                        var filterContainer = $('<div class="filter-container"></div>').appendTo(header.empty());
+                        $('<label>' + columnNames[index] + '</label>').appendTo(filterContainer);
+                        var select = $('<select><option value="">Todos</option></select>')
+                            .appendTo(filterContainer)
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    } else {
+                        $('<label>' + columnNames[index] + '</label>').appendTo(header.empty());
+                    }
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}

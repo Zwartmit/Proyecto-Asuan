@@ -94,15 +94,6 @@ class PlatoUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:plato_lista')
         return context
     
-    def form_valid(self, form):
-        plato = form.cleaned_data.get('plato').lower()
-        
-        if Plato.objects.filter(plato__iexact=plato).exists():
-            form.add_error('plato', 'Ya existe un plato con este nombre.')
-            return self.form_invalid(form)
-        
-        return super().form_valid(form)
-    
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
