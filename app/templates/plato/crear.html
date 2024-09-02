@@ -36,10 +36,34 @@
 
     Swal.fire({
         title: 'Error',
-        text: 'Ya existe un plato con ese nombre.',
+        text: 'Ya existe un plato con este nombre.',
         icon: 'error',
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#04644b'
+    });
+    {% elif request.GET.created %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Plato registrado con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:plato_lista' %}";
+        }
+    });
+    {% elif request.GET.updated %}
+    Swal.fire({
+        title: 'Éxito',
+        text: 'Plato editado con éxito.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#04644b'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'app:plato_lista' %}";
+        }
     });
     {% endif %}
 </script>

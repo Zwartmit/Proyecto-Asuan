@@ -72,7 +72,9 @@ class ProductoCreateView(CreateView):
             form.add_error('producto', 'Ya existe un producto con ese nombre.')
             return self.form_invalid(form)
         
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        success_url = reverse('app:producto_crear') + '?created=True'
+        return redirect(success_url)
     
 ###### EDITAR ######
 

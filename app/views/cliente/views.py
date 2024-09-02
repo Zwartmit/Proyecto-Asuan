@@ -2,7 +2,7 @@ import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -64,6 +64,20 @@ class ClienteCreateView(CreateView):
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
     
+    def form_valid(self, form):
+        nombre = form.cleaned_data.get('nombre').lower()
+        numero_documento = form.cleaned_data.get('numero_documento')
+
+        if Cliente.objects.filter(nombre__iexact=nombre).exists():
+            form.add_error('nombre', 'Ya existe un cliente con ese nombre.')
+            return self.form_invalid(form)
+        
+        if Cliente.objects.filter(numero_documento=numero_documento).exists():
+            form.add_error('numero_documento', 'Ya existe un cliente registrado con este número de documento.')
+            return self.form_invalid(form)
+        
+        return super().form_valid(form)
+
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -81,9 +95,15 @@ class ClienteUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar cliente'
         context['entidad'] = 'Editar cliente'
-        context['error'] = 'Este cliente ya está registrad'
+        context['error'] = 'Este cliente ya está registrado'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
+
+    def form_valid(self, form):
+        nombre = form.cleaned_data.get('nombre').lower()
+        response = super().form_valid(form)
+        success_url = reverse('app:cliente_crear') + '?updated=True'
+        return redirect(success_url)
 
 ###### ELIMINAR ######
 
@@ -103,3 +123,11 @@ class ClienteDeleteView(DeleteView):
         context['entidad'] = 'Eliminar cliente'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Cliente eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el cliente.'})

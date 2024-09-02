@@ -263,24 +263,6 @@ class AdministradorForm(ModelForm):
             self.fields['email'].initial = self.instance.user.email
         self.fields["username"].widget.attrs["autofocus"] = True
 
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get('username')
-        email = cleaned_data.get('email')
-        password1 = cleaned_data.get("password")
-        password2 = cleaned_data.get("conf_password")
-
-        if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            raise ValidationError("Este nombre de usuario ya está en uso.")
-        
-        if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
-            raise ValidationError("Este correo electrónico ya está en uso.")
-        
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Las contraseñas no coinciden")
-        
-        return cleaned_data
-
     def save(self, commit=True):
         cleaned_data = self.cleaned_data
         username = cleaned_data.get('username')
