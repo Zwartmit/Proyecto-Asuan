@@ -291,15 +291,14 @@ class Detalle_venta(models.Model):
 class Detalle_venta_cuenta(models.Model):
 
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
-    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
-    cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
     id_plato = models.ForeignKey(Plato,on_delete=models.PROTECT)
     cantidad_plato = models.PositiveIntegerField(verbose_name="Cantidad")
+    subtotal_plato = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
     id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.id_producto
+        return str(self.id_plato)
 
     class Meta:
         verbose_name= "detalle_venta_cuenta"

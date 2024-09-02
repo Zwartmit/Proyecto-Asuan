@@ -91,8 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
         row.querySelector('.delete-row').addEventListener('click', function () {
-            row.remove();
-            validateInputs();
+            if (window.confirm('¿Estás segura de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
         });
 
         validateInputs();
@@ -110,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const priceInput = row.querySelector('.product-price');
             const stockSpan = row.querySelector('.product-stock');
     
-            // Convert inputs to numbers
             const quantity = Number(quantityInput.value);
             const price = Number(priceInput.value);
             const maxQuantity = Number(quantityInput.max);
@@ -167,9 +168,31 @@ document.addEventListener('DOMContentLoaded', function () {
         return isValid && !duplicateError;
     }
 
+    function calculateChange() {
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+        const cambio = dineroRecibido - subtotal;
+
+            cambioElement.value = cambio.toFixed(2);
+        
+    }
+
     function prepareForm(event) {
         if (!validateInputs()) {
             event.preventDefault();
+            return;
+        }
+    
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+    
+        if (dineroRecibido < subtotal) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Error!',
+                text: 'El dinero recibido no puede ser menor al total de la venta.',
+                icon: 'error',
+            });
             return;
         }
     
@@ -193,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         const detallesVentaJSON = JSON.stringify(detallesVenta);
         document.getElementById('detalles_venta').value = detallesVentaJSON;
-
+    
         Swal.fire({
             title: 'Venta Generada',
             html: `<ul>${productosLista}</ul>`,
@@ -204,22 +227,13 @@ document.addEventListener('DOMContentLoaded', function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                isConfirmed = true;
                 document.querySelector('form').submit();
             }
         });
-
+    
         console.log("Detalles de Venta JSON:", detallesVentaJSON);
     }
-
-    function calculateChange() {
-        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
-        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
-        const cambio = dineroRecibido - subtotal;
-
-        cambioElement.value = cambio.toFixed(2);
-    }
-
+    
     dineroRecibidoInput.addEventListener('input', calculateChange);
     
     document.querySelector('form').addEventListener('submit', prepareForm);

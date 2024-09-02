@@ -431,22 +431,23 @@ class DetalleVentaForm(ModelForm):
 class DetalleVentaCuentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+        self.fields["cantidad_plato"].widget.attrs["autofocus"] = True
+        self.fields['id_plato'].queryset = Producto.objects.all()
 
     class Meta:
         model = Detalle_venta_cuenta
         fields = "__all__"
         widgets = {
-            "cantidad_producto": NumberInput(
-                attrs={
-                    "placeholder": "Cantidad"
-                }
-            ),
             "cantidad_plato": NumberInput(
                 attrs={
                     "placeholder": "Cantidad"
                 }
             ),
+            "id_plato": Select2Widget(
+                attrs={
+                    "class": "product-select"
+                }
+            )
         }
         
 class FacturaForm(ModelForm):
