@@ -59,55 +59,11 @@ class AdministradorCreateView(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        nombre = form.cleaned_data.get('nombre').lower()
-        numero_documento = form.cleaned_data.get('numero_documento')
-        username = form.cleaned_data.get('username')
-        email = form.cleaned_data.get('email')
-        password1 = form.cleaned_data.get("password")
-        password2 = form.cleaned_data.get("conf_password")
-
-        if Administrador.objects.filter(numero_documento=numero_documento).exists():
-            form.add_error('numero_documento', 'Ya existe un administrador registrado con ese número de documento.')
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            form.add_error(None, e)
             return self.form_invalid(form)
-
-        # Validaciones de nombre de usuario y correo electrónico
-        if User.objects.filter(username=username).exists():
-            form.add_error('username', 'Este nombre de usuario ya está en uso.')
-            return self.form_invalid(form)
-        
-        if User.objects.filter(email=email).exists():
-            form.add_error('email', 'Este correo electrónico ya está en uso.')
-            return self.form_invalid(form)
-        
-        # Validación de contraseñas
-        if password1 or password2:
-            if not password1 or not password2:
-                form.add_error('password', 'Ambos campos de contraseña deben ser completados si se proporciona una contraseña.')
-                return self.form_invalid(form)
-            
-            if password1 != password2:
-                form.add_error('conf_password', 'Las contraseñas no coinciden.')
-                return self.form_invalid(form)
-            
-            if len(password1) < 8:
-                form.add_error('password', 'La contraseña debe tener al menos 8 caracteres.')
-                return self.form_invalid(form)
-            
-            if not re.search(r'[A-Z]', password1):
-                form.add_error('password', 'La contraseña debe incluir al menos una letra mayúscula.')
-                return self.form_invalid(form)
-            
-            if not re.search(r'[0-9]', password1):
-                form.add_error('password', 'La contraseña debe incluir al menos un número.')
-                return self.form_invalid(form)
-            
-            # Si las contraseñas son válidas, haz el hash de la contraseña y guárdalo
-            form.instance.user.password = make_password(password1)
-
-        # Llama al método `form_valid` original para continuar con el procesamiento del formulario
-        response = super().form_valid(form)
-        success_url = f"{self.get_success_url()}?created=true"
-        return redirect(success_url)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorUpdateView(UpdateView):
@@ -131,38 +87,11 @@ class AdministradorUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        password1 = form.cleaned_data.get("password")
-        password2 = form.cleaned_data.get("conf_password")
-
-        # Validación de contraseñas
-        if password1 or password2:
-            if not password1 or not password2:
-                form.add_error('password', 'Ambos campos de contraseña deben ser completados si se proporciona una contraseña.')
-                return self.form_invalid(form)
-            
-            if password1 != password2:
-                form.add_error('conf_password', 'Las contraseñas no coinciden.')
-                return self.form_invalid(form)
-            
-            if len(password1) < 8:
-                form.add_error('password', 'La contraseña debe tener al menos 8 caracteres.')
-                return self.form_invalid(form)
-            
-            if not re.search(r'[A-Z]', password1):
-                form.add_error('password', 'La contraseña debe incluir al menos una letra mayúscula.')
-                return self.form_invalid(form)
-            
-            if not re.search(r'[0-9]', password1):
-                form.add_error('password', 'La contraseña debe incluir al menos un número.')
-                return self.form_invalid(form)
-            
-            # Si las contraseñas son válidas, haz el hash de la contraseña y guárdalo
-            self.object.user.password = make_password(password1)
-
-        # Llama al método `form_valid` original para continuar con el procesamiento del formulario
-        response = super().form_valid(form)
-        success_url = f"{self.get_success_url()}?updated=True"
-        return redirect(success_url)
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):

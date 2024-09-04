@@ -82,7 +82,7 @@ class Mesero(models.Model):
         CE = 'CE', 'Cédula de Extranjería'
         RC = 'RC', 'Registro Civil'
         PSP = 'PSP', 'Pasaporte'
-
+  
     def validar_email(value):
         value = "foo.bar@baz.qux"
         try:
@@ -164,7 +164,7 @@ class Administrador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")

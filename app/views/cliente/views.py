@@ -65,18 +65,15 @@ class ClienteCreateView(CreateView):
         return context
     
     def form_valid(self, form):
-        nombre = form.cleaned_data.get('nombre').lower()
         numero_documento = form.cleaned_data.get('numero_documento')
 
-        if Cliente.objects.filter(nombre__iexact=nombre).exists():
-            form.add_error('nombre', 'Ya existe un cliente con ese nombre.')
-            return self.form_invalid(form)
-        
         if Cliente.objects.filter(numero_documento=numero_documento).exists():
             form.add_error('numero_documento', 'Ya existe un cliente registrado con este número de documento.')
             return self.form_invalid(form)
         
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        success_url = reverse('app:cliente_crear') + '?created=True'
+        return redirect(success_url)
 
 ###### EDITAR ######
 

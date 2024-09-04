@@ -2,7 +2,7 @@ import os
 import subprocess
 from django.http import Http404
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
@@ -12,11 +12,14 @@ from datetime import datetime
 from django.http import JsonResponse
 from django.contrib import messages
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class BackupDatabaseView(View):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(permission_required('app.view_backup', raise_exception=False))
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('app.view_backup'):
+            return HttpResponseRedirect(reverse('access_denied'))
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         contexto = {
@@ -60,11 +63,12 @@ class BackupDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class BackupListView(View):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(permission_required('app.add_backup', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         try:
@@ -83,6 +87,7 @@ class BackupListView(View):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class RestoreDatabaseView(View):
     @method_decorator(login_required)
@@ -132,6 +137,7 @@ class RestoreDatabaseView(View):
 
         return JsonResponse({'messages': messages_str, 'success': success})
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class DeleteBackupView(View):
     @method_decorator(login_required)

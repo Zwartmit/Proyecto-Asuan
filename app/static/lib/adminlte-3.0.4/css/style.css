@@ -108,7 +108,8 @@
     padding: 20px;
 }
 
-.h1, h1 {
+.h1,
+h1 {
     text-shadow: 3px 3px 2.5px black;
 }
 
@@ -223,7 +224,8 @@
     color: #ffffff;
 }
 
-.dark-mode .company-details, .client-details {
+.dark-mode .company-details,
+.client-details {
     background-color: #242424;
     border-color: #c4c4c4;
     color: #ffffff;
@@ -259,6 +261,18 @@
     color: #ffffff;
 }
 
+.dark-mode .logout-menu {
+    background: #414141;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.logout-menu {
+    background-color: #04644b;
+    border-color: #ffffff;
+    border-radius: 10px
+}
+
 .img_db {
     margin-top: 20px;
 }
@@ -268,7 +282,8 @@
     margin-bottom: 15px;
 }
 
-.generate-section, .restore-section {
+.generate-section,
+.restore-section {
     width: 48%;
     padding: 20px;
     background-color: #fff;
@@ -281,7 +296,10 @@
     margin-top: 50px;
 }
 
-.btn_generate, .btn_restore, .btn_delete, .btn_download {
+.btn_generate,
+.btn_restore,
+.btn_delete,
+.btn_download {
     font-size: 40px;
     background-color: transparent;
     color: white;
@@ -302,13 +320,16 @@ table {
     margin-bottom: 20px;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ddd;
     color: black;
     text-shadow: none;
 }
 
-th, td {
+th,
+td {
     padding: 15px;
     text-align: left;
 }
@@ -373,7 +394,8 @@ tr:hover td {
     margin-bottom: 30px;
 }
 
-.company-details, .client-details {
+.company-details,
+.client-details {
     width: 45%;
     padding: 15px;
     border: 1px solid #ddd;
@@ -381,14 +403,16 @@ tr:hover td {
     background-color: #f9f9f9;
 }
 
-.company-details label, .client-details label {
+.company-details label,
+.client-details label {
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
     width: 100px;
 }
 
-.company-details input, .client-details input {
+.company-details input,
+.client-details input {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 15px;
@@ -404,7 +428,8 @@ tr:hover td {
     font-size: 16px;
 }
 
-.product-table th, .product-table td {
+.product-table th,
+.product-table td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: center;
@@ -478,7 +503,7 @@ button:hover {
     color: red;
     font-size: 14px;
     margin-top: 5px;
-    display: block; 
+    display: block;
 }
 
 @media print {
@@ -492,16 +517,17 @@ button:hover {
         box-shadow: none;
         padding: 0;
     }
-    
-    .product-table th, .product-table td {
+
+    .product-table th,
+    .product-table td {
         padding: 8px;
-        word-wrap: break-word; 
+        word-wrap: break-word;
     }
 
     .product-table td.detail {
-        white-space: normal; 
-        overflow: visible; 
-        max-width: none; 
+        white-space: normal;
+        overflow: visible;
+        max-width: none;
     }
 
     .product-table th:last-child,
@@ -509,7 +535,8 @@ button:hover {
         display: none;
     }
 
-    input, textarea {
+    input,
+    textarea {
         border: none;
         background: none;
         box-shadow: none;
