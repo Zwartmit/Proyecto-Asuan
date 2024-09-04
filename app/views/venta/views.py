@@ -9,8 +9,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app.models import Venta, Producto, Detalle_venta, Detalle_venta_cuenta
-from app.forms import VentaForm, ClienteForm, DetalleVentaForm, DetalleVentaCuentaForm
+from app.models import Venta, Producto, Detalle_venta, Cuenta
+from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm
 import json
 from app.models import Venta
 from app.forms import VentaForm
@@ -73,7 +73,6 @@ class VentaCreateView(CreateView):
         context['entidad'] = 'Registrar venta'
         context['error'] = 'Esta venta ya existe'
         context['listar_url'] = reverse_lazy('app:venta_lista')
-        context['cliente_form'] = ClienteForm()
         context['detalleventa_form'] = DetalleVentaForm()
         return context
     
@@ -122,13 +121,13 @@ class VentaCreateView(CreateView):
             print(f"Error al guardar la venta: {e}")    
             return self.form_invalid(form)
     
-###### CREAR CAJA ######
+###### CREAR CUENTA ######
 
 @method_decorator(never_cache, name='dispatch')
-class VentaCajaCreateView(CreateView):
+class CuentaCreateView(CreateView):
     model = Venta
     form_class = VentaForm
-    template_name = 'venta_caja/crear.html'
+    template_name = 'venta/cuenta.html'
     success_url = reverse_lazy('app:venta_lista')
 
     @method_decorator(login_required)
@@ -143,6 +142,7 @@ class VentaCajaCreateView(CreateView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         context['cliente_form'] = ClienteForm()
         context['detalleventa_form'] = DetalleVentaForm()
+        context['detalleventacuenta_form'] = CuentaForm()
         return context
     
     def form_valid(self, form):

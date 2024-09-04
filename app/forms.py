@@ -428,14 +428,14 @@ class DetalleVentaForm(ModelForm):
             )
         }
         
-class DetalleVentaCuentaForm(ModelForm):
+class CuentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["cantidad_plato"].widget.attrs["autofocus"] = True
         self.fields['id_plato'].queryset = Producto.objects.all()
 
     class Meta:
-        model = Detalle_venta_cuenta
+        model = Cuenta
         fields = "__all__"
         widgets = {
             "cantidad_plato": NumberInput(

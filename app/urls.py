@@ -82,6 +82,9 @@ urlpatterns = [
     path('detalle_venta/listar/', DetalleVentaListView.as_view(), name='detalle_venta_lista'),
     path('detalleventa/eliminar/<int:pk>/', DetalleVentaDeleteView.as_view(), name='detalle_venta_eliminar'),
 
+    ### DETALLE VENTA CUENTA###
+    path('venta/cuenta/', CuentaCreateView.as_view(), name='cuenta'),
+
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
     path('factura/crear/', FacturaCreateView.as_view(), name='factura_crear'),

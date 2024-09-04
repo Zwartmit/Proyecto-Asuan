@@ -56,7 +56,7 @@ class DetalleVentaDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar venta'
         context['entidad'] = 'Eliminar venta'
-        context['listar_url'] = reverse_lazy('app:detalle_venta_lista')
+        context['listar_url'] = reverse_lazy('app:detalle_venta_cuenta_lista')
         return context 
     
 def ventas_view(request):

@@ -288,7 +288,7 @@ class Detalle_venta(models.Model):
 
 ########################################################################################################################################
 
-class Detalle_venta_cuenta(models.Model):
+class Cuenta(models.Model):
 
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
     id_plato = models.ForeignKey(Plato,on_delete=models.PROTECT)
