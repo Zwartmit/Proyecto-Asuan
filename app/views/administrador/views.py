@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -49,11 +50,12 @@ class AdministradorCreateView(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        try:
-            return super().form_valid(form)
-        except ValidationError as e:
-            form.add_error(None, e)
-            return self.form_invalid(form)
+        messages.success(self.request, "Administrador creado con éxito.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Hubo un error al crear el administrador.")
+        return super().form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorUpdateView(UpdateView):
@@ -77,11 +79,12 @@ class AdministradorUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        try:
-            return super().form_valid(form)
-        except ValidationError as e:
-            form.add_error(None, e)
-            return self.form_invalid(form)
+        messages.success(self.request, "Administrador actualizado con éxito.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Hubo un error al actualizar el administrador.")
+        return super().form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):
@@ -102,3 +105,7 @@ class AdministradorDeleteView(DeleteView):
             list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
             return render(request, 'administrador/listar.html', list_context)
         return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Administrador eliminado con éxito.")
+        return super().delete(request, *args, **kwargs)

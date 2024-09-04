@@ -35,7 +35,7 @@ class BackupDatabaseView(View):
             db_port = db_settings['PORT']
 
             filename = request.POST.get('filename', f"backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.sql")
-            backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+            backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
             backup_path = os.path.join(backup_dir, filename)
 
             os.makedirs(backup_dir, exist_ok=True)
@@ -75,7 +75,7 @@ class RestoreDatabaseView(View):
                 messages.error(request, "No se ha enviado ningún archivo")
             else:
                 file = request.FILES['backup_file']
-                backup_dir = os.path.join(settings.BASE_DIR, 'backups')
+                backup_dir = os.path.join(settings.BASE_DIR, 'backups/files')
                 os.makedirs(backup_dir, exist_ok=True)
                 backup_path = os.path.join(backup_dir, file.name)
 
@@ -138,23 +138,25 @@ class BackupListView(View):
 @method_decorator(login_required, name='dispatch')
 @method_decorator(never_cache, name='dispatch')
 class DeleteBackupView(View):
-    @method_decorator(permission_required('app.delete_backup', raise_exception=True))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         filename = request.POST.get('filename')
+        success = False
         if filename:
-            file_path = os.path.join(settings.BASE_DIR, 'backups', filename)
+            file_path = os.path.join(settings.BASE_DIR, 'backups/files', filename)
             if os.path.exists(file_path):
                 os.remove(file_path)
-                messages.success(request, f"Respaldo {filename} eliminado exitosamente")
+                messages.success(request, f"Copia: {filename} eliminada correctamente.")
                 success = True
             else:
-                messages.error(request, f"El archivo {filename} no existe")
-                success = False
+                messages.error(request, f"El archivo: {filename} no existe.")
         else:
-            messages.error(request, "No se especificó un archivo para eliminar")
-            success = False
+            messages.error(request, "No se especificó un archivo para eliminar.")
 
-        return JsonResponse({'message': messages, 'success': success})
+        messages_list = list(messages.get_messages(request))
+        messages_str = [str(message) for message in messages_list]
+
+        return JsonResponse({'messages': messages_str, 'success': success})
