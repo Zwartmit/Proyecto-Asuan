@@ -32,12 +32,11 @@ CREATE TABLE `administrador` (
   `conf_contrasena` varchar(128) NOT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Administrador_numero_documento_fa238ef2_uniq` (`numero_documento`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `Administrador_user_id_949907f5_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `administrador_chk_1` CHECK ((`numero_documento` >= 0)),
   CONSTRAINT `administrador_chk_2` CHECK ((`telefono` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +45,7 @@ CREATE TABLE `administrador` (
 
 LOCK TABLES `administrador` WRITE;
 /*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
+INSERT INTO `administrador` VALUES (1,'Brandon','CC',12356423,123456,'','',2);
 /*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,7 +125,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add Administrador',7,'add_administrador'),(26,'Can change Administrador',7,'change_administrador'),(27,'Can delete Administrador',7,'delete_administrador'),(28,'Can view Administrador',7,'view_administrador'),(29,'Can add categoria',8,'add_categoria'),(30,'Can change categoria',8,'change_categoria'),(31,'Can delete categoria',8,'delete_categoria'),(32,'Can view categoria',8,'view_categoria'),(33,'Can add cliente',9,'add_cliente'),(34,'Can change cliente',9,'change_cliente'),(35,'Can delete cliente',9,'delete_cliente'),(36,'Can view cliente',9,'view_cliente'),(37,'Can add marca',10,'add_marca'),(38,'Can change marca',10,'change_marca'),(39,'Can delete marca',10,'delete_marca'),(40,'Can view marca',10,'view_marca'),(41,'Can add mesero',11,'add_mesero'),(42,'Can change mesero',11,'change_mesero'),(43,'Can delete mesero',11,'delete_mesero'),(44,'Can view mesero',11,'view_mesero'),(45,'Can add Operador',12,'add_operador'),(46,'Can change Operador',12,'change_operador'),(47,'Can delete Operador',12,'delete_operador'),(48,'Can view Operador',12,'view_operador'),(49,'Can add plato',13,'add_plato'),(50,'Can change plato',13,'change_plato'),(51,'Can delete plato',13,'delete_plato'),(52,'Can view plato',13,'view_plato'),(53,'Can add presentacion',14,'add_presentacion'),(54,'Can change presentacion',14,'change_presentacion'),(55,'Can delete presentacion',14,'delete_presentacion'),(56,'Can view presentacion',14,'view_presentacion'),(57,'Can add producto',15,'add_producto'),(58,'Can change producto',15,'change_producto'),(59,'Can delete producto',15,'delete_producto'),(60,'Can view producto',15,'view_producto'),(61,'Can add venta',16,'add_venta'),(62,'Can change venta',16,'change_venta'),(63,'Can delete venta',16,'delete_venta'),(64,'Can view venta',16,'view_venta'),(65,'Can add factura',17,'add_factura'),(66,'Can change factura',17,'change_factura'),(67,'Can delete factura',17,'delete_factura'),(68,'Can view factura',17,'view_factura'),(69,'Can add detalle_de_venta',18,'add_detalle_venta'),(70,'Can change detalle_de_venta',18,'change_detalle_venta'),(71,'Can delete detalle_de_venta',18,'delete_detalle_venta'),(72,'Can view detalle_de_venta',18,'view_detalle_venta'),(73,'Can add detalle_venta_cuenta',19,'add_detalle_venta_cuenta'),(74,'Can change detalle_venta_cuenta',19,'change_detalle_venta_cuenta'),(75,'Can delete detalle_venta_cuenta',19,'delete_detalle_venta_cuenta'),(76,'Can view detalle_venta_cuenta',19,'view_detalle_venta_cuenta');
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add categoria',7,'add_categoria'),(26,'Can change categoria',7,'change_categoria'),(27,'Can delete categoria',7,'delete_categoria'),(28,'Can view categoria',7,'view_categoria'),(29,'Can add cliente',8,'add_cliente'),(30,'Can change cliente',8,'change_cliente'),(31,'Can delete cliente',8,'delete_cliente'),(32,'Can view cliente',8,'view_cliente'),(33,'Can add marca',9,'add_marca'),(34,'Can change marca',9,'change_marca'),(35,'Can delete marca',9,'delete_marca'),(36,'Can view marca',9,'view_marca'),(37,'Can add mesero',10,'add_mesero'),(38,'Can change mesero',10,'change_mesero'),(39,'Can delete mesero',10,'delete_mesero'),(40,'Can view mesero',10,'view_mesero'),(41,'Can add plato',11,'add_plato'),(42,'Can change plato',11,'change_plato'),(43,'Can delete plato',11,'delete_plato'),(44,'Can view plato',11,'view_plato'),(45,'Can add presentacion',12,'add_presentacion'),(46,'Can change presentacion',12,'change_presentacion'),(47,'Can delete presentacion',12,'delete_presentacion'),(48,'Can view presentacion',12,'view_presentacion'),(49,'Can add Administrador',13,'add_administrador'),(50,'Can change Administrador',13,'change_administrador'),(51,'Can delete Administrador',13,'delete_administrador'),(52,'Can view Administrador',13,'view_administrador'),(53,'Can add Operador',14,'add_operador'),(54,'Can change Operador',14,'change_operador'),(55,'Can delete Operador',14,'delete_operador'),(56,'Can view Operador',14,'view_operador'),(57,'Can add producto',15,'add_producto'),(58,'Can change producto',15,'change_producto'),(59,'Can delete producto',15,'delete_producto'),(60,'Can view producto',15,'view_producto'),(61,'Can add venta',16,'add_venta'),(62,'Can change venta',16,'change_venta'),(63,'Can delete venta',16,'delete_venta'),(64,'Can view venta',16,'view_venta'),(65,'Can add factura',17,'add_factura'),(66,'Can change factura',17,'change_factura'),(67,'Can delete factura',17,'delete_factura'),(68,'Can view factura',17,'view_factura'),(69,'Can add detalle_venta_cuenta',18,'add_detalle_venta_cuenta'),(70,'Can change detalle_venta_cuenta',18,'change_detalle_venta_cuenta'),(71,'Can delete detalle_venta_cuenta',18,'delete_detalle_venta_cuenta'),(72,'Can view detalle_venta_cuenta',18,'view_detalle_venta_cuenta'),(73,'Can add detalle_de_venta',19,'add_detalle_venta'),(74,'Can change detalle_de_venta',19,'change_detalle_venta'),(75,'Can delete detalle_de_venta',19,'delete_detalle_venta'),(76,'Can view detalle_de_venta',19,'view_detalle_venta');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +150,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +159,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$aCvPYshJpfeFybp1r1yzi6$hrMG0CmceTW3/lfEosF+gqh4o6Q/LjV8Dg+fJ/hzbAk=','2024-09-04 19:55:36.990063',1,'admin','','','admin@gmail.com',1,1,'2024-09-04 19:37:55.379434'),(2,'pbkdf2_sha256$870000$3N6QcKRydYGapbfFmW0XKe$btIKoZM8HZd0xG1jobXJTW1aW7TaJjgxMpHiMIoW+/E=','2024-09-04 19:55:23.924853',0,'juan','','','juan@gmail.com',0,1,'2024-09-04 19:51:10.980502');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$5ysTVBi0CeLwt99PF2BkTT$edwfWDAZylCEk7xQJ4kqyLm2UNY5Z9r9NXgsaOvS3es=','2024-09-05 18:58:26.561901',1,'admin','','','asuan.adso@gmail.com',1,1,'2024-09-05 18:57:51.301328'),(2,'pbkdf2_sha256$870000$89Z8KhOVnhlUDjEzyYUExF$8VCNLIjTtpl9puL5RL+9K7IQcU9SQnJnPd522m7v1r0=','2024-09-05 19:02:03.802875',1,'Brandon','','','brandon@gmail.com',1,1,'2024-09-05 19:00:30.382846'),(3,'pbkdf2_sha256$870000$UaqHj4cNJ6ErJ4abIKk0Oz$wR0sigWNs6oGt3ULHdDrvhGGpilMbI8eRw94vOS2KI8=',NULL,0,'BrandonU','','','brandonu@gmail.com',0,1,'2024-09-05 19:01:48.010232');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,8 +231,8 @@ CREATE TABLE `categoria` (
   `categoria` varchar(50) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Categoria_categoria_4061e22a_uniq` (`categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `categoria` (`categoria`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,7 +241,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (3,'sad',1);
+INSERT INTO `categoria` VALUES (1,'asd',1);
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,12 +258,12 @@ CREATE TABLE `cliente` (
   `tipo_documento` varchar(3) NOT NULL,
   `numero_documento` int unsigned NOT NULL,
   `email` varchar(50) NOT NULL,
-  `telefono` int unsigned NOT NULL,
   `pais_telefono` varchar(50) NOT NULL,
+  `telefono` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Cliente_numero_documento_3f4d400b_uniq` (`numero_documento`),
-  CONSTRAINT `cliente_chk_2` CHECK ((`telefono` >= 0)),
-  CONSTRAINT `Cliente_numero_documento_3f4d400b_check` CHECK ((`numero_documento` >= 0))
+  UNIQUE KEY `numero_documento` (`numero_documento`),
+  CONSTRAINT `cliente_chk_1` CHECK ((`numero_documento` >= 0)),
+  CONSTRAINT `cliente_chk_2` CHECK ((`telefono` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -403,7 +403,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(7,'app','administrador'),(8,'app','categoria'),(9,'app','cliente'),(18,'app','detalle_venta'),(19,'app','detalle_venta_cuenta'),(17,'app','factura'),(10,'app','marca'),(11,'app','mesero'),(12,'app','operador'),(13,'app','plato'),(14,'app','presentacion'),(15,'app','producto'),(16,'app','venta'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(6,'sessions','session');
+INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(13,'app','administrador'),(7,'app','categoria'),(8,'app','cliente'),(19,'app','detalle_venta'),(18,'app','detalle_venta_cuenta'),(17,'app','factura'),(9,'app','marca'),(10,'app','mesero'),(14,'app','operador'),(11,'app','plato'),(12,'app','presentacion'),(15,'app','producto'),(16,'app','venta'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(6,'sessions','session');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -420,7 +420,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -429,7 +429,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-09-04 19:37:32.634641'),(2,'auth','0001_initial','2024-09-04 19:37:33.097048'),(3,'admin','0001_initial','2024-09-04 19:37:33.225842'),(4,'admin','0002_logentry_remove_auto_add','2024-09-04 19:37:33.231855'),(5,'admin','0003_logentry_add_action_flag_choices','2024-09-04 19:37:33.239552'),(6,'app','0001_initial','2024-09-04 19:37:34.182593'),(7,'app','0002_alter_categoria_categoria','2024-09-04 19:37:34.199064'),(8,'app','0003_rename_nombre_producto_producto_producto_and_more','2024-09-04 19:37:34.253633'),(9,'app','0004_alter_administrador_tipo_documento_and_more','2024-09-04 19:37:34.260497'),(10,'app','0005_alter_administrador_numero_documento_and_more','2024-09-04 19:37:34.278636'),(11,'app','0006_alter_administrador_numero_documento_and_more','2024-09-04 19:37:34.354843'),(12,'app','0007_alter_administrador_numero_documento_and_more','2024-09-04 19:37:34.419059'),(13,'app','0008_rename_nombre_plato_plato_plato','2024-09-04 19:37:34.445354'),(14,'app','0009_alter_cliente_numero_documento_and_more','2024-09-04 19:37:34.470316'),(15,'app','0010_alter_cliente_numero_documento','2024-09-04 19:37:34.476304'),(16,'app','0011_alter_cliente_numero_documento_and_more','2024-09-04 19:37:34.615386'),(17,'app','0012_alter_cliente_numero_documento_and_more','2024-09-04 19:37:34.852605'),(18,'app','0013_alter_cliente_numero_documento','2024-09-04 19:37:34.858224'),(19,'app','0014_alter_administrador_numero_documento_and_more','2024-09-04 19:37:34.870316'),(20,'app','0015_cliente_pais_telefono','2024-09-04 19:37:34.902190'),(21,'app','0016_mesero_pais_telefono_operador_pais_telefono','2024-09-04 19:37:34.955372'),(22,'app','0017_alter_cliente_email','2024-09-04 19:37:34.960352'),(23,'app','0018_alter_administrador_email_alter_mesero_email_and_more','2024-09-04 19:37:34.969579'),(24,'app','0019_remove_factura_id_metodo_alter_producto_id_categoria_and_more','2024-09-04 19:37:35.087406'),(25,'app','0020_venta_metodo_pago_alter_venta_id_admin_and_more','2024-09-04 19:37:35.387190'),(26,'app','0021_administrador_conf_contraseña','2024-09-04 19:37:35.414120'),(27,'app','0022_alter_administrador_conf_contraseña','2024-09-04 19:37:35.418111'),(28,'app','0023_remove_administrador_email_administrador_user','2024-09-04 19:37:35.519590'),(29,'app','0024_alter_administrador_options_and_more','2024-09-04 19:37:35.647354'),(30,'app','0025_rename_conf_contraseña_administrador_conf_contrasena_and_more','2024-09-04 19:37:35.690394'),(31,'app','0026_alter_operador_options_remove_operador_contraseña_and_more','2024-09-04 19:37:35.891126'),(32,'app','0027_alter_venta_options_alter_venta_metodo_pago','2024-09-04 19:37:35.911056'),(33,'app','0028_alter_venta_options_alter_venta_metodo_pago','2024-09-04 19:37:35.931101'),(34,'app','0029_alter_venta_metodo_pago','2024-09-04 19:37:35.942608'),(35,'app','0030_alter_venta_metodo_pago','2024-09-04 19:37:35.958568'),(36,'app','0031_alter_venta_order_with_respect_to_and_more','2024-09-04 19:37:36.660927'),(37,'app','0032_presentacion_unidad_medida','2024-09-04 19:37:36.688775'),(38,'app','0033_alter_presentacion_unidad_medida','2024-09-04 19:37:36.703708'),(39,'app','0034_alter_presentacion_unidad_medida','2024-09-04 19:37:36.707858'),(40,'app','0035_categoria_estado_marca_estado_presentacion_estado','2024-09-04 19:37:36.777429'),(41,'app','0036_alter_categoria_categoria_alter_marca_marca_and_more','2024-09-04 19:37:36.844645'),(42,'app','0037_alter_categoria_categoria_alter_marca_marca_and_more','2024-09-04 19:37:36.890069'),(43,'app','0038_alter_presentacion_unidad_medida','2024-09-04 19:37:36.893532'),(44,'contenttypes','0002_remove_content_type_name','2024-09-04 19:37:36.970485'),(45,'auth','0002_alter_permission_name_max_length','2024-09-04 19:37:37.023958'),(46,'auth','0003_alter_user_email_max_length','2024-09-04 19:37:37.049918'),(47,'auth','0004_alter_user_username_opts','2024-09-04 19:37:37.057242'),(48,'auth','0005_alter_user_last_login_null','2024-09-04 19:37:37.113663'),(49,'auth','0006_require_contenttypes_0002','2024-09-04 19:37:37.115657'),(50,'auth','0007_alter_validators_add_error_messages','2024-09-04 19:37:37.122638'),(51,'auth','0008_alter_user_username_max_length','2024-09-04 19:37:37.185780'),(52,'auth','0009_alter_user_last_name_max_length','2024-09-04 19:37:37.256197'),(53,'auth','0010_alter_group_name_max_length','2024-09-04 19:37:37.274969'),(54,'auth','0011_update_proxy_permissions','2024-09-04 19:37:37.288438'),(55,'auth','0012_alter_user_first_name_max_length','2024-09-04 19:37:37.352748'),(56,'sessions','0001_initial','2024-09-04 19:37:37.383561');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2024-09-05 18:56:58.742633'),(2,'auth','0001_initial','2024-09-05 18:56:59.073765'),(3,'admin','0001_initial','2024-09-05 18:56:59.163660'),(4,'admin','0002_logentry_remove_auto_add','2024-09-05 18:56:59.168646'),(5,'admin','0003_logentry_add_action_flag_choices','2024-09-05 18:56:59.174788'),(6,'app','0001_initial','2024-09-05 18:56:59.915896'),(7,'contenttypes','0002_remove_content_type_name','2024-09-05 18:56:59.976231'),(8,'auth','0002_alter_permission_name_max_length','2024-09-05 18:57:00.021026'),(9,'auth','0003_alter_user_email_max_length','2024-09-05 18:57:00.044962'),(10,'auth','0004_alter_user_username_opts','2024-09-05 18:57:00.051944'),(11,'auth','0005_alter_user_last_login_null','2024-09-05 18:57:00.097241'),(12,'auth','0006_require_contenttypes_0002','2024-09-05 18:57:00.099235'),(13,'auth','0007_alter_validators_add_error_messages','2024-09-05 18:57:00.105252'),(14,'auth','0008_alter_user_username_max_length','2024-09-05 18:57:00.148724'),(15,'auth','0009_alter_user_last_name_max_length','2024-09-05 18:57:00.199384'),(16,'auth','0010_alter_group_name_max_length','2024-09-05 18:57:00.215193'),(17,'auth','0011_update_proxy_permissions','2024-09-05 18:57:00.227161'),(18,'auth','0012_alter_user_first_name_max_length','2024-09-05 18:57:00.275739'),(19,'sessions','0001_initial','2024-09-05 18:57:00.300925');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -455,7 +455,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('y4qoyk60x23i9x4f3azvd58il898yipd','.eJxVjDsOwjAQBe_iGln4uzElPWewvLs2DiBHipMKcXcSKQW0b2beW8S0LjWuPc9xZHERSpx-N0z0zG0H_EjtPkma2jKPKHdFHrTL28T5dT3cv4Oaet3qrC2GsvmMRoNhYM-eBiQy5FwGKkYFhBK8cnRmzeQDOEgaPdmhWPH5AhYwONI:1slw6K:SNeG5nm92ImJgtnBsQu_ocKM6OslpHMLjK6co2DnbvI','2024-09-18 19:55:36.994055');
+INSERT INTO `django_session` VALUES ('hpcezycibj8mewtyqe3g11kpobwxlrj8','.eJxVjEEOwiAQRe_C2hBg6EBduvcMZBhAqoYmpV0Z765NutDtf-_9lwi0rTVsPS9hSuIsjDj9bpH4kdsO0p3abZY8t3WZotwVedAur3PKz8vh_h1U6vVbs45WFxyV9cQGImJx2ZbscjGKwLEHIrRxQFaDA06ksYBVOjHQ6LV4fwDrsTf0:1smHk3:cYZoTLrh4G2Q1NP0_ohuz9tyt6BvZQFCI27ot2Vycgo','2024-09-19 19:02:03.806822');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,8 +497,8 @@ CREATE TABLE `marca` (
   `marca` varchar(50) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Marca_marca_706bdc27_uniq` (`marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `marca` (`marca`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +507,6 @@ CREATE TABLE `marca` (
 
 LOCK TABLES `marca` WRITE;
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (2,'CocaCola',1);
 /*!40000 ALTER TABLE `marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -524,12 +523,12 @@ CREATE TABLE `mesero` (
   `tipo_documento` varchar(3) NOT NULL,
   `numero_documento` int unsigned NOT NULL,
   `email` varchar(50) NOT NULL,
-  `telefono` int unsigned NOT NULL,
   `pais_telefono` varchar(50) NOT NULL,
+  `telefono` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Mesero_numero_documento_582a65fb_uniq` (`numero_documento`),
-  CONSTRAINT `mesero_chk_2` CHECK ((`telefono` >= 0)),
-  CONSTRAINT `Mesero_numero_documento_582a65fb_check` CHECK ((`numero_documento` >= 0))
+  UNIQUE KEY `numero_documento` (`numero_documento`),
+  CONSTRAINT `mesero_chk_1` CHECK ((`numero_documento` >= 0)),
+  CONSTRAINT `mesero_chk_2` CHECK ((`telefono` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -555,11 +554,11 @@ CREATE TABLE `operador` (
   `tipo_documento` varchar(3) NOT NULL,
   `numero_documento` int unsigned NOT NULL,
   `telefono` int unsigned NOT NULL,
-  `conf_contrasena` varchar(128) NOT NULL,
   `contrasena` varchar(128) NOT NULL,
+  `conf_contrasena` varchar(128) NOT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Operador_numero_documento_2ec1fdff_uniq` (`numero_documento`),
+  UNIQUE KEY `numero_documento` (`numero_documento`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `Operador_user_id_17453727_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `operador_chk_1` CHECK ((`numero_documento` >= 0)),
@@ -573,7 +572,7 @@ CREATE TABLE `operador` (
 
 LOCK TABLES `operador` WRITE;
 /*!40000 ALTER TABLE `operador` DISABLE KEYS */;
-INSERT INTO `operador` VALUES (1,'juan','CC',12345663,234567,'asd','asd',2);
+INSERT INTO `operador` VALUES (1,'Brandon','CC',234567844,2345678,'Burzmit31','Burzmit31',3);
 /*!40000 ALTER TABLE `operador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -616,8 +615,8 @@ CREATE TABLE `presentacion` (
   `unidad_medida` varchar(12) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `Presentacion_presentacion_0e222490_uniq` (`presentacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `presentacion` (`presentacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -626,7 +625,6 @@ CREATE TABLE `presentacion` (
 
 LOCK TABLES `presentacion` WRITE;
 /*!40000 ALTER TABLE `presentacion` DISABLE KEYS */;
-INSERT INTO `presentacion` VALUES (2,'1.5','litro(s)',1);
 /*!40000 ALTER TABLE `presentacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -654,7 +652,7 @@ CREATE TABLE `producto` (
   CONSTRAINT `Producto_id_marca_id_d863f11f_fk_Marca_id` FOREIGN KEY (`id_marca_id`) REFERENCES `marca` (`id`),
   CONSTRAINT `Producto_id_presentacion_id_02f8c93a_fk_Presentacion_id` FOREIGN KEY (`id_presentacion_id`) REFERENCES `presentacion` (`id`),
   CONSTRAINT `producto_chk_1` CHECK ((`cantidad` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -675,8 +673,8 @@ DROP TABLE IF EXISTS `venta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `venta` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `total_venta` decimal(8,2) NOT NULL,
   `fecha_venta` datetime(6) NOT NULL,
+  `total_venta` decimal(8,2) NOT NULL,
   `metodo_pago` varchar(3) NOT NULL,
   `_order` int NOT NULL,
   PRIMARY KEY (`id`)
@@ -701,4 +699,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-04 14:55:55
+-- Dump completed on 2024-09-05 14:02:27

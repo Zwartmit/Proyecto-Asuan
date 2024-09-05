@@ -33,7 +33,7 @@
 }
 
 .content-wrapper {
-    background-image: url("/static/img/beach.jpeg");
+    background-image: url("/static/img/background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -119,9 +119,9 @@ h1 {
 }
 
 .dark-mode .content-wrapper {
-    background: #242424;
-    border-color: #414141;
-    color: #ffffff;
+    background-image: url("/static/img/backDark1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .dark-mode .main-header {

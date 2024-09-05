@@ -1,11 +1,15 @@
+import openpyxl
+from openpyxl.drawing.image import Image
 from django.shortcuts import render
 from django.http import HttpResponse
 from app.forms import ReporteForm
+from datetime import datetime
 from app.models import *
-import openpyxl
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -75,19 +79,73 @@ def reporte_selector(request):
 def export_categorias_excel(request):
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.title = "Categorías"
+    ws.title = "Reporte de categorías"
+    
+    # Estilo
+    bold_font = Font(bold=True)
+    center_alignment = Alignment(horizontal="center", vertical="center")
+    green_fill = PatternFill(start_color="04644B'", end_color="04644B", fill_type="solid")
+    white_font = Font(color="FFFFFF")
+    
+    # Ajustar ancho de columnas a todas las columnas
+    column_width = 20  # Ancho deseado
+    for col in range(1, 11):  # Puedes ajustar el número de columnas según sea necesario
+        column_letter = get_column_letter(col)
+        ws.column_dimensions[column_letter].width = column_width
 
+    # Ajustar alto de las filas
+    ws.row_dimensions[1].height = 60  # Alto para la fila del logo
+    ws.row_dimensions[5].height = 20  # Alto para el título
+    ws.row_dimensions[7].height = 20  # Alto para los encabezados
+
+    # Logo en la parte superior izquierda (ajustar la ruta)
+    img = Image('app/views/reportes/logo_asuan.png')  # Reemplaza con la ruta correcta a tu logo
+    img.width = 150  # Ajustar el ancho del logo
+    img.height = 70  # Ajustar el alto del logo
+    ws.add_image(img, 'B1')  # Posiciona la imagen en la celda A1
+
+    # Título en la parte superior central (Centrado y combinando celdas)
+    ws.merge_cells('A5:C5')
+    ws['A5'] = "Reporte de Categorías"
+    ws['A5'].font = Font(size=14, bold=True)
+    ws['A5'].alignment = center_alignment
+
+    # Fecha en la parte superior derecha
+    ws.merge_cells('E3:F3')
+    fecha = datetime.now().strftime("%d/%m/%Y")
+    ws['E3'] = f"Fecha:\n{fecha}"
+    ws['E3'].alignment = Alignment(horizontal="right", vertical="center", wrap_text=True)
+    ws['E3'].font = bold_font
+
+    # Encabezados de la tabla
     headers = ['ID', 'Categoría', 'Estado']
-    ws.append(headers)
+    for col_num, header in enumerate(headers, 1):
+        cell = ws.cell(row=7, column=col_num)
+        cell.value = header
+        cell.fill = green_fill
+        cell.font = white_font
+        cell.alignment = center_alignment
+        cell.border = Border(left=Side(style='thin'), 
+                             right=Side(style='thin'), 
+                             top=Side(style='thin'), 
+                             bottom=Side(style='thin'))
 
+    # Agregar los datos de las categorías
     categorias = Categoria.objects.all()
-    for categoria in categorias:
-        ws.append([
-            categoria.id,
-            categoria.categoria,
-            'Activo' if categoria.estado else 'Inactivo',
-        ])
+    for row_num, categoria in enumerate(categorias, 8):  # Comienza en la fila 8
+        ws.cell(row=row_num, column=1, value=categoria.id)
+        ws.cell(row=row_num, column=2, value=categoria.categoria)
+        ws.cell(row=row_num, column=3, value='Activo' if categoria.estado else 'Inactivo')
+        
+        for col_num in range(1, 4):  # Aplica el borde a las celdas de datos
+            cell = ws.cell(row=row_num, column=col_num)
+            cell.alignment = center_alignment
+            cell.border = Border(left=Side(style='thin'), 
+                                 right=Side(style='thin'), 
+                                 top=Side(style='thin'), 
+                                 bottom=Side(style='thin'))
 
+    # Generar archivo Excel
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=categorias.xlsx'
     wb.save(response)
@@ -98,21 +156,35 @@ def export_categorias_pdf(request):
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
-    p.drawString(100, height - 100, 'ID')
-    p.drawString(200, height - 100, 'Categoría')
-    p.drawString(300, height - 100, 'Estado')
+    # Fecha en la parte superior izquierda
+    fecha = datetime.now().strftime("%Y-%m-%d %H:%M")
+    p.drawString(30, height - 50, f"Fecha: {fecha}")
 
-    y = height - 120
+    # Título en la parte superior central
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString((width / 2) - 80, height - 50, "Reporte de Categorías")
+
+    # Encabezados
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(100, height - 150, 'ID')
+    p.drawString(200, height - 150, 'Categoría')
+    p.drawString(300, height - 150, 'Estado')
+
+    # Agregando los datos
+    y = height - 170
     categorias = Categoria.objects.all()
+    p.setFont("Helvetica", 10)
     for categoria in categorias:
         p.drawString(100, y, str(categoria.id))
         p.drawString(200, y, categoria.categoria)
         p.drawString(300, y, 'Activo' if categoria.estado else 'Inactivo')
         y -= 20
 
+    # Guardar página
     p.showPage()
     p.save()
 
+    # Retornar el PDF
     buffer.seek(0)
     response = HttpResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=categorias.pdf'
