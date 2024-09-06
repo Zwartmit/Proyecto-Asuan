@@ -58,11 +58,23 @@ class ClienteCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form() 
         context['titulo'] = 'Registrar cliente'
         context['entidad'] = 'Registrar cliente'
         context['error'] = 'Este cliente ya está registrado'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.is_ajax():
+            return JsonResponse({'success': True}, status=200)
+        return response
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+        return super().form_invalid(form)
     
 ###### EDITAR ######
 

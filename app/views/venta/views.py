@@ -9,7 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app.models import Venta, Producto, Detalle_venta, Cuenta
+from app.models import Venta, Producto, Detalle_venta, Cuenta, Cliente
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm
 import json
 from app.models import Venta
@@ -46,13 +46,25 @@ class VentaListView(ListView):
         context['crear_url'] = reverse_lazy('app:venta_crear')
         return context
 
-###### API ######
+###### API'S ######
     
 def productos_api(request):
     term = request.GET.get('term', '') 
     productos = Producto.objects.filter(Q(producto__icontains=term) & Q(estado=True)
     ).values('id', 'producto', 'valor', 'cantidad')
     return JsonResponse(list(productos), safe=False)
+
+def platos_api(request):
+    term = request.GET.get('term', '') 
+    platos = Producto.objects.filter(Q(plato__icontains=term) & Q(estado=True)
+    ).values('id', 'producto', 'valor')
+    return JsonResponse(list(platos), safe=False)
+
+def clientes_api(request):
+    term = request.GET.get('term', '') 
+    clientes = Cliente.objects.filter(Q(nombre__icontains=term) & Q(estado=True)
+    ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
+    return JsonResponse(list(clientes), safe=False)
 
 ###### CREAR ######
 
@@ -121,7 +133,7 @@ class VentaCreateView(CreateView):
             print(f"Error al guardar la venta: {e}")    
             return self.form_invalid(form)
     
-###### CREAR CUENTA ######
+###### CUENTA ######
 
 @method_decorator(never_cache, name='dispatch')
 class CuentaCreateView(CreateView):

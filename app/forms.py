@@ -136,6 +136,12 @@ class ClienteForm(ModelForm):
                 attrs={
                     "placeholder": "Teléfono",
                 }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado del cliente",
+                },
             )
         }
 
@@ -416,16 +422,21 @@ class DetalleVentaForm(ModelForm):
         model = Detalle_venta
         fields = "__all__"
         widgets = {
-            "cantidad_producto": NumberInput(
+            "cantidad_plato": NumberInput(
                 attrs={
                     "placeholder": "Cantidad"
                 }
             ),
-            "id_producto": Select2Widget(
+            "id_plato": Select2Widget(
                 attrs={
                     "class": "product-select"
                 }
-            )
+            ),
+            "id_cliente": Select2Widget(
+                attrs={
+                    "class": "product-select"
+                }
+            ),
         }
         
 class CuentaForm(ModelForm):

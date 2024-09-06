@@ -76,13 +76,12 @@ urlpatterns = [
     path('venta/crear/', VentaCreateView.as_view(), name='venta_crear'),
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
-    path('venta/productos_api/', productos_api, name='productos_api'),
 
     ### DETALLE VENTA ###
     path('detalle_venta/listar/', DetalleVentaListView.as_view(), name='detalle_venta_lista'),
     path('detalleventa/eliminar/<int:pk>/', DetalleVentaDeleteView.as_view(), name='detalle_venta_eliminar'),
 
-    ### DETALLE VENTA CUENTA###
+    ### CUENTA###
     path('venta/cuenta/', CuentaCreateView.as_view(), name='cuenta'),
 
     ### CRUD FACTURA ###
@@ -98,5 +97,9 @@ urlpatterns = [
     path('eliminar_backup/', DeleteBackupView.as_view(), name='eliminar_backup'),
     path('backup_list/', backup_list, name='backup_list'),
 
+    ### API´S ###
+    path('venta/productos_api/', productos_api, name='productos_api'),
+    path('venta/platos_api/', platos_api, name='platos_api'),
+    path('venta/clientes_api/', clientes_api, name='clientes_api'),
 ]
 

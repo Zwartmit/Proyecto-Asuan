@@ -27,78 +27,78 @@ document.addEventListener('DOMContentLoaded', function () {
     const cambioElement = document.getElementById('cambio');
     let validationTimeout = null;
 
-    function addProductRow() {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="product-column">
-                <input class="product-id product-select" style="width: 100%;" required />
-            </td>
-            <td class="quantity-column"><input type="number" class="product-quantity" min="1" required></td>
-            <td class="price-column"><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
-            <td class="stock-column"><span class="product-stock">0</span></td>
-            <td class="delete-column">
-                <i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
-                    onmouseover="this.style.color='#ff0000';"
-                    onmouseout="this.style.color='#04644B';"></i>
-            </td>
-            <td><span class="product-total">$0.00</span></td>
-        `;
-    
-        $(row.querySelector('.product-select')).select2({
-            placeholder: 'Seleccione un producto',
-            ajax: {
-                url: '/app/venta/productos_api/',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        term: params.term
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data.map(producto => ({
-                            id: producto.id,
-                            text: producto.producto,
-                            valor: producto.valor,
-                            cantidad: producto.cantidad
-                        }))
-                    };
-                },
-                cache: true
-            }
-        }).on('select2:select', function (e) {
-            const data = e.params.data;
-            const priceInput = row.querySelector('.product-price');
-            const stockSpan = row.querySelector('.product-stock');
-            const quantityInput = row.querySelector('.product-quantity');
-            
-            priceInput.value = data.valor || 0;
-            stockSpan.textContent = data.cantidad || 0;
-            quantityInput.max = data.cantidad || 0;
-            quantityInput.value = 1; 
+        function addProductRow() {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="product-column">
+                    <input class="product-id product-select" style="width: 100%;" required />
+                </td>
+                <td class="quantity-column"><input type="number" class="product-quantity" min="1" required></td>
+                <td class="price-column"><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
+                <td class="stock-column"><span class="product-stock">0</span></td>
+                <td class="delete-column">
+                    <i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
+                        onmouseover="this.style.color='#ff0000';"
+                        onmouseout="this.style.color='#04644B';"></i>
+                </td>
+                <td><span class="product-total">$0.00</span></td>
+            `;
+        
+            $(row.querySelector('.product-select')).select2({
+                placeholder: 'Seleccione un producto',
+                ajax: {
+                    url: '/app/venta/productos_api/', 
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.map(producto => ({
+                                id: producto.id,
+                                text: producto.producto,
+                                valor: producto.valor,
+                                cantidad: producto.cantidad
+                            }))
+                        };
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function (e) {
+                const data = e.params.data;
+                const priceInput = row.querySelector('.product-price');
+                const stockSpan = row.querySelector('.product-stock');
+                const quantityInput = row.querySelector('.product-quantity');
+                
+                priceInput.value = data.valor || 0;
+                stockSpan.textContent = data.cantidad || 0;
+                quantityInput.max = data.cantidad || 0;
+                quantityInput.value = 1; 
 
-            $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+                $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+
+                validateInputs();
+            });
+
+            productRows.appendChild(row);
+
+            row.querySelector('.product-quantity').addEventListener('input', function() {
+                clearTimeout(validationTimeout);
+                validationTimeout = setTimeout(validateInputs, 500);
+            });
+            row.querySelector('.product-price').addEventListener('input', validateInputs);
+            row.querySelector('.delete-row').addEventListener('click', function () {
+                if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                    row.remove();
+                    validateInputs();
+                }
+            });
 
             validateInputs();
-        });
-
-        productRows.appendChild(row);
-
-        row.querySelector('.product-quantity').addEventListener('input', function() {
-            clearTimeout(validationTimeout);
-            validationTimeout = setTimeout(validateInputs, 500);
-        });
-        row.querySelector('.product-price').addEventListener('input', validateInputs);
-        row.querySelector('.delete-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás segura de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
-            }
-        });
-
-        validateInputs();
-    }
+        }
 
     function validateInputs() {
         let isValid = true;
@@ -243,4 +243,66 @@ document.addEventListener('DOMContentLoaded', function () {
     addProductRow();
 
     window.addProductRow = addProductRow;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function () {
+        $('.client-select').select2({
+            placeholder: 'Buscar cliente',
+            ajax: {
+                url: '/app/venta/clientes_api/', 
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(cliente => ({
+                            id: cliente.id,
+                            text: `${cliente.tipo_documento}: ${cliente.numero_documento} - ${cliente.nombre}`,
+                            nombre: cliente.nombre,
+                            tipo_documento: cliente.tipo_documento,
+                            numero_documento: cliente.numero_documento,
+                            email: cliente.email,
+                            pais_telefono: cliente.pais_telefono,
+                            telefono: cliente.telefono
+                        }))
+                    };
+                },
+                cache: true
+            }
+        }).on('select2:select', function (e) {
+            const data = e.params.data;
+            console.log('Cliente seleccionado:', data);
+
+            document.getElementById('client-name').value = data.nombre;
+            document.getElementById('client-document_type').value = data.tipo_documento;
+            document.getElementById('client-document_number').value = data.numero_documento;
+            document.getElementById('client-email').value = data.email;
+            document.getElementById('client-phone_prefix').value = data.pais_telefono;
+            document.getElementById('client-phone_number').value = data.telefono;
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    $('#client-form').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "app:cliente_crear" %}',
+            data: $(this).serialize(),
+            success: function (response) {
+                alert('Cliente agregado exitosamente');
+                $('#addClientModal').modal('hide');
+            },
+            error: function (response) {
+                alert('Error al agregar cliente');
+            }
+        });
+    });
 });

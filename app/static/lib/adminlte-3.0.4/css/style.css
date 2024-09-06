@@ -188,7 +188,14 @@
     color: #ffffff;
 }
 
-.dark-mode .company-details, .client-details {
+.dark-mode .company-details {
+    background-color: #242424;
+    border-color: #c4c4c4;
+    color: #ffffff;
+    margin-right: 5px;
+}
+
+.dark-mode .client-details {
     background-color: #242424;
     border-color: #c4c4c4;
     color: #ffffff;
@@ -348,7 +355,7 @@ tr:hover td {
 .company-details label, .client-details label {
     font-weight: bold;
     margin-bottom: 5px;
-    display: block;
+    display: inline;
     width: 100px;
 }
 
@@ -359,6 +366,50 @@ tr:hover td {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+.client-options{
+    display: flex;
+    justify-content: space-between;
+    background-color: #e7e7e7;
+    border-radius: 5px;
+    border-color: #7e7e7e;
+}
+
+.options{
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.document {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.document-type {
+    width: 40%; 
+}
+
+.document-number {
+    width: 70%; 
+}
+
+
+.phone{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.phone-prefix {
+    width: 45%;
+}
+
+.phone-number {
+    width: 70%;
 }
 
 .product-table {

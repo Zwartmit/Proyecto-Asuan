@@ -20,6 +20,7 @@
                     </div>
                     <div class="details-section">
                         <div class="company-details">
+                            <label for="details-company" style="font-size: 20px;">Detalles de la Empresa:</label><br><br>
                             <label for="company-name">Nombre de la Empresa:</label>
                             <input type="text" id="company-name" value="Asuan parque eco-turistico" readonly>
         
@@ -35,45 +36,123 @@
                             <label for="company-phone">Teléfono:</label>
                             <input type="tel" id="company-phone" value="+57 3209668241" readonly>
                         </div>
-                        <!-- <div class="client-details">
-                            {% for field in cliente_form.visible_fields %}
-                            <div class="form-group">
-                                <label for="text">{{ field.label }}:</label>
-                                {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
-                            </div>
-                            {% endfor %}
-                            <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
-                        </div> -->
-                        <main>
-                            <table class="product-table">
-                                <thead>
-                                    <tr>
-                                        <th class="product-column">Producto</th>
-                                        <th class="quantity-column">Cantidad</th>
-                                        <th class="price-column">Precio</th>
-                                        <th class="stock-column">Stock</th>
-                                        <th class="delete-column">Eliminar</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="product-rows">
-                                    <!-- tabla de productos-->
-                                </tbody>
-                            </table>
-                            <button onclick="addProductRow()">Agregar Producto</button>
-                            <div class="totals">
-                                <p>Total: <span id="subtotal" style="font-size: 35px; font-weight: bold;">$0</span></p>
-                                <div class="form-group">
-                                    <label for="dinero_recibido">Dinero Recibido:</label>
-                                    <input type="number" id="dinero_recibido" name="dinero_recibido" class="form-control" step="0.01" required>
+                        <div class="client-details">
+                            <label for="client-select" style="font-size: 20px;">Detalles del Cliente:</label><br><br>
+                            <div class="client-options">
+                                <div class="options">
+                                    <label for="client-select">Buscar cliente:</label><br>
+                                    <input class="client-id client-select" id="client-select" required />
                                 </div>
-                                <div class="form-group">
-                                    <label for="cambio">Cambio:</label>
-                                    <input type="text" id="cambio" name="cambio" class="form-control" readonly>
+                                <div class="options">
+                                    <label for="add-client">Agregar:</label>
+                                    <button id="add-client" data-toggle="modal" data-target="#addClientModal">
+                                        <i class="fas fa-plus"></i> Nuevo cliente
+                                    </button>
+                                    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="addClientModalLabel">Agregar Cliente</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="client-form" method="POST" action="{% url 'app:cliente_crear' %}">
+                                                        {% csrf_token %}
+                                                        <!-- Campos del formulario -->
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.nombre.id_for_label }}">{{cliente_form.nombre.label }}:</label>
+                                                            {{ cliente_form.nombre|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.tipo_documento.id_for_label }}">{{cliente_form.tipo_documento.label }}:</label>
+                                                            {{ cliente_form.tipo_documento|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.numero_documento.id_for_label }}">{{cliente_form.numero_documento.label }}:</label>
+                                                            {{ cliente_form.numero_documento|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.email.id_for_label }}">{{cliente_form.email.label }}:</label>
+                                                            {{ cliente_form.email|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.pais_telefono.id_for_label }}">{{cliente_form.pais_telefono.label }}:</label>
+                                                            {{ cliente_form.pais_telefono|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ cliente_form.telefono.id_for_label }}">{{cliente_form.telefono.label }}:</label>
+                                                            {{ cliente_form.telefono|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                        </div>           
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-primary" form="client-form">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
-                        </main>
+                            <div class="client-information">
+                                <label for="client-name">Nombre:</label>
+                                <input type="text" id="client-name" readonly>
+                                <div class="document">
+                                    <div class="document-type">
+                                        <label for="client-document_type">T. Documento:</label>
+                                        <input type="text" id="client-document_type" readonly>
+                                    </div>
+                                    <div class="document-number">
+                                        <label for="client-document_number">No. Documento:</label>
+                                        <input type="text" id="client-document_number" readonly>
+                                    </div>
+                                </div>
+                                <label for="client-email">Correo:</label>
+                                <input type="email" id="client-email" readonly>
+                                <div class="phone">
+                                    <div class="phone-prefix">
+                                        <label for="client-phone_prefix">Prefijo:</label>
+                                        <input type="tel" id="client-phone_prefix" readonly>
+                                    </div>
+                                    <div class="phone-number">
+                                        <label for="client-phone_number">Teléfono:</label>
+                                        <input type="tel" id="client-phone_number" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <main>
+                        <table class="product-table">
+                            <thead>
+                                <tr>
+                                    <th class="product-column">Producto</th>
+                                    <th class="quantity-column">Cantidad</th>
+                                    <th class="price-column">Precio</th>
+                                    <th class="stock-column">Stock</th>
+                                    <th class="delete-column">Eliminar</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-rows">
+                                <!-- tabla de productos-->
+                            </tbody>
+                        </table>
+                        <button onclick="addProductRow()">Agregar Producto</button>
+                        <div class="totals">
+                            <p>Total: <span id="subtotal" style="font-size: 35px; font-weight: bold;">$0</span></p>
+                            <div class="form-group">
+                                <label for="dinero_recibido">Dinero Recibido:</label>
+                                <input type="number" id="dinero_recibido" name="dinero_recibido" class="form-control" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cambio">Cambio:</label>
+                                <input type="text" id="cambio" name="cambio" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </main>
                     <div class="form-group">
                         <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
                         {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
