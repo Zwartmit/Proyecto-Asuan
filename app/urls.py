@@ -13,6 +13,7 @@ from app.views.venta.views import *
 from app.views.factura.views import *
 from app.views.reportes.viewsExcel import *
 from app.views.reportes.viewsPDF import *
+from app.views.reportes.views import *
 from backups.views import BackupDatabaseView, RestoreDatabaseView, DeleteBackupView, BackupListView
 
 app_name = 'app'

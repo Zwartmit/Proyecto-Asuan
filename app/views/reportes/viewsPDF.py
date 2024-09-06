@@ -1,429 +1,189 @@
 import io
 from io import BytesIO
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A3, landscape
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from datetime import datetime
 from app.models import *
 
+def generate_pdf_report(title_text, headers, data_rows, filename):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=landscape(A3))
+    elements = []
+
+    styles = getSampleStyleSheet()
+    style_title = styles['Title']
+    style_normal = styles['Normal']
+
+    centered_style = ParagraphStyle(
+        name='CenteredStyle',
+        parent=styles['Normal'],
+        alignment=1 
+    )
+
+    image_path = 'app/views/reportes/logo_asuan.png'
+    image = Image(image_path)
+    image_width = 3 * inch  
+    image_height = 1 * inch
+    image.drawHeight = image_height
+    image.drawWidth = image_width
+    image.hAlign = 'CENTER'
+
+    elements.append(image)
+    elements.append(Spacer(1, 12))
+
+    title = Paragraph(title_text, style_title)
+    elements.append(title)
+
+    fecha = datetime.now().strftime("%d/%m/%Y")
+    date_paragraph = Paragraph(f"Fecha: {fecha}", centered_style)
+    elements.append(date_paragraph)
+    elements.append(Spacer(1, 12))
+
+    data = [headers] + data_rows
+
+    table = Table(data, colWidths=[1.5 * inch] * len(headers))
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#04644B")),  
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'), 
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    elements.append(table)
+
+    doc.build(elements)
+    buffer.seek(0)
+
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename={filename}.pdf'
+    return response
+
+################################################## Categorias ##################################################
 @login_required
 @never_cache
 def export_categorias_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    style_title = styles['Title']
-    style_heading = styles['Heading2']
-    style_normal = styles['Normal']
-
-    # Título
-    title = Paragraph("Reporte de Categorías", style_title)
-    elements.append(title)
-    
-    # Fecha
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_paragraph = Paragraph(f"Fecha: {fecha}", style_normal)
-    elements.append(date_paragraph)
-
-    # Cabeceras de la tabla
     headers = ['ID', 'Categoría', 'Estado']
-    data = [headers]
+    data_rows = [
+        [categoria.id, categoria.categoria, 'Activo' if categoria.estado else 'Inactivo']
+        for categoria in Categoria.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Categorías", headers, data_rows, "Reporte de categorias")
 
-    # Datos de categorías
-    categorias = Categoria.objects.all()
-    for categoria in categorias:
-        row = [categoria.id, categoria.categoria, 'Activo' if categoria.estado else 'Inactivo']
-        data.append(row)
-
-    # Crear tabla
-    table = Table(data, colWidths=[1.5*inch] * 3)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), (0, 51, 102)),
-        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-    buffer.seek(0)
-
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_de_Categorias.pdf'
-    return response
-
+################################################## Marcas ##################################################
 @login_required
 @never_cache
 def export_marcas_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    style_title = styles['Title']
-    style_heading = styles['Heading2']
-    style_normal = styles['Normal']
-
-    # Título
-    title = Paragraph("Reporte de Marcas", style_title)
-    elements.append(title)
-
-    # Fecha
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_paragraph = Paragraph(f"Fecha: {fecha}", style_normal)
-    elements.append(date_paragraph)
-
-    # Cabeceras de la tabla
     headers = ['ID', 'Marca', 'Estado']
-    data = [headers]
+    data_rows = [
+        [marca.id, marca.marca, 'Activo' if marca.estado else 'Inactivo']
+        for marca in Marca.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Marcas", headers, data_rows, "Reporte de marcas")
 
-    # Datos de marcas
-    marcas = Marca.objects.all()
-    for marca in marcas:
-        row = [marca.id, marca.marca, 'Activo' if marca.estado else 'Inactivo']
-        data.append(row)
-
-    # Crear tabla
-    table = Table(data, colWidths=[1.5*inch] * 3)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), (0, 51, 102)),
-        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-    buffer.seek(0)
-
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_de_Marcas.pdf'
-    return response
-
+################################################## Presentaciones ##################################################
 @login_required
 @never_cache
 def export_presentaciones_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    style_title = styles['Title']
-    style_heading = styles['Heading2']
-    style_normal = styles['Normal']
-
-    # Título
-    title = Paragraph("Reporte de Presentaciones", style_title)
-    elements.append(title)
-
-    # Fecha
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_paragraph = Paragraph(f"Fecha: {fecha}", style_normal)
-    elements.append(date_paragraph)
-
-    # Cabeceras de la tabla
     headers = ['ID', 'Presentación', 'Estado']
-    data = [headers]
+    data_rows = [
+        [presentacion.id, presentacion.presentacion, 'Activo' if presentacion.estado else 'Inactivo']
+        for presentacion in Presentacion.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Presentaciones", headers, data_rows, "Reporte de presentaciones")
 
-    # Datos de presentaciones
-    presentaciones = Presentacion.objects.all()
-    for presentacion in presentaciones:
-        row = [presentacion.id, f"{presentacion.presentacion} {presentacion.unidad_medida}", 'Activo' if presentacion.estado else 'Inactivo']
-        data.append(row)
-
-    # Crear tabla
-    table = Table(data, colWidths=[1.5*inch] * 3)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), (0, 51, 102)),
-        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-    buffer.seek(0)
-
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_de_Presentaciones.pdf'
-    return response
-
+################################################## Productos ##################################################
 @login_required
 @never_cache
 def export_productos_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    style_title = styles['Title']
-    style_heading = styles['Heading2']
-    style_normal = styles['Normal']
-
-    # Título
-    title = Paragraph("Reporte de Productos", style_title)
-    elements.append(title)
-
-    # Fecha
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_paragraph = Paragraph(f"Fecha: {fecha}", style_normal)
-    elements.append(date_paragraph)
-
-    # Cabeceras de la tabla
-    headers = ['ID', 'Producto', 'Cantidad', 'Valor', 'Estado', 'Categoría', 'Marca', 'Presentación']
-    data = [headers]
-
-    # Datos de productos
-    productos = Producto.objects.all()
-    for producto in productos:
-        row = [
-            producto.id,
-            producto.producto,
-            producto.cantidad,
-            producto.valor,
-            'Activo' if producto.estado else 'Inactivo',
-            producto.id_categoria.categoria,
-            producto.id_marca.marca,
-            f"{producto.id_presentacion.presentacion} {producto.id_presentacion.unidad_medida}"
+    headers = ['ID', 'Producto', 'Cantidad', 'Valor', 'Categoría', 'Marca', 'Presentación', 'Estado']
+    data_rows = [
+        [
+            producto.id, producto.producto, producto.cantidad, producto.valor,
+            producto.id_categoria.categoria, producto.id_marca.marca, 
+            producto.id_presentacion.presentacion,
+            'Activo' if producto.estado else 'Inactivo'
         ]
-        data.append(row)
+        for producto in Producto.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Productos", headers, data_rows, "Reporte de productos")
 
-    # Crear tabla
-    table = Table(data, colWidths=[1.5*inch] * 8)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), (0, 51, 102)),
-        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-    buffer.seek(0)
-
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_de_Productos.pdf'
-    return response
-
+################################################## Platos ##################################################
+@login_required
+@never_cache
 def export_platos_pdf(request):
-    # Configurar el PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_de_platos.pdf'
-
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    # Agregar título
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    title = Paragraph("Reporte de Platos", title_style)
-    elements.append(title)
-
-    # Agregar fecha
-    date_style = ParagraphStyle(name='DateStyle', fontSize=12, alignment=1)
-    date = Paragraph(f"Fecha: {datetime.now().strftime('%d/%m/%Y')}", date_style)
-    elements.append(date)
-
-    # Preparar datos de la tabla
-    headers = ['ID', 'Plato', 'Descripción', 'Precio', 'Estado']
-    platos = Plato.objects.all().values_list('id', 'plato', 'descripcion', 'precio', 'estado')
-
-    data = [headers]
+    headers = ['ID', 'Nombre', 'Descripción', 'Valor', 'Estado']
+    
+    platos = Plato.objects.all()
+    data_rows = []
+    
+    centered_paragraph_style = ParagraphStyle(
+        name="CenteredParagraph",
+        parent=getSampleStyleSheet()['Normal'],
+        alignment=1,  
+        spaceBefore=0,
+        spaceAfter=0,
+    )
+    
     for plato in platos:
-        data.append(list(plato))
+        description_paragraph = Paragraph(plato.descripcion, centered_paragraph_style)
+        row = [
+            plato.id,
+            plato.plato,
+            description_paragraph,  
+            f"${plato.valor:.2f}",
+            'Activo' if plato.estado else 'Inactivo'
+        ]
+        data_rows.append(row)
+    
+    return generate_pdf_report("Reporte de Platos", headers, data_rows, "Reporte de platos")
 
-    # Crear tabla
-    table = Table(data)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), '#04644B'),
-        ('TEXTCOLOR', (0, 0), (-1, 0), '#FFFFFF'),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, '#000000'),
-        ('BACKGROUND', (0, 1), (-1, -1), '#F5F5F5'),
-        ('ALIGN', (1, 1), (-1, -1), 'LEFT'),
-    ]))
-    elements.append(table)
-
-    # Construir el PDF
-    doc.build(elements)
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-    return response
-
+################################################## Meseros ##################################################
+@login_required
+@never_cache
 def export_meseros_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+    headers = ['ID', 'Mesero', 'Tipo de documento', '# de documento', 'Email', 'Prefijo', 'Teléfono']
+    data_rows = [
+        [mesero.id, mesero.nombre, mesero.tipo_documento, mesero.numero_documento, mesero.email, mesero.pais_telefono, mesero.telefono]
+        for mesero in Mesero.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Meseros", headers, data_rows, "Reporte de meseros")
 
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    normal_style = styles['Normal']
-
-    # Header
-    title = "Reporte de Meseros"
-    elements.append(Paragraph(title, title_style))
-
-    # Date
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_text = f"Fecha: {fecha}"
-    elements.append(Paragraph(date_text, normal_style))
-
-    # Table
-    data = [['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Prefijo', 'Teléfono']]
-    meseros = Mesero.objects.all()
-    for mesero in meseros:
-        data.append([mesero.id, mesero.nombre, mesero.tipo_documento, mesero.numero_documento, mesero.email, mesero.pais_telefono, mesero.telefono])
-
-    table = Table(data, colWidths=[0.5*inch] * len(data[0]))
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-
-    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_de_meseros.pdf"'
-    buffer.close()
-    return response
-
+################################################## Clientes ##################################################
+@login_required
+@never_cache
 def export_clientes_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+    headers = ['ID', 'Cliente', 'Tipo de documento', '# de documento', 'Email', 'Prefijo', 'Teléfono']
+    data_rows = [
+        [cliente.id, cliente.nombre, cliente.tipo_documento, cliente.numero_documento, cliente.email, cliente.pais_telefono, cliente.telefono]
+        for cliente in Cliente.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Clientes", headers, data_rows, "Reporte de clientes")
 
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    normal_style = styles['Normal']
-
-    # Header
-    title = "Reporte de Clientes"
-    elements.append(Paragraph(title, title_style))
-
-    # Date
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_text = f"Fecha: {fecha}"
-    elements.append(Paragraph(date_text, normal_style))
-
-    # Table
-    data = [['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Prefijo', 'Teléfono']]
-    clientes = Cliente.objects.all()
-    for cliente in clientes:
-        data.append([cliente.id, cliente.nombre, cliente.tipo_documento, cliente.numero_documento, cliente.email, cliente.pais_telefono, cliente.telefono])
-
-    table = Table(data, colWidths=[0.5*inch] * len(data[0]))
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-
-    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_de_clientes.pdf"'
-    buffer.close()
-    return response
-
+################################################## Administradores ##################################################
+@login_required
+@never_cache
 def export_administradores_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+    headers = ['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Teléfono']
+    data_rows = [
+        [admin.id, admin.nombre, admin.tipo_documento, admin.numero_documento, admin.user.email, admin.telefono]
+        for admin in Administrador.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Administradores", headers, data_rows, "Reporte de administradores")
 
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    normal_style = styles['Normal']
-
-    # Header
-    title = "Reporte de Administradores"
-    elements.append(Paragraph(title, title_style))
-
-    # Date
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_text = f"Fecha: {fecha}"
-    elements.append(Paragraph(date_text, normal_style))
-
-    # Table
-    data = [['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Teléfono']]
-    administradores = Administrador.objects.all()
-    for administrador in administradores:
-        data.append([administrador.id, administrador.nombre, administrador.tipo_documento, administrador.numero_documento, administrador.user.email, administrador.telefono])
-
-    table = Table(data, colWidths=[0.5*inch] * len(data[0]))
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-
-    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_de_administradores.pdf"'
-    buffer.close()
-    return response
-
+################################################## Operadores ##################################################
+@login_required
+@never_cache
 def export_operadores_pdf(request):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    normal_style = styles['Normal']
-
-    # Header
-    title = "Reporte de Operadores"
-    elements.append(Paragraph(title, title_style))
-
-    # Date
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    date_text = f"Fecha: {fecha}"
-    elements.append(Paragraph(date_text, normal_style))
-
-    # Table
-    data = [['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Teléfono']]
-    operadores = Operador.objects.all()
-    for operador in operadores:
-        data.append([operador.id, operador.nombre, operador.tipo_documento, operador.numero_documento, operador.user.email, operador.telefono])
-
-    table = Table(data, colWidths=[0.5*inch] * len(data[0]))
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ]))
-
-    elements.append(table)
-
-    doc.build(elements)
-
-    response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_de_operadores.pdf"'
-    buffer.close()
-    return response
+    headers = ['ID', 'Nombre', 'Tipo de documento', '# de documento', 'Email', 'Teléfono']
+    data_rows = [
+        [operador.id, operador.nombre, operador.tipo_documento, operador.numero_documento, operador.user.email, operador.telefono]
+        for operador in Operador.objects.all()
+    ]
+    return generate_pdf_report("Reporte de Operadores", headers, data_rows, "Reporte de operadores")

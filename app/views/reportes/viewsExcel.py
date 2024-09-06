@@ -2,56 +2,15 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from app.forms import ReporteForm
 from app.models import *
 
-def get(self, request, *args, **kwargs):
-    contexto = {
-        'titulo': 'Gestión de bases de datos'
-    }
-    return render(request, 'backup.html', contexto)
-
+################################################## Categorias ##################################################
 @login_required
 @never_cache
-def reporte_selector(request):
-    if request.method == 'POST':
-        tipo_reporte = request.POST.get('tipo_reporte')
-        formato = request.POST.get('formato')
-        
-        if formato == 'excel':
-            if tipo_reporte == 'categoria':
-                return export_categorias_excel(request)
-            elif tipo_reporte == 'marca':
-                return export_marcas_excel(request)
-            elif tipo_reporte == 'presentacion':
-                return export_presentaciones_excel(request)
-            elif tipo_reporte == 'producto':
-                return export_productos_excel(request)
-            elif tipo_reporte == 'plato':
-                return export_platos_excel(request)
-            elif tipo_reporte == 'mesero':
-                return export_meseros_excel(request)
-            elif tipo_reporte == 'cliente':
-                return export_clientes_excel(request)
-            elif tipo_reporte == 'administrador':
-                return export_administradores_excel(request)
-            elif tipo_reporte == 'operador':
-                return export_operadores_excel(request)
-    else:
-        form = ReporteForm() 
-
-    contexto = {
-        'titulo': 'Generar reportes',
-    }
-    
-    return render(request, 'reportes.html', contexto)
-
-################################################## Categorias ##################################################
 def export_categorias_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -127,6 +86,8 @@ def export_categorias_excel(request):
     return response
 
 ################################################## Marcas ##################################################
+@login_required
+@never_cache
 def export_marcas_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -202,6 +163,8 @@ def export_marcas_excel(request):
     return response
 
 ################################################## Presentaciones ##################################################
+@login_required
+@never_cache
 def export_presentaciones_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -277,6 +240,8 @@ def export_presentaciones_excel(request):
     return response
 
 ################################################## Productos ##################################################
+@login_required
+@never_cache
 def export_productos_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -357,53 +322,61 @@ def export_productos_excel(request):
     return response
 
 ################################################## Platos ##################################################
+@login_required
+@never_cache
 def export_platos_excel(request):
     wb = Workbook()
     ws = wb.active
     ws.title = "Reporte de platos"
 
     bold_font = Font(bold=True)
-    center_alignment = Alignment(horizontal="center", vertical="center")
+    center_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
     green_fill = PatternFill(start_color="04644B", end_color="04644B", fill_type="solid")
     white_font = Font(color="FFFFFF")
     medium_border = Border(left=Side(style='medium'), 
-                         right=Side(style='medium'), 
-                         top=Side(style='medium'), 
-                         bottom=Side(style='medium'))
+                           right=Side(style='medium'), 
+                           top=Side(style='medium'), 
+                           bottom=Side(style='medium'))
 
     column_width = 20  
     for col in range(2, 7): 
         column_letter = get_column_letter(col)
         ws.column_dimensions[column_letter].width = column_width
-        
+
     ws.row_dimensions[2].height = 38 
     ws.row_dimensions[3].height = 23  
-    ws.row_dimensions[5].height = 20
+    ws.row_dimensions[4].height = 20
 
     img = Image('app/views/reportes/logo_asuan.png') 
     img.width = 140  
     img.height = 50  
     ws.add_image(img, 'D2')
-    ws.merge_cells('B2:F2')
-    ws['B2'].alignment = center_alignment
-    ws['B2'].border = medium_border
 
     ws.merge_cells('B2:F2')
+    ws['B2'] = ""
     ws['B2'].alignment = center_alignment
+    ws['B2'].border = medium_border
+    ws['C2'].border = medium_border
+    ws['D2'].border = medium_border
+    ws['E2'].border = medium_border
+    ws['F2'].border = medium_border
+
     ws.merge_cells('B3:F3')
     ws['B3'] = "Reporte de Platos"
     ws['B3'].font = Font(size=14, bold=True)
     ws['B3'].alignment = center_alignment
     ws['B3'].border = medium_border
-    for col in range(3, 7):
-        ws.cell(row=3, column=col).border = medium_border
+    ws['C3'].border = medium_border
+    ws['D3'].border = medium_border
+    ws['E3'].border = medium_border
+    ws['F3'].border = medium_border
 
     ws.merge_cells('B4:F4')
     fecha = datetime.now().strftime("%d/%m/%Y")
     ws['B4'] = f"Fecha: {fecha}"
-    ws['B4'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    ws['B4'].alignment = center_alignment
     ws['B4'].border = medium_border
-    for col in range(3, 7):
+    for col in range(2, 7):
         ws.cell(row=4, column=col).border = medium_border
 
     headers = ['ID', 'Plato', 'Descripción', 'Valor', 'Estado']
@@ -422,9 +395,14 @@ def export_platos_excel(request):
         ws.cell(row=row_num, column=4, value=plato.descripcion)
         ws.cell(row=row_num, column=5, value=plato.valor)
         ws.cell(row=row_num, column=6, value='Activo' if plato.estado else 'Inactivo')
-        
+
         for col_num in range(2, 7):
             cell = ws.cell(row=row_num, column=col_num)
+            cell.alignment = center_alignment
+            cell.border = medium_border
+
+    for row in ws.iter_rows(min_row=5, min_col=2, max_col=6, max_row=ws.max_row):
+        for cell in row:
             cell.alignment = center_alignment
             cell.border = medium_border
 
@@ -434,6 +412,8 @@ def export_platos_excel(request):
     return response
 
 ################################################## Meseros ##################################################
+@login_required
+@never_cache
 def export_meseros_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -513,6 +493,8 @@ def export_meseros_excel(request):
     return response
 
 ################################################## Clientes ##################################################
+@login_required
+@never_cache
 def export_clientes_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -592,6 +574,8 @@ def export_clientes_excel(request):
     return response
 
 ################################################## Administradores ##################################################
+@login_required
+@never_cache
 def export_administradores_excel(request):
     wb = Workbook()
     ws = wb.active
@@ -670,6 +654,8 @@ def export_administradores_excel(request):
     return response
 
 ################################################## Operadores ##################################################
+@login_required
+@never_cache
 def export_operadores_excel(request):
     wb = Workbook()
     ws = wb.active
