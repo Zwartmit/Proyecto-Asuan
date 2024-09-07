@@ -26,7 +26,7 @@
                 <form action="#" method="post">
                     {% csrf_token %}
                     <div class="input-group mb-3">
-                        {{ form.username | add_class:'form-control' | attr:'id:username' | attr:'autocomplete:off' | attr:'placeholder:Ingrese su usuario' }}
+                        {{ form.username | add_class:'form-control' | attr:'id:username' | attr:'autocomplete:on' | attr:'placeholder:Ingrese su usuario' }}
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope" style="color: white;"></span>

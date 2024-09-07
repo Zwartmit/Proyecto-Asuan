@@ -61,6 +61,7 @@ def reporte_selector(request):
 
     contexto = {
         'titulo': 'Generar reportes',
+        'entidad': 'Generar reportes'
     }
     
     return render(request, 'reportes.html', contexto)
