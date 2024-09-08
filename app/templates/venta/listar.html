@@ -5,8 +5,6 @@
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
     <th scope="col">Total</th>
-    <th scope="col">Dinero recibido</th>
-    <th scope="col">Cambio</th>
     <th scope="col">Metodo de pago</th>
     <th scope="col">Opciones</th>
 </tr>
@@ -18,8 +16,6 @@
         <td>{{ v.id }}</td>
         <td>{{ v.fecha_venta }}</td>
         <td>{{ v.total_venta }}</td>
-        <td>{{ v.dinero_recibido }}</td>
-        <td>{{ v.cambio }}</td>
         <td>{{ v.metodo_pago }}</td>
         <td>
             <a href="{% url 'app:venta_editar' v.id %}" class="btn btn-info btn-sm">
@@ -31,4 +27,41 @@
         </td>
     </tr>
     {% endfor %}
+ {% endblock %}
+ {% block javascript %}
+ <script type="application/javascript">
+     $(document).ready(function () {
+         $("#tabla").DataTable({
+             responsive: true,
+             initComplete: function () {
+                 var api = this.api();
+                 var columnNames = ['id', 'Fecha', 'Total', 'Metodo de pago', 'Opciones'];
+                 var excludedColumnIndex = columnNames.indexOf('Opciones'); 
+                api.columns().every(function (index) {
+                    var column = this;
+                    var header = $(column.header());
+                    if (index !== excludedColumnIndex) {
+                        var filterContainer = $('<div class="filter-container"></div>').appendTo(header.empty());
+                        $('<label>' + columnNames[index] + '</label>').appendTo(filterContainer);
+                        var select = $('<select><option value="">Todos</option></select>')
+                            .appendTo(filterContainer)
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    } else {
+                        $('<label>' + columnNames[index] + '</label>').appendTo(header.empty());
+                    }
+                });
+            }
+        });
+    });
+</script>
  {% endblock %}

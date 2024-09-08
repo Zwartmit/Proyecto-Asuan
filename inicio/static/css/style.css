@@ -1217,8 +1217,9 @@ section {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  background: #f6f6f7;
-  background-color: #f6f6f7;
+  background: #04644b;
+  background-color: #04644b;
+  color: white;
   padding: 20px 0; 
 }
 

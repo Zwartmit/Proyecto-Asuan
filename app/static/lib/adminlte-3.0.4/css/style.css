@@ -33,7 +33,7 @@
 }
 
 .content-wrapper {
-    background-image: url("/static/img/beach.jpeg");
+    background-image: url("/static/img/background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -47,6 +47,7 @@
     text-align: center;
     color: #ffffff;
     background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    border-radius: 15px;
 }
 
 .containerBackup .backup-section {
@@ -79,10 +80,48 @@
     width: 170px;
 }
 
-.dark-mode .content-wrapper {
-    background: #242424;
-    border-color: #414141;
+.containerReport {
+    display: block;
+    text-align: center;
     color: #ffffff;
+    background: linear-gradient(#04644b, #04644b, #6ddbd7);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.containerReport .format-section {
+    background: #04644b;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    margin-right: 30px;
+    text-shadow: 3px 3px 2.5px black;
+    border: 1px solid #ddd;
+}
+
+.containerReport .report-section {
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.h1,
+h1 {
+    text-shadow: 3px 3px 2.5px black;
+}
+
+.dropdown-item:hover {
+    background-color: #043b2e;
+    border-radius: 10px;
+}
+
+.dark-mode .content-wrapper {
+    background-image: url("/static/img/backDark1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .dark-mode .main-header {
@@ -115,7 +154,6 @@
     background-color: #303030;
     border-color: #414141;
     color: #e0e0e0;
-    border-radius: 10px;
 }
 
 .dark-mode .card-header {
@@ -138,9 +176,7 @@
 
 .dark-mode .containerBackup {
     background-color: #414141;
-    border-color: #414141;
     color: #ffffff;
-    border-radius: 10px;
 }
 
 .dark-mode .containerTitle {
@@ -202,6 +238,13 @@
     margin-right: 5px;
 }
 
+.dark-mode .client-options {
+    background-color: #3b3a3a;
+    border-color: #c4c4c4;
+    color: #ffffff;
+    margin-right: 5px;
+}
+
 .dark-mode .product-table th {
     background-color: #414141;
     border-color: #c4c4c4;
@@ -214,6 +257,36 @@
     color: #ffffff;
 }
 
+.dark-mode .containerReport {
+    background: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .format-section {
+    background: #646464;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .containerReport .report-section {
+    background: #414141;
+    border-color: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .logout-menu {
+    background: #414141;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.logout-menu {
+    background-color: #04644b;
+    border-color: #ffffff;
+    border-radius: 10px
+}
+
 .img_db {
     margin-top: 20px;
 }
@@ -223,7 +296,8 @@
     margin-bottom: 15px;
 }
 
-.generate-section, .restore-section {
+.generate-section,
+.restore-section {
     width: 48%;
     padding: 20px;
     background-color: #fff;
@@ -236,7 +310,10 @@
     margin-top: 50px;
 }
 
-.btn_generate, .btn_restore, .btn_delete, .btn_download {
+.btn_generate,
+.btn_restore,
+.btn_delete,
+.btn_download {
     font-size: 40px;
     background-color: transparent;
     color: white;
@@ -257,13 +334,16 @@ table {
     margin-bottom: 20px;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ddd;
     color: black;
     text-shadow: none;
 }
 
-th, td {
+th,
+td {
     padding: 15px;
     text-align: left;
 }
@@ -343,6 +423,10 @@ tr:hover td {
     margin-bottom: 30px;
 }
 
+.company-details{
+    margin-right: 5px;
+}
+
 .company-details, .client-details {
     width: 45%;
     padding: 15px;
@@ -420,6 +504,14 @@ tr:hover td {
     table-layout: fixed;
 }
 
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+    table-layout: fixed;
+}
+
 .product-table th, .product-table td {
     border: 1px solid #ddd;
     padding: 12px;
@@ -446,30 +538,30 @@ tr:hover td {
 }
 
 .product-table th.product-column, .product-table td.product-column {
-    width: 30%; /* Ajusta el valor según el espacio que desees */
+    width: 28%;
 }
 
 .product-table th.quantity-column, .product-table td.quantity-column {
-    width: 15%; /* Ajusta el valor según el espacio que desees */
+    width: 15%;
 }
 
 .product-table th.price-column, .product-table td.price-column {
-    width: 15%; /* Ajusta el valor según el espacio que desees */
+    width: 15%;
 }
 
 .product-table th.stock-column, .product-table td.stock-column {
-    width: 10%; /* Ajusta el valor según el espacio que desees */
+    width: 12%;
 }
 
 .product-table th.delete-column, .product-table td.delete-column {
-    width: 13%; /* Ajusta el valor según el espacio que desees */
+    width: 14%;
 }
 
 .totals {
     text-align: right;
     font-size: 18px;
     font-weight: bold;
-    margin-left: 70%;
+    margin-bottom: 20px;
 }
 
 .delete-row {
@@ -487,8 +579,17 @@ tr:hover td {
     box-shadow: none;
 }
 
+.totals{
+    margin-left: 50%;
+}
+
 .totals p {
     margin: 5px 0;
+}
+
+.form-control[readonly] {
+    background-color: white;
+    opacity: 1;
 }
 
 button {
@@ -517,7 +618,7 @@ button:hover {
     color: red;
     font-size: 14px;
     margin-top: 5px;
-    display: block; 
+    display: block;
 }
 
 @media print {
@@ -531,16 +632,17 @@ button:hover {
         box-shadow: none;
         padding: 0;
     }
-    
-    .product-table th, .product-table td {
+
+    .product-table th,
+    .product-table td {
         padding: 8px;
-        word-wrap: break-word; 
+        word-wrap: break-word;
     }
 
     .product-table td.detail {
-        white-space: normal; 
-        overflow: visible; 
-        max-width: none; 
+        white-space: normal;
+        overflow: visible;
+        max-width: none;
     }
 
     .product-table th:last-child,
@@ -548,7 +650,8 @@ button:hover {
         display: none;
     }
 
-    input, textarea {
+    input,
+    textarea {
         border: none;
         background: none;
         box-shadow: none;
@@ -558,7 +661,12 @@ button:hover {
     }
 }
 
-.form-control:disabled, .form-control[readonly] {
-    background-color: #f8f9fa;
-    opacity: 1;
+.filter-container {
+    margin-bottom: 10px;
+}
+
+.filter-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
 }

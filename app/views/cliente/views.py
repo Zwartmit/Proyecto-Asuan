@@ -2,7 +2,7 @@ import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -58,7 +58,6 @@ class ClienteCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form() 
         context['titulo'] = 'Registrar cliente'
         context['entidad'] = 'Registrar cliente'
         context['error'] = 'Este cliente ya está registrado'
@@ -66,16 +65,24 @@ class ClienteCreateView(CreateView):
         return context
     
     def form_valid(self, form):
-        response = super().form_valid(form)
+        numero_documento = form.cleaned_data.get('numero_documento')
+
+        if Cliente.objects.filter(numero_documento=numero_documento).exists():
+            form.add_error('numero_documento', 'Ya existe un cliente registrado con este número de documento.')
+            return self.form_invalid(form)
+
         if self.request.is_ajax():
-            return JsonResponse({'success': True}, status=200)
-        return response
+            cliente = form.save()
+            return JsonResponse({'success': True, 'cliente_id': cliente.id})
+
+        return super().form_valid(form)
 
     def form_invalid(self, form):
         if self.request.is_ajax():
-            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+            return JsonResponse({'success': False, 'form': form.as_p()})
+        
         return super().form_invalid(form)
-    
+
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -93,9 +100,15 @@ class ClienteUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar cliente'
         context['entidad'] = 'Editar cliente'
-        context['error'] = 'Este cliente ya está registrad'
+        context['error'] = 'Este cliente ya está registrado'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
+
+    def form_valid(self, form):
+        nombre = form.cleaned_data.get('nombre').lower()
+        response = super().form_valid(form)
+        success_url = reverse('app:cliente_crear') + '?updated=True'
+        return redirect(success_url)
 
 ###### ELIMINAR ######
 
@@ -115,3 +128,11 @@ class ClienteDeleteView(DeleteView):
         context['entidad'] = 'Eliminar cliente'
         context['listar_url'] = reverse_lazy('app:cliente_lista')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Cliente eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el cliente.'})

@@ -45,55 +45,31 @@
                                 </div>
                                 <div class="options">
                                     <label for="add-client">Agregar:</label>
-                                    <button id="add-client" data-toggle="modal" data-target="#addClientModal">
+                                    <button id="add-client" data-toggle="modal" data-target="#addClientModal" data-url="{% url 'app:cliente_crear' %}">
                                         <i class="fas fa-plus"></i> Nuevo cliente
                                     </button>
-                                    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addClientModalLabel">Agregar Cliente</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form id="client-form" method="POST" action="{% url 'app:cliente_crear' %}">
-                                                        {% csrf_token %}
-                                                        <!-- Campos del formulario -->
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.nombre.id_for_label }}">{{cliente_form.nombre.label }}:</label>
-                                                            {{ cliente_form.nombre|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.tipo_documento.id_for_label }}">{{cliente_form.tipo_documento.label }}:</label>
-                                                            {{ cliente_form.tipo_documento|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.numero_documento.id_for_label }}">{{cliente_form.numero_documento.label }}:</label>
-                                                            {{ cliente_form.numero_documento|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.email.id_for_label }}">{{cliente_form.email.label }}:</label>
-                                                            {{ cliente_form.email|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.pais_telefono.id_for_label }}">{{cliente_form.pais_telefono.label }}:</label>
-                                                            {{ cliente_form.pais_telefono|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="{{ cliente_form.telefono.id_for_label }}">{{cliente_form.telefono.label }}:</label>
-                                                            {{ cliente_form.telefono|add_class:'form-control'|attr:'autocomplete:off' }}
-                                                        </div>           
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-primary" form="client-form">Guardar</button>
-                                                </div>
+                                </div>
+                                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addClientModalLabel">Nuevo Cliente</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="clienteForm" method="post">
+                                                    {% csrf_token %}
+                                                    {{ form.as_p }}
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-primary" id="save-client">Guardar cliente</button>
                                             </div>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                             <div class="client-information">

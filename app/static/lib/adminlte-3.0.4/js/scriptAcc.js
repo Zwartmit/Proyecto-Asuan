@@ -289,20 +289,34 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    $('#client-form').on('submit', function (e) {
-        e.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            url: '{% url "app:cliente_crear" %}',
-            data: $(this).serialize(),
-            success: function (response) {
-                alert('Cliente agregado exitosamente');
-                $('#addClientModal').modal('hide');
-            },
-            error: function (response) {
-                alert('Error al agregar cliente');
-            }
+    $(document).ready(function() {
+        $('#add-client').on('click', function() {
+            var url = $(this).data('url');  // Obtiene la URL del atributo data-url
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    $('#clienteForm').html(data);
+                }
+            });
+        });
+    
+        $('#save-client').on('click', function() {
+            var form = $('#clienteForm');
+            var url = $('#add-client').data('url');  // Usa la misma URL para el envío del formulario
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function(data) {
+                    if (data.success) {
+                        $('#addClientModal').modal('hide');
+                        location.reload();
+                    } else {
+                        $('#clienteForm').html(data.form);
+                    }
+                }
+            });
         });
     });
 });

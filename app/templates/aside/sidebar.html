@@ -7,7 +7,7 @@
                 <img src="{% static 'img/logo_asuan3.png' %}" alt="Logo Asuán" class="logo-image">
             </a>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"
-                style="align-content: left">
+                style="align-content: center; justify-content: right">
                 <h1 style="font-size: 50px; font-style: oblique; color: white; text-align: center">ㅤ</h1>
                 <li class="nav-itemm">
                     <a href="#submenu1" class="nav-link d-flex justify-content-between align-items-center"
@@ -21,33 +21,29 @@
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{% url 'app:venta_lista' %}"
                                 style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-search"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <i class="nav-icon fas fa-search" style="font-size: 20px; margin-right: 10px; color: white;"></i>
                                 <span>Consultar ventas</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{% url 'app:venta_crear' %}"
                                 style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-cash-register"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <i class="nav-icon fas fa-cash-register" style="font-size: 20px; margin-right: 10px; color: white;"></i>
                                 <span>Ventas por caja</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{% url 'app:cuenta' %}"
                                 style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-file-invoice-dollar"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <i class="nav-icon fas fa-file-invoice-dollar" style="font-size: 20px; margin-right: 10px; color: white;"></i>
                                 <span>Ventas por cuenta</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{% url 'app:detalle_venta_lista' %}"
                                 style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-folder"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
-                                <span>Registro de ventas por caja</span>
+                                <i class="nav-icon fas fa-folder" style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Detalle productos</span>
                             </a>
                         </li>
                     </ul>
@@ -184,34 +180,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-itemm">
-                    <a href="#submenu6" class="nav-link d-flex justify-content-between align-items-center"
-                        data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
-                        <div class="d-flex align-items-center">
-                            <i class="nav-icon fas fa-file-invoice-dollar"
-                                style="font-size: 25px; margin-right: 10px;"></i>
-                            <p class="mb-0" style="font-size: 19px;">Gestión de facturas</p>
-                        </div>
-                    </a>
-                    <ul class="collapse list-unstyled pl-4" id="submenu6">
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_lista' %}"
-                                style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-list"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
-                                <span>Lista de facturas</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_crear' %}"
-                                style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-plus"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
-                                <span>Generar factura</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 {% if perms.app.view_usuario %}
                 <li class="nav-itemm">
                     <a href="#submenu7" class="nav-link d-flex justify-content-between align-items-center"
@@ -241,6 +209,41 @@
                     </ul>
                 </li>
                 {% endif %}
+                <li class="nav-itemm">
+                    <a href="#submenu6" class="nav-link d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
+                        <div class="d-flex align-items-center">
+                            <i class="nav-icon fas fa-file-invoice" style="font-size: 25px; margin-right: 10px;"></i>
+                            <p class="mb-0" style="font-size: 19px;">Gestión de facturas</p>
+                        </div>
+                    </a>
+                    <ul class="collapse list-unstyled pl-4" id="submenu6">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_lista' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="nav-icon fas fa-list"
+                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Lista de facturas</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_crear' %}"
+                                style="font-size: 19px; color: white;">
+                                <i class="nav-icon fas fa-plus"
+                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
+                                <span>Generar factura</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-itemm">
+                    <a href="{% url 'app:gestion_reportes' %}" class="nav-link d-flex justify-content-between align-items-center" style="color: white; font-size: 13px;">
+                        <div class="d-flex align-items-center">
+                            <i class="nav-icon fas fa-file-pdf" style="font-size: 25px; margin-right: 10px;"></i>
+                            <p class="mb-0" style="font-size: 19px;">Reportes</p>
+                        </div>
+                    </a>                    
+                </li>
             </ul>
         </nav>
     </div>
