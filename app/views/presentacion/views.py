@@ -3,7 +3,7 @@ import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -63,16 +63,19 @@ class PresentacionCreateView(CreateView):
         context['entidad'] = 'Registrar presentación'
         context['error'] = 'Esta presentación ya existe'
         context['listar_url'] = reverse_lazy('app:presentacion_lista')
+        context['created'] = self.request.session.pop('created', False) 
         return context
     
     def form_valid(self, form):
         presentacion = form.cleaned_data.get('presentacion').lower()
         
         if Presentacion.objects.filter(presentacion__iexact=presentacion).exists():
-            form.add_error('presentacion', 'Ya existe una presentación con este nombre.')
+            form.add_error('presentacion', 'Ya existe una presentación con ese nombre.')
             return self.form_invalid(form)
-        
-        return super().form_valid(form)
+
+        response = super().form_valid(form)
+        success_url = reverse('app:presentacion_crear') + '?created=True'
+        return redirect(success_url)
     
 ###### EDITAR ######
 
@@ -95,6 +98,12 @@ class PresentacionUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:presentacion_lista')
         return context
     
+    def form_valid(self, form):
+        presentacion = form.cleaned_data.get('presentacion').lower()
+        response = super().form_valid(form)
+        success_url = reverse('app:presentacion_crear') + '?updated=True'
+        return redirect(success_url)
+
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')

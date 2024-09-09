@@ -1,10 +1,19 @@
-from django.contrib import messages
-from django.urls import reverse_lazy
+import django
+import os
+import re
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.views.decorators.cache import never_cache
+from django.urls import reverse_lazy, reverse
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import render, redirect
+from django.db.models import ProtectedError
 from app.models import Administrador
 from app.forms import AdministradorForm
 
@@ -50,12 +59,13 @@ class AdministradorCreateView(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        messages.success(self.request, "Administrador creado con éxito.")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Hubo un error al crear el administrador.")
-        return super().form_invalid(form)
+        try:
+            response = super().form_valid(form)
+            success_url = reverse('app:administrador_crear') + '?created=True'
+            return redirect(success_url)
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorUpdateView(UpdateView):
@@ -79,12 +89,13 @@ class AdministradorUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        messages.success(self.request, "Administrador actualizado con éxito.")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Hubo un error al actualizar el administrador.")
-        return super().form_invalid(form)
+        try:
+            response = super().form_valid(form)
+            success_url = reverse('app:administrador_crear') + '?updated=True'
+            return redirect(success_url)
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):
@@ -106,6 +117,10 @@ class AdministradorDeleteView(DeleteView):
             return render(request, 'administrador/listar.html', list_context)
         return super().dispatch(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, "Administrador eliminado con éxito.")
-        return super().delete(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Administrador eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el administrador.'})

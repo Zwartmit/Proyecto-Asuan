@@ -234,12 +234,6 @@ class PlatoForm(ModelForm):
             )
         }
 
-from django import forms
-from django.core.exceptions import ValidationError
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, Select, NumberInput
-from django.contrib.auth.models import User
-from .models import Administrador
-
 class AdministradorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
@@ -271,11 +265,23 @@ class AdministradorForm(ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("conf_password")
+        cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
+        if not password1 or not password2:
+            raise ValidationError('La contraseña es obligatoria.')
+
+        if password1 != password2:
+            raise ValidationError('Las contraseñas no coinciden.')
+
+        if len(password1) < 6 or not any(char.isupper() for char in password1) or not any(char.isdigit() for char in password1):
+            raise ValidationError('La contraseña debe tener al menos 6 caracteres, incluir una letra mayúscula y un número.')
+        
         if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
@@ -284,24 +290,8 @@ class AdministradorForm(ModelForm):
         
         if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
-
-        # Requerir contraseña al editar
-        if self.instance.pk and not password1:
-            raise ValidationError("Debe proporcionar una contraseña al editar un administrador.")
         
         return cleaned_data
-
-    def clean_numero_documento(self):
-        numero_documento = self.cleaned_data.get('numero_documento')
-        if numero_documento and numero_documento < 1:
-            raise ValidationError("El número de documento debe ser mayor o igual a 1.")
-        return numero_documento
-
-    def clean_telefono(self):
-        telefono = self.cleaned_data.get('telefono')
-        if telefono and telefono < 1:
-            raise ValidationError("El número de teléfono debe ser mayor o igual a 1.")
-        return telefono
 
     def save(self, commit=True):
         cleaned_data = self.cleaned_data
@@ -337,12 +327,12 @@ class AdministradorForm(ModelForm):
         widgets = {
             "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
             "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
-            "numero_documento": NumberInput(attrs={"min": 1, "placeholder": "Número de documento"}),
+            "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
-        
+
 class OperadorForm(ModelForm):
     username = forms.CharField(
         label="Nombre de usuario",
