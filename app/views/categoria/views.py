@@ -70,7 +70,7 @@ class CategoriaCreateView(CreateView):
         categoria = form.cleaned_data.get('categoria').lower()
 
         if Categoria.objects.filter(categoria__iexact=categoria).exists():
-            form.add_error('categoria', 'Ya existe una categoría con este nombre.')
+            form.add_error('categoria', 'Ya existe una categoría registrada con este nombre.')
             return self.form_invalid(form)
 
         response = super().form_valid(form)

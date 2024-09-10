@@ -69,7 +69,7 @@ class PresentacionCreateView(CreateView):
     def form_valid(self, form):
         presentacion = form.cleaned_data.get('presentacion').lower()
         
-        if Presentacion.objects.filter(presentacion__iexact=presentacion).exists():
+        if Presentacion.objects.filter(presentacion__iexact=presentacion, unidad_medida__iexact=unidad_medida).exists():
             form.add_error('presentacion', 'Ya existe una presentación con ese nombre.')
             return self.form_invalid(form)
 

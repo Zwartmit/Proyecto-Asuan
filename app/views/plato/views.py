@@ -68,7 +68,7 @@ class PlatoCreateView(CreateView):
         plato = form.cleaned_data.get('plato').lower()
         
         if Plato.objects.filter(plato__iexact=plato).exists():
-            form.add_error('plato', 'Ya existe un plato con ese nombre.')
+            form.add_error('plato', 'Ya existe un plato registrado con ese nombre.')
             return self.form_invalid(form)
         
         response = super().form_valid(form)
