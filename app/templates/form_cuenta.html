@@ -45,11 +45,11 @@
                                 </div>
                                 <div class="options">
                                     <label for="add-client">Agregar:</label>
-                                    <button id="add-client" data-toggle="modal" data-target="#addClientModal" data-url="{% url 'app:cliente_crear' %}">
+                                    <button id="add-client" data-toggle="modal" data-target="#modal" data-url="{% url 'app:cliente_crear' %}">
                                         <i class="fas fa-plus"></i> Nuevo cliente
                                     </button>
                                 </div>
-                                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -58,10 +58,37 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                <form id="clienteForm" method="post">
+                                            <div class="modal-body" id="modal">
+                                                <form id="clienteForm" method="post" novalidate>
                                                     {% csrf_token %}
-                                                    {{ form.as_p }}
+                                                    <div class="form-group">
+                                                        <label for="nombre">Nombre:</label>
+                                                        <input type="text" id="nombre">
+                                                    </div>  
+                                                    <div class="form-group">
+                                                        <label for="{{ cliente_form.tipo_documento.id_for_label }}">{{ cliente_form.tipo_documento.label }}:</label>
+                                                        {{ cliente_form.tipo_documento|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="documento">No. Documento:</label>
+                                                        <input type="text" id="documento">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email:</label>
+                                                        <input type="email" id="email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="{{ cliente_form.pais_telefono.id_for_label }}">{{ cliente_form.pais_telefono.label }}:</label>
+                                                        {{ cliente_form.pais_telefono|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="telefono">Telefono:</label>
+                                                        <input type="number" id="telefono">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="{{ cliente_form.estado.id_for_label }}">{{ cliente_form.estado.label }}:</label>
+                                                        {{ cliente_form.estado|add_class:'form-control'|attr:'autocomplete:off' }}
+                                                    </div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer">

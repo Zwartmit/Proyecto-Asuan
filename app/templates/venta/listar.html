@@ -5,7 +5,10 @@
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
     <th scope="col">Total</th>
+    <th scope="col">Dinero ingresado</th>
+    <th scope="col">Cambio</th>
     <th scope="col">Metodo de pago</th>
+
     <th scope="col">Opciones</th>
 </tr>
 {% endblock %}
@@ -16,26 +19,25 @@
         <td>{{ v.id }}</td>
         <td>{{ v.fecha_venta }}</td>
         <td>{{ v.total_venta }}</td>
+        <td>{{ v.dinero_recibido }}</td>
+        <td>{{ v.cambio }}</td>
         <td>{{ v.metodo_pago }}</td>
         <td>
-            <a href="{% url 'app:venta_editar' v.id %}" class="btn btn-info btn-sm">
-                <i class="fas fa-edit"></i>
-            </a>
             <a href="{% url 'app:venta_eliminar' v.id %}" class="btn btn-danger btn-sm">
                 <i class="fas fa-trash"></i>
             </a>
         </td>
     </tr>
     {% endfor %}
- {% endblock %}
- {% block javascript %}
- <script type="application/javascript">
-     $(document).ready(function () {
-         $("#tabla").DataTable({
-             responsive: true,
-             initComplete: function () {
+{% endblock %}
+{% block javascript %}
+<script type="application/javascript">
+    $(document).ready(function () {
+        $("#tabla").DataTable({
+            responsive: true,
+            initComplete: function () {
                  var api = this.api();
-                 var columnNames = ['id', 'Fecha', 'Total', 'Metodo de pago', 'Opciones'];
+                 var columnNames = ['id', 'Fecha', 'Total', 'Dinero ingresado', 'Cambio', 'Metodo de pago', 'Opciones'];
                  var excludedColumnIndex = columnNames.indexOf('Opciones'); 
                 api.columns().every(function (index) {
                     var column = this;

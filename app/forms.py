@@ -140,33 +140,52 @@ class ClienteForm(ModelForm):
         widgets = {
             "nombre": TextInput(
                 attrs={
+                    'id': 'nombre',
                     "placeholder": "Nombre del cliente",
+                    'class': 'form-control'
                 }
             ),
             "tipo_documento": Select(
                 attrs={
+                    'id': 'tipo_documento',
                     "placeholder": "Tipo de documento",
+                    'class': 'form-control'
                 }
             ),
             "numero_documento": NumberInput(
                 attrs={
+                    'id': 'numero_documento',
                     "placeholder": "Número de documento",
+                    'class': 'form-control'
                 }
             ),
             "email": EmailInput(
                 attrs={
+                    'id': 'email',
                     "placeholder": "Email",
+                    'class': 'form-control'
+                }
+            ),
+            "pais_telefono": Select(
+                attrs={
+                    'id': 'pais_telefono',
+                    "placeholder": "Tipo de documento",
+                    'class': 'form-control'
                 }
             ),
             "telefono": NumberInput(
                 attrs={
+                    'id': 'nombre',
                     "placeholder": "Teléfono",
+                    'class': 'form-control'
                 }
             ),
             "estado": Select(
                 choices=[(True, "Activo"), (False, "Inactivo")],
                 attrs={
+                    'id': 'estado',
                     "placeholder": "Estado del cliente",
+                    'class': 'form-control'
                 },
             )
         }

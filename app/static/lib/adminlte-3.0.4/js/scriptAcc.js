@@ -286,37 +286,54 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('client-phone_number').value = data.telefono;
         });
     });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    $(document).ready(function() {
-        $('#add-client').on('click', function() {
-            var url = $(this).data('url');  // Obtiene la URL del atributo data-url
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(data) {
-                    $('#clienteForm').html(data);
-                }
-            });
-        });
     
-        $('#save-client').on('click', function() {
-            var form = $('#clienteForm');
-            var url = $('#add-client').data('url');  // Usa la misma URL para el envío del formulario
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: form.serialize(),
-                success: function(data) {
-                    if (data.success) {
-                        $('#addClientModal').modal('hide');
-                        location.reload();
-                    } else {
-                        $('#clienteForm').html(data.form);
-                    }
-                }
+    document.getElementById('save-client').addEventListener('click', function () {
+        const clientForm = document.getElementById('clienteForm');
+        const formData = new FormData(clientForm);
+
+        fetch('/app/cliente/crear/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Actualiza la lista de clientes en el formulario principal
+                const selectElement = document.querySelector('.product-select');
+                const newOption = new Option(data.client_name, data.client_id, true, true);
+                selectElement.add(newOption, undefined);
+                $(selectElement).trigger('change');
+                
+                // Cierra el modal
+                $('#modal').modal('hide');
+                
+                // Limpia el formulario del modal
+                clientForm.reset();
+                
+                Swal.fire({
+                    title: 'Cliente guardado',
+                    text: 'El cliente ha sido guardado exitosamente.',
+                    icon: 'success'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: data.error_message,
+                    icon: 'error'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Hubo un problema al guardar el cliente.',
+                icon: 'error'
             });
         });
     });
 });
+
