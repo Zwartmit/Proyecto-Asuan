@@ -1401,3 +1401,38 @@ section {
   border-color: #777777;
   color: #ffffff;
 }
+
+.dark-mode .asw-menu-btn {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu-header {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-card {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-adjust-font {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-filter {
+  background: #313131;
+  color: #ffffff;
+}

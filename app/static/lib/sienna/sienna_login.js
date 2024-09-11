@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const defaultOptions = {
-        buttonColor: '#04644b',
-        buttonIconColor: '#ffffff',
-        highlightColor: '#04644b',
+        buttonColor: '#ffffff',
+        buttonIconColor: '#04644b',
+        highlightColor: '#ffffff',
         menuBackgroundColor: '#ffffff',
         menuTextColor: '#000000',
         customLabels: {}
