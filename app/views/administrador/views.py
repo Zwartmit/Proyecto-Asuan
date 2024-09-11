@@ -81,23 +81,16 @@ class AdministradorUpdateView(UpdateView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.change_administrador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.change_administrador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'administrador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         try:
-            response = super().form_valid(form)
-            success_url = reverse('app:administrador_crear') + '?updated=True'
-            return redirect(success_url)
+            form.save()
+            return JsonResponse({'success': True})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        errors = form.errors.as_json()  # Captura los errores como JSON
+        errors = form.errors.as_json()
         return JsonResponse({'success': False, 'errors': errors})
 
 

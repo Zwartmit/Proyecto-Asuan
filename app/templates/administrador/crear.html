@@ -33,7 +33,7 @@
 <script>
     $(document).ready(function () {
         $('form').on('submit', function (event) {
-            event.preventDefault();  // Evita el envío normal del formulario
+            event.preventDefault(); 
 
             $.ajax({
                 type: $(this).attr('method'),
