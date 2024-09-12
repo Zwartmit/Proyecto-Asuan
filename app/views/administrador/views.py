@@ -57,7 +57,7 @@ class AdministradorCreateView(CreateView):
     def form_valid(self, form):
         try:
             form.save()
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'message': 'Administrador creado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
@@ -65,6 +65,7 @@ class AdministradorCreateView(CreateView):
     def form_invalid(self, form):
         errors = form.errors.as_json()
         return JsonResponse({'success': False, 'errors': errors})
+
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorUpdateView(UpdateView):
@@ -84,7 +85,7 @@ class AdministradorUpdateView(UpdateView):
     def form_valid(self, form):
         try:
             form.save()
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'message': 'Administrador editado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)

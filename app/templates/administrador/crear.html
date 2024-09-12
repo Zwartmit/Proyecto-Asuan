@@ -43,7 +43,7 @@
                     if (response.success) {
                         Swal.fire({
                             title: 'Éxito',
-                            text: 'Administrador guardado correctamente',
+                            text: response.message,  
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -54,7 +54,7 @@
                         let errors = JSON.parse(response.errors);
                         for (let field in errors) {
                             for (let error of errors[field]) {
-                                errorMessages += `${field}: ${error.message}<br>`;
+                                errorMessages += `${error.message}<br>`;
                             }
                         }
 
@@ -70,31 +70,5 @@
             });
         });
     });
-
-    {% if request.GET.created %}
-    Swal.fire({
-        title: 'Éxito',
-        text: 'Administrador registrado con éxito.',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#04644b'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "{% url 'app:administrador_lista' %}";
-        }
-    });
-    {% elif request.GET.updated %}
-    Swal.fire({
-        title: 'Éxito',
-        text: 'Administrador editado con éxito.',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#04644b'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "{% url 'app:administrador_lista' %}";
-        }
-    });
-    {% endif %}
 </script>
 {% endblock %}
