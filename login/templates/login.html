@@ -15,15 +15,38 @@
     <script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
     <script src="{% static 'lib/sienna/sienna_login.js' %}"></script>
     <style>
+        .card {
+            border-radius: 14px;
+        }
+        
+        .card-header {
+            background-color: #05805f;
+            border-radius: 10px;
+            color: white;
+        }
+
         body.dark-mode {
             background-color: #414141;
+            border-radius: 10px;
             border-color: #ffffff;
             color: white;
         }
 
+        .dark-mode .login-box {
+            background-color: #414141;
+            border-radius: 10px;
+            color: white;
+        }
+
         .dark-mode .card {
+            background-color: #5a5a5a;
+            border-radius: 18px;
+            color: white;
+        }
+
+        .dark-mode .card-header {
             background-color: #303030;
-            border-color: #ffffff;
+            border-radius: 10px;
             color: white;
         }
 
@@ -35,17 +58,19 @@
 
         .dark-mode .input-group-text {
             background-color: #414141;
+            border-radius: 10px;
             border-color: #2c2c2c;
             color: white;
         }
 
         .dark-mode .card-body {
-            background-color: #414141;
+            background-color: #5a5a5a;
+            border-radius: 14px;
             border-color: #2c2c2c   ;
             color: white;
         }
 
-        .dark-mode .row .col-8 .icheck-primary .mb-1 {
+        .dark-mode a {
             color: white;
         }
     </style>
@@ -55,7 +80,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{% url 'index' %}"><img src="{% static 'img/logo_asuan1.png' %}" alt="Asuán"></a>
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo_asuan3.png' %}" alt="Asuán"></a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Iniciar sesión</p>
@@ -113,11 +138,9 @@
                 style="font-size: 30px; color: white; text-shadow: 3px 3px 2.5px black;" aria-hidden="true"></i>
         </a>
     </div>
-
     <script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const togglePasswordButton = document.querySelector('.toggle-password');

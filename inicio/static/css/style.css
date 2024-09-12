@@ -1436,3 +1436,8 @@ section {
   background: #313131;
   color: #ffffff;
 }
+
+.dark-mode #header {
+  background: #242424;
+  color: #ffffff;
+}
