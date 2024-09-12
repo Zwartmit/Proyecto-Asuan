@@ -43,7 +43,7 @@
             <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
-            <li><a class="btn-dark bx bxs-moon" style="font-size: 30px;" title="Modo oscuro-claro"
+            <li><a id="darkModeToggle" class="btn-dark bx bxs-moon" style="font-size: 30px;" title="Modo oscuro-claro"
                 onclick="toggleDarkMode()"></a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
@@ -149,47 +149,26 @@
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                   <h4><a>Kayak</a></h4>
                   <source><img src="{% static 'img/kayak.png' %}" alt="Kayak">
-                  <p>Ya seas un principiante entusiasta o un experto experimentado, nuestro servicio de kayak se
-                    adapta
-                    a todos los niveles. Siente la brisa en tu rostro y la libertad en tus manos mientras te deslizas
-                    suavemente sobre las aguas cristalinas de nuestro lago.</p>
-                  <br>
-                  <p><b>1 Persona - 30 minutos - $20.000 COP<br>
-                      2 Personas - 30 minutos - $30.000 COP<br>
-                      3 Personas - 30 minutos - $40.000 COP</b></p>
                 </div>
               </div>
               <div class="col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
                   <h4><a>Paddle board</a></h4>
                   <source><img src="{% static 'img/paddle.png' %}" alt="Kayak">
-                  <p>Disfruta de vistas panorámicas espectaculares mientras te desplazas sobre el agua. El paddle
-                    board
-                    te brinda la oportunidad de contemplar la belleza natural que rodea nuestro parque eco turístico
-                    desde una perspectiva única.</p>
-                  <br>
-                  <p><b>1 Persona - 30 minutos - $20.000 COP<br>
-                      2 Personas - 30 minutos - $30.000 COP</b></p>
                 </div>
               </div>
               <div class="col-md-6 d-flex align-items-stretch mt-4">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
                   <h4><a>Bote</a></h4>
                   <source><img src="{% static 'img/bote.png' %}" alt="Kayak">
-                  <p>Embárcate en un viaje relajante y sereno mientras te desplazas suavemente sobre las aguas
-                    cristalinas de nuestro lago. Nuestros botes ofrecen una forma cómoda y tranquila de explorar la
-                    belleza natural de Casanare.</p>
-                  <br>
-                  <p><b>1 - 4 Personas - 30 minutos - $40.000 COP</b></p>
                 </div>
               </div>
-              <!-- <div class="col-md-6 d-flex align-items-stretch mt-4">
-                <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
-                  <div class="icon"><i class="bx bx-world"></i></div>
-                  <h4><a href="">Nemo Enim</a></h4>
-                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+              <div class="col-md-6 d-flex align-items-stretch mt-4">
+                <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
+                  <h4><a>Voley playa</a></h4>
+                  <source><img src="{% static 'img/voley.png' %}" alt="Voley playa">
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -216,10 +195,10 @@
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/churrasco.jpg' %}" class="img-fluid" alt="Churrasco"
+              <img src="{%static 'img/picada.png' %}" class="img-fluid" alt="Picada"
                 style="width: 600px; height: 300px">
               <div class="portfolio-info">
-                <h4>Churrasco</h4>
+                <h4>Picada</h4>
               </div>
             </div>
           </div>
@@ -229,33 +208,6 @@
                 style="width: 600px; height: 300px">
               <div class="portfolio-info">
                 <h4>Cachama frita</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/costillas.jpg' %}" class="img-fluid" alt="Costillas de cerdo"
-                style="width: 600px; height: 300px">
-              <div class="portfolio-info">
-                <h4>Costillas de cerdo</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/lengua.jpg' %}" class="img-fluid" alt="Lengua en salsa"
-                style="width: 600px; height: 300px">
-              <div class="portfolio-info">
-                <h4>Lengua en salsa</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="{%static 'img/sancocho.jpg' %}" class="img-fluid" alt="Sancocho"
-                style="width: 600px; height: 300px">
-              <div class="portfolio-info">
-                <h4>Sancocho</h4>
               </div>
             </div>
           </div>
@@ -283,8 +235,11 @@
                     <h4>Brandon Urbano</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/zwart_mit/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/zwart_mit/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a target="_blank"
+                        href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                          class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -296,8 +251,9 @@
                     <h4>David Cubides</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/incogn___/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="#"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/incogn___/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a href=""><i class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -309,8 +265,10 @@
                     <h4>Diego Joya</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/d.z.v.i.o/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/d.z.v.i.o/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a target="_blank" href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"><i
+                          class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -349,7 +307,8 @@
               <h4>Nuestras redes sociales:</h4>
               <div>
                 <p>
-                  <a target="_blank" href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d">Facebook</a>
+                  <a target="_blank"
+                    href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d">Facebook</a>
                   /
                   <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/">Instragram</i></a>
                 </p>
@@ -359,8 +318,9 @@
               <div class="col-lg-6 mt-4">
                 <div class="info">
                   <i class="bi bi-envelope"></i>
-                  <h4>Correo:</h4>
-                  <p>asuanparqueecoturistico@gmail.com</p>
+                  <h4>Envíanos un correo:</h4>
+                  <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=asuan.adso@gmail.com"
+                      target="_blank">asuan.adso@gmail.com</a></p>
                 </div>
               </div>
               <div class="col-lg-6">
@@ -371,28 +331,6 @@
                 </div>
               </div>
             </div>
-            <form action="{% static 'forms/contact.php' %}" method="post" role="form" class="php-email-form mt-4">
-              <div class="row">
-                  <div class="col-md-6 form-group">
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" required>
-                  </div>
-                  <div class="col-md-6 form-group mt-3 mt-md-0">
-                      <input type="email" class="form-control" name="email" id="email" placeholder="Correo" required>
-                  </div>
-              </div>
-              <div class="form-group mt-3">
-                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required>
-              </div>
-              <div class="form-group mt-3">
-                  <textarea class="form-control" name="message" rows="5" placeholder="Mensaje" required></textarea>
-              </div>
-              <div class="my-3">
-                  <div class="loading">Cargando</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Tu mensaje se ha enviado con éxito. ¡Gracias!</div>
-              </div>
-              <div class="text-center"><button type="submit">Enviar mensaje</button></div>
-          </form>
           </div>
         </div>
       </div>
@@ -404,16 +342,18 @@
   <footer class="footer">
     <div class="contenedor">
       <div class="footer1">
-        <strong>Copyright &copy; 2024-2030 <a href="https://www.asuanparque.com">Asuán</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2024-2030 <a target="_blank" href="https://www.asuanparque.com"
+            style="color: black">Asuán</a>.</strong> All rights reserved.
       </div>
       <div class="footer2">
-        <img src="{%static 'img/logo_asuan1.png' %}" alt="Logo Asuán">
+        <img src="{%static 'img/logo_asuan.png' %}" alt="Logo Asuán">
       </div>
     </div>
   </footer>
   <!-- Fin del pie de página -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
   <script src="{%static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{%static 'vendor/aos/aos.js' %}"></script>
   <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -422,6 +362,35 @@
   <script src="{%static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{%static 'vendor/php-email-form/validate.js' %}"></script>
   <script src="{%static 'js/main.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const darkModeIcon = document.getElementById("darkModeToggle");
+
+        localStorage.setItem('dark-mode', isDarkMode);
+
+        if (isDarkMode) {
+          darkModeIcon.classList.remove('bxs-moon');
+          darkModeIcon.classList.add('bxs-sun');
+        } else {
+          darkModeIcon.classList.remove('bxs-sun');
+          darkModeIcon.classList.add('bxs-moon');
+        }
+      }
+
+      if (localStorage.getItem('dark-mode') === 'true') {
+        document.body.classList.add('dark-mode');
+        const darkModeIcon = document.getElementById("darkModeToggle");
+        darkModeIcon.classList.remove('bxs-moon');
+        darkModeIcon.classList.add('bxs-sun');
+      }
+
+      window.toggleDarkMode = toggleDarkMode;
+    });
+
+  </script>
 </body>
 
 </html>

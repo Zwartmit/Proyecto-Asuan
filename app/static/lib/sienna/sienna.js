@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .asw-footer a { text-decoration: underline; color: #fff; background: 0 0 !important; }
         .asw-card { margin: 0 15px 30px; }
         .asw-card-title { font-size: 18px; padding: 15px 0; }
-        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; }
+        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; border-radius: 8px; }
         .asw-adjust-font .label { display: flex; align-items: center; }
         .asw-adjust-font > div { display: flex; justify-content: space-between; margin-top: 20px; align-items: center; font-size: 16px; font-weight: 700; }
         .asw-adjust-font div[role=button] { background: #04644b; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     const h = function (e, s) {
         let a = !1;
-        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.8), s = Math.min(s, 1.2), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span").forEach((function (t) {
+        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.7), s = Math.min(s, 1.3), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span").forEach((function (t) {
             if (!t.classList.contains("material-icons")) {
                 let e = t.getAttribute("data-asw-orgFontSize");
                 e || (e = parseInt(window.getComputedStyle(t, null).getPropertyValue("font-size")), t.setAttribute("data-asw-orgFontSize", e));

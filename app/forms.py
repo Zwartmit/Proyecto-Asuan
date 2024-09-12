@@ -22,7 +22,13 @@ class CategoriaForm(ModelForm):
         widgets = {
             "categoria": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la categoria",
+                    "placeholder": "Categoría",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la categoría",
                 }
             )
         }
@@ -38,7 +44,13 @@ class MarcaForm(ModelForm):
         widgets = {
             "marca": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la marca",
+                    "placeholder": "Marca",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la marca",
                 }
             )
         }
@@ -54,7 +66,18 @@ class PresentacionForm(ModelForm):
         widgets = {
             "presentacion": TextInput(
                 attrs={
-                    "placeholder": "Nombre de la presentacion",
+                    "placeholder": "Presentación",
+                }
+            ),
+            "unidad_medida": Select(
+                attrs={
+                    "placeholder": "Unidad de medida",
+                }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado de la presentación",
                 }
             )
         }
@@ -62,7 +85,10 @@ class PresentacionForm(ModelForm):
 class ProductoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["producto"].widget.attrs["autofocus"] = True
+        
+        self.fields["id_categoria"].queryset = Categoria.objects.filter(estado=True)
+        self.fields["id_marca"].queryset = Marca.objects.filter(estado=True)
+        self.fields["id_presentacion"].queryset = Presentacion.objects.filter(estado=True)
 
     class Meta:
         model = Producto
@@ -87,7 +113,7 @@ class ProductoForm(ModelForm):
                 choices=[(True, "Activo"), (False, "Inactivo")],
                 attrs={
                     "placeholder": "Estado del producto",
-                },
+                }
             )
         }
 
@@ -239,11 +265,23 @@ class AdministradorForm(ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        password1 = cleaned_data.get("password")
+        password2 = cleaned_data.get("conf_password")
+        cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
+        if not password1 or not password2:
+            raise ValidationError('La contraseña es obligatoria.')
+
+        if password1 != password2:
+            raise ValidationError('Las contraseñas no coinciden.')
+
+        if len(password1) < 6 or not any(char.isupper() for char in password1) or not any(char.isdigit() for char in password1):
+            raise ValidationError('La contraseña debe tener al menos 6 caracteres, incluir una letra mayúscula y un número.')
+        
         if User.objects.filter(username=username).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
@@ -294,9 +332,6 @@ class AdministradorForm(ModelForm):
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
-
-
-# -----------------------------------------------------------------------------------------------
 
 class OperadorForm(ModelForm):
     username = forms.CharField(
@@ -387,9 +422,6 @@ class OperadorForm(ModelForm):
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
 
-
-# -------------------------------------------------------------------------------------------
- 
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -470,3 +502,10 @@ class FacturaForm(ModelForm):
                 }
             )
         }
+
+class ReporteForm(forms.Form):
+    FORMATO_CHOICES = [
+        ('excel', 'Excel'),
+        ('pdf', 'PDF'),
+    ]
+    formato = forms.ChoiceField(choices=FORMATO_CHOICES, label='Formato del Reporte')

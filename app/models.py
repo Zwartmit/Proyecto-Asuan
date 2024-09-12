@@ -9,6 +9,7 @@ from django.core.validators import MinLengthValidator
 
 class Categoria (models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
         return f"{self.categoria}"
@@ -22,6 +23,7 @@ class Categoria (models.Model):
     
 class Marca (models.Model):
     marca = models.CharField(max_length=50, verbose_name="Marca", unique=True)
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
         return f"{self.marca}"
@@ -33,16 +35,25 @@ class Marca (models.Model):
         
 ########################################################################################################################################
 
-class Presentacion (models.Model):
-    presentacion = models.CharField(max_length=50, verbose_name="Presentación", unique=True)
+class Presentacion(models.Model):
+    class unidadMedida(models.TextChoices):
+        L = 'litro(s)', 'litro(s)'
+        ML = 'mililitro(s)', 'mililitro(s)'
+        G = 'gramo(s)', 'gramo(s)'
+
+    presentacion = models.CharField(max_length=50, verbose_name="Presentación")
+    unidad_medida = models.CharField(max_length=12, choices=unidadMedida.choices, default="", verbose_name="Unidad de medida")
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
-        return f"{self.presentacion}"
+        return f"{self.presentacion} {self.get_unidad_medida_display()}"
 
     class Meta:
-        verbose_name= "presentacion"
-        verbose_name_plural ='presentaciones'
-        db_table ='Presentacion'
+        verbose_name = "presentacion"
+        verbose_name_plural = "presentaciones"
+        db_table = "Presentacion"
+        unique_together = ('presentacion', 'unidad_medida')  # Añade la restricción única
+
         
 ########################################################################################################################################
 
@@ -72,11 +83,7 @@ class Mesero(models.Model):
         CE = 'CE', 'Cédula de Extranjería'
         RC = 'RC', 'Registro Civil'
         PSP = 'PSP', 'Pasaporte'
-
-    def validar_numero_documento(value):
-        if value < 10000000 or value > 9999999999:
-            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
-        
+  
     def validar_email(value):
         value = "foo.bar@baz.qux"
         try:
@@ -86,7 +93,7 @@ class Mesero(models.Model):
         
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
     email = models.EmailField(max_length=50, verbose_name="Email", validators=[validate_email])
     pais_telefono = models.CharField(max_length=50, choices=[(pais, pais) for pais in codigos_telefonicos_paises], default='Colombia (+57)', verbose_name="Prefijo telefónico")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
@@ -109,10 +116,6 @@ class Cliente(models.Model):
         RC = 'RC', 'Registro Civil'
         PSP = 'PSP', 'Pasaporte'
 
-    def validar_numero_documento(value):
-        if value < 10000000 or value > 9999999999:
-            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
-        
     def validar_email(value):
         value = "foo.bar@baz.qux"
         try:
@@ -122,7 +125,7 @@ class Cliente(models.Model):
         
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
     email = models.EmailField(max_length=50, verbose_name="Email", validators=[validate_email])
     pais_telefono = models.CharField(max_length=50, choices=[(pais, pais) for pais in codigos_telefonicos_paises], default='Colombia (+57)', verbose_name="Prefijo telefónico")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
@@ -159,14 +162,10 @@ class Administrador(models.Model):
         CE = 'CE', 'Cédula de Extranjería'
         PSP = 'PSP', 'Pasaporte'
 
-    def validar_numero_documento(value):
-        if value < 10000000 or value > 9999999999:
-            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
@@ -215,14 +214,10 @@ class Operador(models.Model):
         CE = 'CE', 'Cédula de Extranjería'
         PSP = 'PSP', 'Pasaporte'
 
-    def validar_numero_documento(value):
-        if value < 10000000 or value > 9999999999:
-            raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='operador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validar_numero_documento])
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")

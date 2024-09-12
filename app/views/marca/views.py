@@ -1,14 +1,15 @@
+from django.contrib import messages
 import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
+from django.db.models import ProtectedError
 from app.models import Marca
 from app.forms import MarcaForm
 
@@ -62,15 +63,19 @@ class MarcaCreateView(CreateView):
         context['entidad'] = 'Registrar marca'
         context['error'] = 'Esta marca ya existe'
         context['listar_url'] = reverse_lazy('app:marca_lista')
+        context['created'] = self.request.session.pop('created', False) 
         return context
     
     def form_valid(self, form):
         marca = form.cleaned_data.get('marca').lower()
         
         if Marca.objects.filter(marca__iexact=marca).exists():
-            form.add_error('marca', 'Ya existe una marca con este nombre.')
+            form.add_error('marca', 'Ya existe una marca registrada con ese nombre.')
             return self.form_invalid(form)
-        return super().form_valid(form)
+
+        response = super().form_valid(form)
+        success_url = reverse('app:marca_crear') + '?created=True'
+        return redirect(success_url)
     
 ###### EDITAR ######
 
@@ -95,12 +100,10 @@ class MarcaUpdateView(UpdateView):
     
     def form_valid(self, form):
         marca = form.cleaned_data.get('marca').lower()
-        
-        if Marca.objects.filter(marca__iexact=marca).exists():
-            form.add_error('marca', 'Ya existe una marca con este nombre.')
-            return self.form_invalid(form)
-        return super().form_valid(form)
-    
+        response = super().form_valid(form)
+        success_url = reverse('app:marca_crear') + '?updated=True'
+        return redirect(success_url)
+
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -119,3 +122,11 @@ class MarcaDeleteView(DeleteView):
         context['entidad'] = 'Eliminar marca'
         context['listar_url'] = reverse_lazy('app:marca_lista')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Marca eliminada con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar la marca porque está asociada a un producto.'})

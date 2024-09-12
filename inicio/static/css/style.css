@@ -1217,8 +1217,9 @@ section {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  background: #f6f6f7;
-  background-color: #f6f6f7;
+  background: #04644b;
+  background-color: #04644b;
+  color: white;
   padding: 20px 0; 
 }
 
@@ -1398,5 +1399,45 @@ section {
 .dark-mode .contact .php-email-form textarea {
   background-color: #777777;
   border-color: #777777;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu-btn {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu-header {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-card {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-adjust-font {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-filter {
+  background: #313131;
+  color: #ffffff;
+}
+
+.dark-mode #header {
+  background: #242424;
   color: #ffffff;
 }
