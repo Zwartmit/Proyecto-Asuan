@@ -1,3 +1,4 @@
+// MODO OSCURO //
 document.addEventListener('DOMContentLoaded', function() {
     
 
@@ -19,6 +20,366 @@ document.addEventListener('DOMContentLoaded', function() {
     window.toggleDarkMode = toggleDarkMode;
 });
 
+// CUENTA //
+document.addEventListener('DOMContentLoaded', function () {
+    
+    const productRows = document.getElementById('product-rows');
+    const dishRows = document.getElementById('dish-rows');
+    const subtotalElement = document.getElementById('subtotal');
+    const totalVentaField = document.getElementById('total_venta');
+    const dineroRecibidoInput = document.getElementById('dinero_recibido');
+    const cambioElement = document.getElementById('cambio');
+    let validationTimeout = null;
+
+    let productRowCounter = 1;
+    let dishRowCounter = 1;
+    function addProductRow() {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="product-column" id="product-column-${productRowCounter}">
+                <input id="product-id-${productRowCounter}" class="product-id product-select" style="width: 100%;" required />
+            </td>
+            <td class="quantity-column" id="quantity-column-${productRowCounter}">
+                <input id="product-quantity-${productRowCounter}" type="number" class="product-quantity" min="1" required>
+            </td>
+            <td class="price-column" id="price-column-${productRowCounter}">
+                <input id="product-price-${productRowCounter}" type="number" class="product-price" min="0" step="0.01" required readonly>
+            </td>
+            <td class="stock-column" id="stock-column-${productRowCounter}">
+                <span id="product-stock-${productRowCounter}" class="product-stock">0</span>
+            </td>
+            <td class="delete-column">
+                <i type="button" id="delete-row-${productRowCounter}" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
+                    onmouseover="this.style.color='#ff0000';"
+                    onmouseout="this.style.color='#04644B';"></i>
+            </td>
+            <td><span id="product-total-${productRowCounter}" class="product-total">$0.00</span></td>
+        `;
+    
+        $(row.querySelector('.product-select')).select2({
+            placeholder: 'Seleccione un producto',
+            ajax: {
+                url: '/app/venta/productos_api/', 
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(producto => ({
+                            id: producto.id,
+                            text: producto.producto,
+                            valor: producto.valor,
+                            cantidad: producto.cantidad
+                        }))
+                    };
+                },
+                cache: true
+            }
+        }).on('select2:select', function (e) {
+            const data = e.params.data;
+            const priceInput = row.querySelector('.product-price');
+            const stockSpan = row.querySelector('.product-stock');
+            const quantityInput = row.querySelector('.product-quantity');
+            
+            priceInput.value = data.valor || 0;
+            stockSpan.textContent = data.cantidad || 0;
+            quantityInput.max = data.cantidad || 0;
+            quantityInput.value = 1; 
+
+            $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+
+            validateInputs();
+        });
+
+        productRows.appendChild(row);
+
+        row.querySelector('.product-quantity').addEventListener('input', function() {
+            clearTimeout(validationTimeout);
+            validationTimeout = setTimeout(validateInputs, 500);
+        });
+        row.querySelector('.product-price').addEventListener('input', validateInputs);
+        row.querySelector('.delete-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+        });
+
+        productRowCounter++;
+        validateInputs();
+    }
+
+    function addDishRow() {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="dish-column" id="dish-column-${dishRowCounter}">
+                <input id="dish-id-${dishRowCounter}" class="dish-id dish-select" style="width: 100%;" required />
+            </td>
+            <td class="quantity-dish-column" id="quantity-dish-column-${dishRowCounter}">
+                <input id="dish-quantity-${dishRowCounter}" type="number" class="dish-quantity" min="1" required>
+            </td>
+            <td class="price-dish-column" id="price-dish-column-${dishRowCounter}">
+                <input id="dish-price-${dishRowCounter}" type="number" class="dish-price" min="0" step="0.01" required readonly>
+            </td>
+            <td class="delete-dish-column">
+                <i type="button" id="delete-dish-row-${dishRowCounter}" class="delete-dish-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
+                    onmouseover="this.style.color='#ff0000';"
+                    onmouseout="this.style.color='#04644B';"></i>
+            </td>
+            <td><span id="dish-total-${dishRowCounter}" class="dish-total">$0.00</span></td>
+        `;
+
+        $(row.querySelector('.dish-select')).select2({
+            placeholder: 'Seleccione un platillo',
+            ajax: {
+                url: '/app/venta/platos_api/', 
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(plato => ({
+                            id: plato.id,  // Corregido de 'producto.id' a 'plato.id'
+                            text: plato.plato,
+                            valor: plato.valor,
+                        }))
+                    };
+                },
+                cache: true
+            }
+        }).on('select2:select', function (e) {
+            const data = e.params.data;
+            const priceInput = row.querySelector('.dish-price');
+            const quantityInput = row.querySelector('.dish-quantity');
+            
+            priceInput.value = data.valor || 0;
+            quantityInput.max = data.cantidad || 0;
+            quantityInput.value = 1; 
+
+            $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+
+            validateInputs();
+        });
+
+        dishRows.appendChild(row);
+
+        row.querySelector('.dish-quantity').addEventListener('input', function() {
+            clearTimeout(validationTimeout);
+            validationTimeout = setTimeout(validateInputs, 500);
+        });
+        row.querySelector('.dish-price').addEventListener('input', validateInputs);
+        row.querySelector('.delete-dish-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+        });
+
+        dishRowCounter++;
+        validateInputs();
+    }
+
+    function validateInputs() {
+        let isValid = true;
+        let ids = new Set();
+        let subtotal = 0;
+        let duplicateError = false;
+
+        // Productos
+        document.querySelectorAll('#product-rows tr').forEach(row => {
+            const select = $(row.querySelector('.product-select')).val();
+            const quantityInput = row.querySelector('.product-quantity');
+            const priceInput = row.querySelector('.product-price');
+            const stockSpan = row.querySelector('.product-stock');
+
+            const quantity = Number(quantityInput.value);
+            const price = Number(priceInput.value);
+            const maxQuantity = Number(quantityInput.max);
+
+            if (ids.has(select)) {
+                $(row.querySelector('.product-select')).next().addClass('error');
+                isValid = false;
+                duplicateError = true;
+            } else {
+                $(row.querySelector('.product-select')).next().removeClass('error');
+                ids.add(select);
+            }
+
+            if (quantity <= 0 || quantity > maxQuantity) {
+                quantityInput.classList.add('error');
+                if (quantity > maxQuantity) {
+                    Swal.fire({
+                        title: 'Advertencia!',
+                        text: `La cantidad ingresada (${quantity}) supera el stock disponible (${maxQuantity}).`,
+                        icon: 'warning',
+                    });
+                }
+                isValid = false;
+            } else {
+                quantityInput.classList.remove('error');
+            }
+
+            if (price < 0) {
+                priceInput.classList.add('error');
+                isValid = false;
+            } else {
+                priceInput.classList.remove('error');
+            }
+
+            const total = (quantity * price).toFixed(2);
+            row.querySelector('.product-total').textContent = `$${total}`;
+
+            subtotal += parseFloat(total);
+        });
+
+        // Platos
+        document.querySelectorAll('#dish-rows tr').forEach(row => {
+            const select = $(row.querySelector('.dish-select')).val();
+            const quantityInput = row.querySelector('.dish-quantity');
+            const priceInput = row.querySelector('.dish-price');
+
+            const quantity = Number(quantityInput.value);
+            const price = Number(priceInput.value);
+
+            if (ids.has(select)) {
+                $(row.querySelector('.dish-select')).next().addClass('error');
+                isValid = false;
+                duplicateError = true;
+            } else {
+                $(row.querySelector('.dish-select')).next().removeClass('error');
+                ids.add(select);
+            }
+
+            if (price < 0) {
+                priceInput.classList.add('error');
+                isValid = false;
+            } else {
+                priceInput.classList.remove('error');
+            }
+
+            const total = (quantity * price).toFixed(2);
+            row.querySelector('.dish-total').textContent = `$${total}`;
+
+            subtotal += parseFloat(total);
+        });
+
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+        if (totalVentaField) {
+            totalVentaField.value = subtotal.toFixed(2);
+        }
+
+        if (duplicateError) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'No se pueden guardar productos o platillos duplicados.',
+                icon: 'error',
+            });
+        }
+
+        return isValid && !duplicateError;
+    }
+
+    function calculateChange() {
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+        const cambio = dineroRecibido - subtotal;
+
+        cambioElement.value = cambio.toFixed(2);
+    }
+
+    function prepareForm(event) {
+        if (!validateInputs()) {
+            event.preventDefault();
+            return;
+        }
+
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+
+        if (dineroRecibido < subtotal) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Error!',
+                text: 'El dinero recibido no puede ser menor al total de la venta.',
+                icon: 'error',
+            });
+            return;
+        }
+
+        const detallesVenta = [];
+        let productosLista = '';
+
+        document.querySelectorAll('#product-rows tr').forEach(row => {
+            const idProducto = $(row.querySelector('.product-select')).val();
+            const productoText = $(row.querySelector('.product-select')).text();
+            const cantidadProducto = row.querySelector('.product-quantity').value;
+            const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
+
+            detallesVenta.push({
+                id_producto: idProducto,
+                cantidad_producto: cantidadProducto,
+                subtotal_venta: parseFloat(subtotalVenta.replace('$', '')) || 0
+            });
+
+            productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
+        });
+
+        document.querySelectorAll('#dish-rows tr').forEach(row => {
+            const idPlato = $(row.querySelector('.dish-select')).val();
+            const platoText = $(row.querySelector('.dish-select')).text();
+            const cantidadPlato = row.querySelector('.dish-quantity').value;
+            const subtotalPlato = row.querySelector('.dish-total').textContent.replace('$', '').trim();
+
+            detallesVenta.push({
+                id_plato: idPlato,
+                cantidad_plato: cantidadPlato,
+                subtotal_venta: parseFloat(subtotalPlato.replace('$', '')) || 0
+            });
+
+            productosLista += `<li>${platoText} - Cantidad: ${cantidadPlato} - Subtotal: $${subtotalPlato}</li>`;
+        });
+
+        const detallesVentaJSON = JSON.stringify(detallesVenta);
+        document.getElementById('detalles_venta').value = detallesVentaJSON;
+
+        Swal.fire({
+            title: 'Venta Generada',
+            html: `<ul>${productosLista}</ul>`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelector('form').submit();
+            }
+        });
+
+        console.log("Detalles de Venta JSON:", detallesVentaJSON);
+    }
+
+    dineroRecibidoInput.addEventListener('input', calculateChange);
+    document.querySelector('form').addEventListener('submit', prepareForm);
+    productRows.addEventListener('input', validateInputs);
+    dishRows.addEventListener('input', validateInputs);
+
+    addProductRow();
+    addDishRow();
+
+    window.addProductRow = addProductRow;
+    window.addDishRow = addDishRow;
+});
+
+// PRODUCTOS //
 document.addEventListener('DOMContentLoaded', function () {
     const productRows = document.getElementById('product-rows');
     const subtotalElement = document.getElementById('subtotal');
@@ -245,95 +606,112 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addProductRow = addProductRow;
 });
 
+// CLIENTES //
 document.addEventListener('DOMContentLoaded', function () {
-    $(document).ready(function () {
-        $('.client-select').select2({
-            placeholder: 'Buscar cliente',
-            ajax: {
-                url: '/app/venta/clientes_api/', 
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        term: params.term
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data.map(cliente => ({
-                            id: cliente.id,
-                            text: `${cliente.tipo_documento}: ${cliente.numero_documento} - ${cliente.nombre}`,
-                            nombre: cliente.nombre,
-                            tipo_documento: cliente.tipo_documento,
-                            numero_documento: cliente.numero_documento,
-                            email: cliente.email,
-                            pais_telefono: cliente.pais_telefono,
-                            telefono: cliente.telefono
-                        }))
-                    };
-                },
-                cache: true
-            }
-        }).on('select2:select', function (e) {
-            const data = e.params.data;
-            console.log('Cliente seleccionado:', data);
-
-            document.getElementById('client-name').value = data.nombre;
-            document.getElementById('client-document_type').value = data.tipo_documento;
-            document.getElementById('client-document_number').value = data.numero_documento;
-            document.getElementById('client-email').value = data.email;
-            document.getElementById('client-phone_prefix').value = data.pais_telefono;
-            document.getElementById('client-phone_number').value = data.telefono;
-        });
-    });
     
-    document.getElementById('save-client').addEventListener('click', function () {
-        const clientForm = document.getElementById('clienteForm');
-        const formData = new FormData(clientForm);
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+    
+            if (!csrftoken) {
+                throw new Error('CSRF token not found.');
+            }
+    
+            xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        }
+    });
 
-        fetch('/app/cliente/crear/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Actualiza la lista de clientes en el formulario principal
-                const selectElement = document.querySelector('.product-select');
-                const newOption = new Option(data.client_name, data.client_id, true, true);
-                selectElement.add(newOption, undefined);
-                $(selectElement).trigger('change');
-                
-                // Cierra el modal
-                $('#modal').modal('hide');
-                
-                // Limpia el formulario del modal
-                clientForm.reset();
-                
-                Swal.fire({
-                    title: 'Cliente guardado',
-                    text: 'El cliente ha sido guardado exitosamente.',
-                    icon: 'success'
-                });
-            } else {
-                Swal.fire({
-                    title: 'Error!',
-                    text: data.error_message,
-                    icon: 'error'
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                title: 'Error!',
-                text: 'Hubo un problema al guardar el cliente.',
-                icon: 'error'
-            });
+
+    $('.client-select').select2({
+        placeholder: 'Buscar cliente',
+        ajax: {
+            url: '/app/venta/clientes_api/',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(cliente => ({
+                        id: cliente.id,
+                        text: `${cliente.tipo_documento}: ${cliente.numero_documento} - ${cliente.nombre}`,
+                        nombre: cliente.nombre,
+                        tipo_documento: cliente.tipo_documento,
+                        numero_documento: cliente.numero_documento,
+                        email: cliente.email,
+                        pais_telefono: cliente.pais_telefono,
+                        telefono: cliente.telefono
+                    }))
+                };
+            },
+            cache: true
+        }
+    }).on('select2:select', function (e) {
+        const data = e.params.data;
+        console.log('Cliente seleccionado:', data);
+        document.getElementById('client-name').value = data.nombre;
+        document.getElementById('client-document_type').value = data.tipo_documento;
+        document.getElementById('client-document_number').value = data.numero_documento;
+        document.getElementById('client-email').value = data.email;
+        document.getElementById('client-phone_prefix').value = data.pais_telefono;
+        document.getElementById('client-phone_number').value = data.telefono;
+    });
+
+    $('#save-client').on('click', function() {
+        console.log("Botón de guardar cliente presionado");
+        
+        var formData = new FormData($('#clienteForm')[0]);
+        formData.forEach(function(value, key) {
+        console.log(key + ": " + value);
         });
+    
+        $.ajax({
+            url: '/app/venta/crear_cliente_ajax/',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Nuevo cliente',
+                        text: 'Cliente creado existosamente.',
+                        icon: 'success',
+                    });
+                    $('#clienteSelector').append(new Option(response.cliente_nombre, response.cliente_id));
+                    $('#modal').modal('hide');
+                } else {
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').remove();
+    
+                    var errors = response.errors;
+                    for (var field in errors) {
+                        var fieldElement = $('[name=' + field + ']');
+                        fieldElement.addClass('is-invalid');
+    
+                        var errorElement = $('<div class="invalid-feedback">' + errors[field] + '</div>');
+                        fieldElement.after(errorElement);
+                    }
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log("Error al crear el cliente: " + errmsg);
+            }
+       });
     });
 });
-

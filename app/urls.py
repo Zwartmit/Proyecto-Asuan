@@ -124,4 +124,5 @@ urlpatterns = [
     path('venta/productos_api/', productos_api, name='productos_api'),
     path('venta/platos_api/', platos_api, name='platos_api'),
     path('venta/clientes_api/', clientes_api, name='clientes_api'),
+    path('venta/crear_cliente_ajax/', crear_cliente_ajax, name='crear_cliente_ajax'),
 ]

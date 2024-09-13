@@ -142,42 +142,48 @@ class ClienteForm(ModelForm):
                 attrs={
                     'id': 'nombre',
                     "placeholder": "Nombre del cliente",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "nombre",
                 }
             ),
             "tipo_documento": Select(
                 attrs={
                     'id': 'tipo_documento',
                     "placeholder": "Tipo de documento",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "tipo_documento",
                 }
             ),
             "numero_documento": NumberInput(
                 attrs={
                     'id': 'numero_documento',
                     "placeholder": "Número de documento",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "numero_documento",
                 }
             ),
             "email": EmailInput(
                 attrs={
                     'id': 'email',
                     "placeholder": "Email",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "email",
                 }
             ),
             "pais_telefono": Select(
                 attrs={
                     'id': 'pais_telefono',
                     "placeholder": "Tipo de documento",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "pais_telefono",
                 }
             ),
             "telefono": NumberInput(
                 attrs={
-                    'id': 'nombre',
+                    'id': 'telefono',
                     "placeholder": "Teléfono",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "telefono",
                 }
             ),
             "estado": Select(
@@ -185,7 +191,8 @@ class ClienteForm(ModelForm):
                 attrs={
                     'id': 'estado',
                     "placeholder": "Estado del cliente",
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'name': "estado",
                 },
             )
         }

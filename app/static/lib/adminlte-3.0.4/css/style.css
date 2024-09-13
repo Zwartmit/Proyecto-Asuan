@@ -557,6 +557,54 @@ tr:hover td {
     width: 14%;
 }
 
+.dish-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+    table-layout: fixed;
+}
+
+.dish-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+    table-layout: fixed;
+}
+
+.dish-table th, .dish-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    background-color: #f9f9f9;
+    word-wrap: break-word;
+}
+
+.dish-table th {
+    background-color: #04644B;
+    color: white;
+    font-weight: bold;
+}
+
+.dish-table td input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: right;
+    padding: 10px;
+    
+}
+
+.div-tablas{
+    margin-bottom: 5px;
+    padding: 8px;
+    background-color: #E7E7E7;
+    border-radius: 5px;
+}
+
 .totals {
     text-align: right;
     font-size: 18px;

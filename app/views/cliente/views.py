@@ -70,18 +70,10 @@ class ClienteCreateView(CreateView):
         if Cliente.objects.filter(numero_documento=numero_documento).exists():
             form.add_error('numero_documento', 'Ya existe un cliente registrado con este número de documento.')
             return self.form_invalid(form)
-
-        if self.request.is_ajax():
-            cliente = form.save()
-            return JsonResponse({'success': True, 'cliente_id': cliente.id})
-
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        if self.request.is_ajax():
-            return JsonResponse({'success': False, 'form': form.as_p()})
         
-        return super().form_invalid(form)
+        response = super().form_valid(form)
+        success_url = reverse('app:cliente_crear') + '?created=True'
+        return redirect(success_url)
 
 ###### EDITAR ######
 

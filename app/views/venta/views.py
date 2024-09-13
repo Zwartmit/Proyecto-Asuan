@@ -9,11 +9,9 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta
+from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta, Plato
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm
 import json
-from app.models import Venta
-from app.forms import VentaForm
 
 @method_decorator(never_cache, name='dispatch')
 def lista_venta(request):
@@ -55,9 +53,11 @@ def productos_api(request):
     return JsonResponse(list(productos), safe=False)
 
 def platos_api(request):
-    term = request.GET.get('term', '') 
-    platos = Producto.objects.filter(Q(plato__icontains=term) & Q(estado=True)
-    ).values('id', 'producto', 'valor')
+    term = request.GET.get('term', '')
+    platos = Plato.objects.filter(
+        Q(plato__icontains=term) & Q(estado=True)
+    ).values('id', 'plato', 'valor')
+    
     return JsonResponse(list(platos), safe=False)
 
 def clientes_api(request):
@@ -65,6 +65,25 @@ def clientes_api(request):
     clientes = Cliente.objects.filter(Q(nombre__icontains=term) & Q(estado=True)
     ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
     return JsonResponse(list(clientes), safe=False)
+
+###### GUARDAR CLIENTE ######
+
+def crear_cliente_ajax(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            cliente = form.save()
+            return JsonResponse({
+                'success': True,
+                'cliente_id': cliente.id,
+                'cliente_nombre': cliente.nombre,
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            })
+    return JsonResponse({'success': False}, status=400)
 
 ###### CREAR ######
 
@@ -182,17 +201,23 @@ class CuentaCreateView(CreateView):
                 cantidad_producto = detalle.get('cantidad_producto')
                 subtotal_venta = detalle.get('subtotal_venta')
 
+                # Verificar si es un producto o plato
                 try:
                     producto_instance = Producto.objects.get(pk=id_producto)
+                    # Si es un producto, reducir stock
+                    producto_instance.cantidad -= int(cantidad_producto)
+                    producto_instance.save()
                 except Producto.DoesNotExist:
-                    continue
-
-                producto_instance.cantidad -= int(cantidad_producto)
-                producto_instance.save()
+                    # Si es un plato (que no tiene stock), intentar obtener de Plato
+                    try:
+                        plato_instance = Plato.objects.get(pk=id_producto)
+                        # No reducimos stock aquí
+                    except Plato.DoesNotExist:
+                        continue
 
                 Detalle_venta.objects.create(
                     id_venta=venta,
-                    id_producto=producto_instance, 
+                    id_producto=producto_instance if producto_instance else plato_instance,  # Puede ser plato o producto
                     cantidad_producto=cantidad_producto,
                     subtotal_venta=subtotal_venta
                 )
