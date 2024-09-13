@@ -68,17 +68,15 @@ class PresentacionCreateView(CreateView):
     
     def form_valid(self, form):
         presentacion = form.cleaned_data.get('presentacion').lower()
-        unidad_medida = form.cleaned_data.get('unidad_medida')
-
-        # Verifica si ya existe una combinación de presentación y unidad de medida
-        if Presentacion.objects.filter(presentacion__iexact=presentacion, unidad_medida=unidad_medida).exists():
-            form.add_error('presentacion', 'Ya existe una presentación registrada con ese nombre y unidad de medida.')
+        
+        if Presentacion.objects.filter(presentacion__iexact=presentacion, unidad_medida__iexact=unidad_medida).exists():
+            form.add_error('presentacion', 'Ya existe una presentación con ese nombre.')
             return self.form_invalid(form)
 
         response = super().form_valid(form)
         success_url = reverse('app:presentacion_crear') + '?created=True'
         return redirect(success_url)
-        
+    
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')

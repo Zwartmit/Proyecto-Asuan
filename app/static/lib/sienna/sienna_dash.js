@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .asw-footer a { text-decoration: underline; color: #fff; background: 0 0 !important; }
         .asw-card { margin: 0 15px 30px; }
         .asw-card-title { font-size: 18px; padding: 15px 0; }
-        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; border-radius: 8px; }
+        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; }
         .asw-adjust-font .label { display: flex; align-items: center; }
         .asw-adjust-font > div { display: flex; justify-content: space-between; margin-top: 20px; align-items: center; font-size: 16px; font-weight: 700; }
         .asw-adjust-font div[role=button] { background: #04644b; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; }

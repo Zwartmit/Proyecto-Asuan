@@ -1,9 +1,30 @@
+document.addEventListener('DOMContentLoaded', function() {
+    
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('dark-mode', isDarkMode);
+    }
+
+    if (localStorage.getItem('dark-mode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+
+    function resetAccessibility() {
+        document.body.style.fontSize = '';
+        document.body.classList.remove('dark-mode');
+    }
+    
+    window.toggleDarkMode = toggleDarkMode;
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const productRows = document.getElementById('product-rows');
 
     function addProductRow() {
         const row = document.createElement('tr');
-
+    
         row.innerHTML = `
             <td>
                 <input class="product-id product-select" style="width: 100%;" required />
@@ -15,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 onmouseout="this.style.color='#04644B';"></i></td>
             <td><span class="product-total">$0.00</span></td>
         `;
-
+    
         $(row.querySelector('.product-select')).select2({
             placeholder: 'Seleccione un producto',
             ajax: {
@@ -24,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 delay: 250,
                 data: function (params) {
                     return {
-                        term: params.term
+                        term: params.term 
                     };
                 },
                 processResults: function (data) {
@@ -50,15 +71,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         productRows.appendChild(row);
-
+    
         row.querySelector('.product-quantity').addEventListener('input', validateInputs);
         row.querySelector('.product-price').addEventListener('input', validateInputs);
-
+    
         row.querySelector('.delete-row').addEventListener('click', function () {
             row.remove();
             validateInputs();
         });
-
+    
         validateInputs();
     }
 
@@ -66,12 +87,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let isValid = true;
         let ids = new Set();
         let subtotal = 0;
-
+    
         document.querySelectorAll('#product-rows tr').forEach(row => {
             const select = $(row.querySelector('.product-select')).val();
             const quantity = row.querySelector('.product-quantity').value;
             const price = row.querySelector('.product-price').value;
-
+    
             // validacion de ids
             if (ids.has(select)) {
                 $(row.querySelector('.product-select')).next().addClass('error');
@@ -80,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 $(row.querySelector('.product-select')).next().removeClass('error');
                 ids.add(select);
             }
-
+    
             // validacion de negativos
             if (quantity <= 0) {
                 row.querySelector('.product-quantity').classList.add('error');
@@ -88,27 +109,27 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 row.querySelector('.product-quantity').classList.remove('error');
             }
-
+    
             if (price < 0) {
                 row.querySelector('.product-price').classList.add('error');
                 isValid = false;
             } else {
                 row.querySelector('.product-price').classList.remove('error');
             }
-
+    
             const total = (quantity * price).toFixed(2);
             row.querySelector('.product-total').textContent = `$${total}`;
-
+    
             subtotal += parseFloat(total);
         });
-
+    
         document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-
+    
         const totalVentaField = document.getElementById('total_venta');
         if (totalVentaField) {
             totalVentaField.value = subtotal.toFixed(2);
         }
-
+    
         return isValid;
     }
 

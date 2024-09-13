@@ -17,6 +17,7 @@ from django.db.models import ProtectedError
 from app.models import Administrador
 from app.forms import AdministradorForm
 
+
 @method_decorator(login_required, name='dispatch')
 class AdministradorListView(ListView):
     model = Administrador
@@ -37,6 +38,7 @@ class AdministradorListView(ListView):
 
         return context
 
+
 @method_decorator(login_required, name='dispatch')
 class AdministradorCreateView(CreateView):
     model = Administrador
@@ -52,18 +54,18 @@ class AdministradorCreateView(CreateView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.add_administrador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.add_administrador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'administrador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         try:
-            return super().form_valid(form)
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Administrador creado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
+
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorUpdateView(UpdateView):
@@ -80,18 +82,18 @@ class AdministradorUpdateView(UpdateView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.change_administrador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.change_administrador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = AdministradorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'administrador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         try:
-            return super().form_valid(form)
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Administrador editado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
+
 
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):
