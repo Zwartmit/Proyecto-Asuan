@@ -11,7 +11,9 @@
   <meta content="" name="keywords">
   <link href="{%static 'img/icon.png' %}" rel="icon">
   <link href="{%static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
   <link href="{%static 'vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{%static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
@@ -41,7 +43,7 @@
             <li><a class="nav-link scrollto " href="#portfolio">Comidas</a></li>
             <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
-            <li><a class="btn-dark bx bxs-moon" style="font-size: 30px;" title="Modo oscuro-claro"
+            <li><a id="darkModeToggle" class="btn-dark bx bxs-moon" style="font-size: 30px;" title="Modo oscuro-claro"
                 onclick="toggleDarkMode()"></a></li>
             <li><a class="getstarted scrollto" href="{% url 'login'%}">Iniciar sesión</a></li>
           </ul>
@@ -184,7 +186,8 @@
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/pechuga.png' %}" class="img-fluid" alt="Pechuga a la plancha" style="width: 600px; height: 300px">
+              <img src="{%static 'img/pechuga.png' %}" class="img-fluid" alt="Pechuga a la plancha"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
                 <h4>Pechuga a la plancha</h4>
               </div>
@@ -192,7 +195,8 @@
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/picada.png' %}" class="img-fluid" alt="Picada" style="width: 600px; height: 300px">
+              <img src="{%static 'img/picada.png' %}" class="img-fluid" alt="Picada"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
                 <h4>Picada</h4>
               </div>
@@ -200,7 +204,8 @@
           </div>
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
-              <img src="{%static 'img/cachama.jpg' %}" class="img-fluid" alt="Cachama frita" style="width: 600px; height: 300px">
+              <img src="{%static 'img/cachama.jpg' %}" class="img-fluid" alt="Cachama frita"
+                style="width: 600px; height: 300px">
               <div class="portfolio-info">
                 <h4>Cachama frita</h4>
               </div>
@@ -230,8 +235,11 @@
                     <h4>Brandon Urbano</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/zwart_mit/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/zwart_mit/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a target="_blank"
+                        href="https://www.linkedin.com/in/brandonurbano-dev?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                          class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -243,8 +251,9 @@
                     <h4>David Cubides</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/incogn___/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="#"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/incogn___/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a href=""><i class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -256,8 +265,10 @@
                     <h4>Diego Joya</h4>
                     <p></p>
                     <div class="social">
-                      <a target="_blank" href="https://www.instagram.com/d.z.v.i.o/"><i class="ri-instagram-fill"></i></a>
-                      <a target="_blank" href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"><i class="ri-linkedin-box-fill"></i> </a>
+                      <a target="_blank" href="https://www.instagram.com/d.z.v.i.o/"><i
+                          class="ri-instagram-fill"></i></a>
+                      <a target="_blank" href="http://www.linkedin.com/in/alejandro-joya-21b2052b9"><i
+                          class="ri-linkedin-box-fill"></i> </a>
                     </div>
                   </div>
                 </div>
@@ -296,7 +307,8 @@
               <h4>Nuestras redes sociales:</h4>
               <div>
                 <p>
-                  <a target="_blank" href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d">Facebook</a>
+                  <a target="_blank"
+                    href="https://www.facebook.com/people/Asuán-Parque-Eco-Turístico/61554401715893/?mibextid=LQQJ4d">Facebook</a>
                   /
                   <a target="_blank" href="https://www.instagram.com/asuan_parqueeco/">Instragram</i></a>
                 </p>
@@ -307,7 +319,8 @@
                 <div class="info">
                   <i class="bi bi-envelope"></i>
                   <h4>Envíanos un correo:</h4>
-                  <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=asuan.adso@gmail.com" target="_blank">asuan.adso@gmail.com</a></p>
+                  <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=asuan.adso@gmail.com"
+                      target="_blank">asuan.adso@gmail.com</a></p>
                 </div>
               </div>
               <div class="col-lg-6">
@@ -329,7 +342,8 @@
   <footer class="footer">
     <div class="contenedor">
       <div class="footer1">
-        <strong>Copyright &copy; 2024-2030 <a target="_blank" href="https://www.asuanparque.com" style="color: black">Asuán</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2024-2030 <a target="_blank" href="https://www.asuanparque.com"
+            style="color: black">Asuán</a>.</strong> All rights reserved.
       </div>
       <div class="footer2">
         <img src="{%static 'img/logo_asuan.png' %}" alt="Logo Asuán">
@@ -338,7 +352,8 @@
   </footer>
   <!-- Fin del pie de página -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
   <script src="{%static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
   <script src="{%static 'vendor/aos/aos.js' %}"></script>
   <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -347,6 +362,35 @@
   <script src="{%static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{%static 'vendor/php-email-form/validate.js' %}"></script>
   <script src="{%static 'js/main.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const darkModeIcon = document.getElementById("darkModeToggle");
+
+        localStorage.setItem('dark-mode', isDarkMode);
+
+        if (isDarkMode) {
+          darkModeIcon.classList.remove('bxs-moon');
+          darkModeIcon.classList.add('bxs-sun');
+        } else {
+          darkModeIcon.classList.remove('bxs-sun');
+          darkModeIcon.classList.add('bxs-moon');
+        }
+      }
+
+      if (localStorage.getItem('dark-mode') === 'true') {
+        document.body.classList.add('dark-mode');
+        const darkModeIcon = document.getElementById("darkModeToggle");
+        darkModeIcon.classList.remove('bxs-moon');
+        darkModeIcon.classList.add('bxs-sun');
+      }
+
+      window.toggleDarkMode = toggleDarkMode;
+    });
+
+  </script>
 </body>
 
 </html>
