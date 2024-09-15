@@ -4,8 +4,10 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 from app.models import Operador
 from app.forms import OperadorForm
+from django.db.models import ProtectedError
 
 @method_decorator(login_required, name='dispatch')
 class OperadorListView(ListView):
@@ -42,18 +44,17 @@ class OperadorCreateView(CreateView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.add_operador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.add_operador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = OperadorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'operador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         try:
-            return super().form_valid(form)
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Operador creado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
 
 @method_decorator(login_required, name='dispatch')
 class OperadorUpdateView(UpdateView):
@@ -70,18 +71,17 @@ class OperadorUpdateView(UpdateView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.change_operador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.change_operador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = OperadorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'operador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         try:
-            return super().form_valid(form)
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Operador editado exitosamente.'})
         except ValidationError as e:
             form.add_error(None, e)
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
 
 @method_decorator(login_required, name='dispatch')
 class OperadorDeleteView(DeleteView):
@@ -97,8 +97,10 @@ class OperadorDeleteView(DeleteView):
         context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.delete_operador')
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.has_perm('app.delete_operador') or self.request.user.groups.filter(name='Operador').exists():
-            list_context = OperadorListView.as_view()(request, *args, **kwargs).context_data
-            return render(request, 'operador/listar.html', list_context)
-        return super().dispatch(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Operador eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el operador.'})
