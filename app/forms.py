@@ -270,6 +270,7 @@ class AdministradorForm(ModelForm):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
+        numero_documento = cleaned_data.get('numero_documento')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
@@ -287,6 +288,9 @@ class AdministradorForm(ModelForm):
         
         if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
+        
+        if Administrador.objects.filter(numero_documento=numero_documento).exclude(pk=self.instance.pk if self.instance and self.instance.pk else None).exists():
+            raise ValidationError("Este número de documento ya está registrado.")
         
         if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
@@ -370,6 +374,7 @@ class OperadorForm(ModelForm):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
+        numero_documento = cleaned_data.get('numero_documento')
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
@@ -387,6 +392,9 @@ class OperadorForm(ModelForm):
         
         if User.objects.filter(email=email).exclude(pk=self.instance.user.pk if self.instance and self.instance.pk else None).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
+        
+        if Administrador.objects.filter(numero_documento=numero_documento).exclude(pk=self.instance.pk if self.instance and self.instance.pk else None).exists():
+            raise ValidationError("Este número de documento ya está registrado.")
         
         if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
