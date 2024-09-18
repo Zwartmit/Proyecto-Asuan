@@ -35,27 +35,28 @@
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
         }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  Swal.fire({
-                      icon: 'success',
-                      title: 'Éxito',
-                      text: data.message,
-                      confirmButtonText: 'Aceptar',
-                      confirmButtonColor: '#04644b'
-                  }).then(() => {
-                      window.location.href = "{{ listar_url }}";
-                  });
-              } else {
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: data.message,
-                      confirmButtonText: 'Aceptar',
-                      confirmButtonColor: '#04644b'
-                  });
-              }
-          });
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#04644b'
+                }).then(() => {
+                    history.replaceState(null, '', "{{ listar_url }}");  
+                    window.location.href = "{{ listar_url }}"; 
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#04644b'
+                });
+            }
+        });        
     });
 </script>
 {% endblock %}

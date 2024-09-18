@@ -70,7 +70,7 @@ class MarcaCreateView(CreateView):
         marca = form.cleaned_data.get('marca').lower()
         
         if Marca.objects.filter(marca__iexact=marca).exists():
-            form.add_error('marca', 'Ya existe una marca con ese nombre.')
+            form.add_error('marca', 'Ya existe una marca registrada con ese nombre.')
             return self.form_invalid(form)
 
         response = super().form_valid(form)

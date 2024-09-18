@@ -159,7 +159,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$r2hWGICW0Iy76AvoDbIxaz$jOhydtc63lP7q16gfs9fbtJolGKdYgk6HaHlYWRHshQ=','2024-09-06 15:58:59.122638',1,'admin','','','asuan.adso@gmail.com',1,1,'2024-09-06 15:58:28.448469'),(2,'pbkdf2_sha256$870000$U7ufbtLhnL2CY6djumSexq$lmcRjtE72O0daxVa6Xt6j9dVdT9Cs8gQfYWHAtYJTkA=',NULL,1,'Diego','','','diego@gmail.com',1,1,'2024-09-06 16:05:14.011127'),(3,'pbkdf2_sha256$870000$OiFoK5Phl11k3MQHxLnWXN$eGgUzJgdcbmP59A0XKBfncqGZH1wDSZHr9gwJ7oTEeQ=',NULL,0,'Juan','','','juan@gmail.com',0,1,'2024-09-06 16:05:35.713580');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$r2hWGICW0Iy76AvoDbIxaz$jOhydtc63lP7q16gfs9fbtJolGKdYgk6HaHlYWRHshQ=','2024-09-06 21:13:29.361376',1,'admin','','','asuan.adso@gmail.com',1,1,'2024-09-06 15:58:28.448469'),(2,'pbkdf2_sha256$870000$U7ufbtLhnL2CY6djumSexq$lmcRjtE72O0daxVa6Xt6j9dVdT9Cs8gQfYWHAtYJTkA=',NULL,1,'Diego','','','diego@gmail.com',1,1,'2024-09-06 16:05:14.011127'),(3,'pbkdf2_sha256$870000$OiFoK5Phl11k3MQHxLnWXN$eGgUzJgdcbmP59A0XKBfncqGZH1wDSZHr9gwJ7oTEeQ=',NULL,0,'Juan','','','juan@gmail.com',0,1,'2024-09-06 16:05:35.713580');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +456,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('vmukbor7x3w64wsa4zm5vhy2qwvjfmpd','.eJxVjDsOwjAQBe_iGllebNkJJT1niPZnEkC2FCdVxN0hUgpo38y8zQy4LuOwNp2HSczFgDn9boT81LIDeWC5V8u1LPNEdlfsQZu9VdHX9XD_DkZs47dO2SdMwEIRO-BAPp0zUfYKkRJ02COo9yo5sqh2oSfHkTW50Au4bN4fCCU48A:1smbMR:TGDHoUqucAdsC4pFxRrl9yj2NThMFRcL84p2DZYJI2s','2024-09-20 15:58:59.138551');
+INSERT INTO `django_session` VALUES ('8ek14o8vyekoivx54h55l99vqa7snsdm','.eJxVjDsOwjAQBe_iGllebNkJJT1niPZnEkC2FCdVxN0hUgpo38y8zQy4LuOwNp2HSczFgDn9boT81LIDeWC5V8u1LPNEdlfsQZu9VdHX9XD_DkZs47dO2SdMwEIRO-BAPp0zUfYKkRJ02COo9yo5sqh2oSfHkTW50Au4bN4fCCU48A:1smgGn:xFc-kPYzI9_HXNskcMUt7RfBu6I3DbU3bpbjbZYbnG0','2024-09-20 21:13:29.365365'),('vmukbor7x3w64wsa4zm5vhy2qwvjfmpd','.eJxVjDsOwjAQBe_iGllebNkJJT1niPZnEkC2FCdVxN0hUgpo38y8zQy4LuOwNp2HSczFgDn9boT81LIDeWC5V8u1LPNEdlfsQZu9VdHX9XD_DkZs47dO2SdMwEIRO-BAPp0zUfYKkRJ02COo9yo5sqh2oSfHkTW50Au4bN4fCCU48A:1smbMR:TGDHoUqucAdsC4pFxRrl9yj2NThMFRcL84p2DZYJI2s','2024-09-20 15:58:59.138551');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -666,7 +666,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,'Gaseosa Quatro',20,6000.00,1,1,2,1),(2,'Avena en bolsa',30,2500.00,1,2,1,2),(3,'Bonbonbum',100,800.00,1,3,3,3);
+INSERT INTO `producto` VALUES (1,'Gaseosa Quatro',20,6000.00,1,1,2,1);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -705,4 +705,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-06 11:13:51
+-- Dump completed on 2024-09-06 16:16:48

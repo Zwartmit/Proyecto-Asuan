@@ -69,7 +69,7 @@ class ProductoCreateView(CreateView):
         producto = form.cleaned_data.get('producto').lower()
         
         if Producto.objects.filter(producto__iexact=producto).exists():
-            form.add_error('producto', 'Ya existe un producto con ese nombre.')
+            form.add_error('producto', 'Ya existe un producto registrado con ese nombre.')
             return self.form_invalid(form)
         
         response = super().form_valid(form)

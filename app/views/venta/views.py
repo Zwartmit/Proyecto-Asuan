@@ -156,7 +156,7 @@ class VentaCreateView(CreateView):
             return super().form_valid(form)
         except Exception as e:
             print(f"Error al guardar la venta: {e}")    
-            return self.form_invalid(form)
+            return self.form_invalid(form) 
     
 ###### CUENTA ######
 

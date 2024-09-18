@@ -122,7 +122,7 @@ urlpatterns = [
     path('reportes/administradores/pdf/', export_administradores_pdf, name='export_administradores_pdf'),
     path('reportes/operadores/pdf/', export_operadores_pdf, name='export_operadores_pdf'),
 
-    ### API´S ###
+        ### API´S ###
     path('venta/productos_api/', productos_api, name='productos_api'),
     path('venta/platos_api/', platos_api, name='platos_api'),
     path('venta/clientes_api/', clientes_api, name='clientes_api'),

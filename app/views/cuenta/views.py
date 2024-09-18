@@ -91,7 +91,7 @@ class CuentaCreateView(CreateView):
                 except json.JSONDecodeError:
                     cuentas_data = []
             else:
-                cuentas_data = []
+                cuentas_data = [] 
 
             # Calculate totals
             total_productos = sum(float(d['subtotal_venta']) for d in detalles_venta)

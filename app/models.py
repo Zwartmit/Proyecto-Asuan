@@ -35,14 +35,13 @@ class Marca (models.Model):
         
 ########################################################################################################################################
 
-class Presentacion (models.Model):
-
+class Presentacion(models.Model):
     class unidadMedida(models.TextChoices):
         L = 'litro(s)', 'litro(s)'
         ML = 'mililitro(s)', 'mililitro(s)'
         G = 'gramo(s)', 'gramo(s)'
 
-    presentacion = models.CharField(max_length=50, verbose_name="Presentación", unique=True)
+    presentacion = models.CharField(max_length=50, verbose_name="Presentación")
     unidad_medida = models.CharField(max_length=12, choices=unidadMedida.choices, default="", verbose_name="Unidad de medida")
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
@@ -50,9 +49,11 @@ class Presentacion (models.Model):
         return f"{self.presentacion} {self.get_unidad_medida_display()}"
 
     class Meta:
-        verbose_name= "presentacion"
-        verbose_name_plural ='presentaciones'
-        db_table ='Presentacion'
+        verbose_name = "presentacion"
+        verbose_name_plural = "presentaciones"
+        db_table = "Presentacion"
+        unique_together = ('presentacion', 'unidad_medida')  # Añade la restricción única
+
         
 ########################################################################################################################################
 
@@ -99,7 +100,7 @@ class Mesero(models.Model):
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
-        return f"{self.nombre}: {self.numero_documento}"
+        return f"{self.nombre}"
 
     class Meta:
         verbose_name= "mesero"
@@ -280,7 +281,6 @@ class Detalle_venta(models.Model):
         verbose_name= "detalle_de_venta"
         verbose_name_plural ='detalles_de_ventas'
         db_table ='Detalle_venta'
-
 
 ########################################################################################################################################
 

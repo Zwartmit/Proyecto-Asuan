@@ -1,8 +1,9 @@
 import os
 import subprocess
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
@@ -23,7 +24,8 @@ class BackupDatabaseView(View):
 
     def get(self, request, *args, **kwargs):
         contexto = {
-            'titulo': 'Gestión de bases de datos'
+            'titulo': 'Gestión de bases de datos',
+            'entidad': 'Gestión de bases de datos'
         }
         return render(request, 'backup.html', contexto)
 
