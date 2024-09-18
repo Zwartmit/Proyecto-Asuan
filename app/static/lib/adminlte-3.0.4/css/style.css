@@ -496,6 +496,62 @@ tr:hover td {
     width: 70%;
 }
 
+/* CSS venta de caja */
+
+.product-sale-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+    table-layout: fixed;
+}
+
+.product-sale-table th, .product-sale-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    background-color: #f9f9f9;
+    word-wrap: break-word;
+}
+
+.product-sale-table th {
+    background-color: #04644B;
+    color: white;
+    font-weight: bold;
+}
+
+.product-sale-table td input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: right;
+    padding: 10px;
+}
+
+.product-sale-table th.product-sale-column, .product-sale-table td.product-sale-column {
+    width: 28%;
+}
+
+.product-sale-table th.quantity-sale-column, .product-sale-table td.quantity-sale-column {
+    width: 15%;
+}
+
+.product-sale-table th.price-sale-column, .product-sale-table td.price-sale-column {
+    width: 15%;
+}
+
+.product-sale-table th.stock-sale-column, .product-sale-table td.stock-sale-column {
+    width: 12%;
+}
+
+.product-sale-table th.delete-sale-column, .product-sale-table td.delete-sale-column {
+    width: 14%;
+}
+
+/* CSS venta de cuenta */
+
 .product-table {
     width: 100%;
     border-collapse: collapse;

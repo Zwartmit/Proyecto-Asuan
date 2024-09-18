@@ -11,6 +11,7 @@ from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.detalle_venta.views import *
+from app.views.cuenta.views import *
 from app.views.factura.views import *
 from app.views.reportes.viewsExcel import *
 from app.views.reportes.viewsPDF import *
@@ -85,7 +86,8 @@ urlpatterns = [
     path('detalleventa/eliminar/<int:pk>/', DetalleVentaDeleteView.as_view(), name='detalle_venta_eliminar'),
 
     ### CUENTA###
-    path('venta/cuenta/', CuentaCreateView.as_view(), name='cuenta'),
+    path('cuenta/listar/', CuentaListView.as_view(), name='cuenta_lista'),
+    path('cuenta/crear/', CuentaCreateView.as_view(), name='cuenta'),
 
     ### CRUD FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
@@ -124,5 +126,6 @@ urlpatterns = [
     path('venta/productos_api/', productos_api, name='productos_api'),
     path('venta/platos_api/', platos_api, name='platos_api'),
     path('venta/clientes_api/', clientes_api, name='clientes_api'),
+    path('venta/meseros_api/', meseros_api, name='meseros_api'),
     path('venta/crear_cliente_ajax/', crear_cliente_ajax, name='crear_cliente_ajax'),
 ]

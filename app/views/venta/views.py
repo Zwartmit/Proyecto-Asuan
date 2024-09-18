@@ -9,8 +9,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta, Plato
-from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm
+from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta, Plato, Mesero
+from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm, MeseroForm
 import json
 
 @method_decorator(never_cache, name='dispatch')
@@ -66,6 +66,12 @@ def clientes_api(request):
     ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
     return JsonResponse(list(clientes), safe=False)
 
+def meseros_api(request):
+    term = request.GET.get('term', '') 
+    meseros = Mesero.objects.filter(Q(nombre__icontains=term) & Q(estado=True)
+    ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
+    return JsonResponse(list(meseros), safe=False)
+
 ###### GUARDAR CLIENTE ######
 
 def crear_cliente_ajax(request):
@@ -111,7 +117,7 @@ class VentaCreateView(CreateView):
         try:
             venta = form.save(commit=False)
             detalles_venta_json = self.request.POST.get('detalles_venta')
-            dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
+            dinero_recibido = float(self.request.POST.get('money_received', 0))
             
             if detalles_venta_json:
                 try:
@@ -173,7 +179,7 @@ class CuentaCreateView(CreateView):
         context['listar_url'] = reverse_lazy('app:venta_lista')
         context['cliente_form'] = ClienteForm()
         context['detalleventa_form'] = DetalleVentaForm()
-        context['detalleventacuenta_form'] = CuentaForm()
+        context['cuenta_form'] = CuentaForm()
         return context
     
     def form_valid(self, form):
@@ -181,7 +187,7 @@ class CuentaCreateView(CreateView):
             venta = form.save(commit=False)
             detalles_venta_json = self.request.POST.get('detalles_venta')
             dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
-            
+
             if detalles_venta_json:
                 try:
                     detalles_venta = json.loads(detalles_venta_json)
@@ -193,7 +199,6 @@ class CuentaCreateView(CreateView):
             venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
             venta.dinero_recibido = dinero_recibido
             venta.cambio = dinero_recibido - venta.total_venta
-
             venta.save()
 
             for detalle in detalles_venta:
@@ -201,32 +206,46 @@ class CuentaCreateView(CreateView):
                 cantidad_producto = detalle.get('cantidad_producto')
                 subtotal_venta = detalle.get('subtotal_venta')
 
-                # Verificar si es un producto o plato
                 try:
                     producto_instance = Producto.objects.get(pk=id_producto)
-                    # Si es un producto, reducir stock
-                    producto_instance.cantidad -= int(cantidad_producto)
-                    producto_instance.save()
                 except Producto.DoesNotExist:
-                    # Si es un plato (que no tiene stock), intentar obtener de Plato
-                    try:
-                        plato_instance = Plato.objects.get(pk=id_producto)
-                        # No reducimos stock aquí
-                    except Plato.DoesNotExist:
-                        continue
+                    continue
+
+                producto_instance.cantidad -= int(cantidad_producto)
+                producto_instance.save()
 
                 Detalle_venta.objects.create(
                     id_venta=venta,
-                    id_producto=producto_instance if producto_instance else plato_instance,  # Puede ser plato o producto
+                    id_producto=producto_instance,
                     cantidad_producto=cantidad_producto,
                     subtotal_venta=subtotal_venta
                 )
 
+            for detalle in detalles_venta:
+                id_plato = detalle.get('id_plato')
+                cantidad_plato = detalle.get('cantidad_plato')
+                subtotal_plato = detalle.get('subtotal_plato')
+
+                if id_plato:
+                    try:
+                        plato_instance = Plato.objects.get(pk=id_plato)
+                    except Plato.DoesNotExist:
+                        continue
+
+                    Cuenta.objects.create(
+                        id_venta=venta,
+                        id_plato=plato_instance,
+                        cantidad_plato=cantidad_plato,
+                        subtotal_plato=subtotal_plato,
+                        id_cliente=self.request.POST.get('client_id'),
+                        id_mesero=self.request.POST.get('id_mesero')
+                    )
+
             return super().form_valid(form)
         except Exception as e:
-            print(f"Error al guardar la venta: {e}")    
+            print(f"Error al guardar la venta: {e}")
             return self.form_invalid(form)
-
+        
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')

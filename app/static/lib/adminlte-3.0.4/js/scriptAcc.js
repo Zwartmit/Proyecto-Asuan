@@ -20,13 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.toggleDarkMode = toggleDarkMode;
 });
 
-// CUENTA //
+// VENTA DE CUENTA //
 document.addEventListener('DOMContentLoaded', function () {
     
     const productRows = document.getElementById('product-rows');
     const dishRows = document.getElementById('dish-rows');
     const subtotalElement = document.getElementById('subtotal');
-    const totalVentaField = document.getElementById('total_venta');
     const dineroRecibidoInput = document.getElementById('dinero_recibido');
     const cambioElement = document.getElementById('cambio');
     let validationTimeout = null;
@@ -132,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </td>
             <td><span id="dish-total-${dishRowCounter}" class="dish-total">$0.00</span></td>
         `;
-
+    
         $(row.querySelector('.dish-select')).select2({
             placeholder: 'Seleccione un platillo',
             ajax: {
@@ -140,14 +139,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
-                    return {
-                        term: params.term
-                    };
+                    return { term: params.term };
                 },
                 processResults: function (data) {
                     return {
                         results: data.map(plato => ({
-                            id: plato.id,  // Corregido de 'producto.id' a 'plato.id'
+                            id: plato.id,
                             text: plato.plato,
                             valor: plato.valor,
                         }))
@@ -161,16 +158,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const quantityInput = row.querySelector('.dish-quantity');
             
             priceInput.value = data.valor || 0;
-            quantityInput.max = data.cantidad || 0;
             quantityInput.value = 1; 
-
+    
             $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
-
+    
             validateInputs();
         });
-
+        
         dishRows.appendChild(row);
-
+    
         row.querySelector('.dish-quantity').addEventListener('input', function() {
             clearTimeout(validationTimeout);
             validationTimeout = setTimeout(validateInputs, 500);
@@ -182,8 +178,330 @@ document.addEventListener('DOMContentLoaded', function () {
                 validateInputs();
             }
         });
-
+    
         dishRowCounter++;
+        validateInputs();
+    }
+
+    function validateInputs() {
+        let isValid = true;
+        let productIds = new Set();
+        let dishIds = new Set(); 
+        let subtotal = 0;
+        let duplicateError = false;
+    
+        // Calcular subtotal de los productos
+        document.querySelectorAll('#product-rows tr').forEach(row => {
+            const select = $(row.querySelector('.product-select')).val();
+            const quantityInput = row.querySelector('.product-quantity');
+            const priceInput = row.querySelector('.product-price');
+            const stockSpan = row.querySelector('.product-stock');
+    
+            const quantity = Number(quantityInput.value);
+            const price = Number(priceInput.value);
+            const maxQuantity = Number(quantityInput.max);
+    
+            if (productIds.has(select)) {
+                $(row.querySelector('.product-select')).next().addClass('error');
+                isValid = false;
+                duplicateError = true;
+            } else {
+                $(row.querySelector('.product-select')).next().removeClass('error');
+                productIds.add(select);
+            }
+    
+            if (quantity <= 0 || quantity > maxQuantity) {
+                quantityInput.classList.add('error');
+                if (quantity > maxQuantity) {
+                    Swal.fire({
+                        title: 'Advertencia!',
+                        text: `La cantidad ingresada (${quantity}) supera el stock disponible (${maxQuantity}).`,
+                        icon: 'warning',
+                    });
+                }
+                isValid = false;
+            } else {
+                quantityInput.classList.remove('error');
+            }
+    
+            if (price < 0) {
+                priceInput.classList.add('error');
+                isValid = false;
+            } else {
+                priceInput.classList.remove('error');
+            }
+    
+            const total = (quantity * price).toFixed(2);
+            row.querySelector('.product-total').textContent = `$${total}`;
+    
+            subtotal += parseFloat(total);
+        });
+    
+        // Calcular subtotal de los platos
+        document.querySelectorAll('#dish-rows tr').forEach(row => {
+            const select = $(row.querySelector('.dish-select')).val();
+            const quantityInput = row.querySelector('.dish-quantity');
+            const priceInput = row.querySelector('.dish-price');
+    
+            const quantity = Number(quantityInput.value);
+            const price = Number(priceInput.value);
+    
+            if (dishIds.has(select)) {
+                $(row.querySelector('.dish-select')).next().addClass('error');
+                isValid = false;
+                duplicateError = true;
+            } else {
+                $(row.querySelector('.dish-select')).next().removeClass('error');
+                dishIds.add(select);
+            }
+    
+            if (price < 0) {
+                priceInput.classList.add('error');
+                isValid = false;
+            } else {
+                priceInput.classList.remove('error');
+            }
+    
+            const total = (quantity * price).toFixed(2);
+            row.querySelector('.dish-total').textContent = `$${total}`;
+    
+            subtotal += parseFloat(total);
+        });
+    
+        // Actualizar el subtotal y el total de la venta
+        subtotal = subtotal.toFixed(2);
+        let subtotalElement = document.getElementById('subtotal');
+        subtotalElement.textContent = `$${subtotal}`;
+    
+        let totalVentaField = document.querySelector('input[name="total_venta"]');
+        if (totalVentaField) {
+            totalVentaField.value = subtotal;
+        }
+    
+        if (duplicateError) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'No se pueden guardar productos o platillos duplicados.',
+                icon: 'error',
+            });
+        }
+    
+        return isValid && !duplicateError;
+    }
+    
+    function calculateChange() {
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+        const cambio = dineroRecibido - subtotal;
+    
+        cambioElement.value = cambio.toFixed(2);
+    }
+
+    $('.client-select').select2({
+        placeholder: 'Buscar cliente',
+        ajax: {
+            url: '/app/venta/clientes_api/',
+            dataType: 'json',
+            delay: 250,
+
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(cliente => ({
+                        id: cliente.id,
+                        text: `${cliente.tipo_documento}: ${cliente.numero_documento} - ${cliente.nombre}`,
+                        nombre: cliente.nombre,
+                        tipo_documento: cliente.tipo_documento,
+                        numero_documento: cliente.numero_documento,
+                        email: cliente.email,
+                        pais_telefono: cliente.pais_telefono,
+                        telefono: cliente.telefono
+                    }))
+                };
+            },
+            cache: true
+        }
+    }).on('select2:select', function (e) {
+        const data = e.params.data;
+        console.log('Cliente seleccionado:', data);
+        document.getElementById('client-name').value = data.nombre;
+        document.getElementById('client-document_type').value = data.tipo_documento;
+        document.getElementById('client-document_number').value = data.numero_documento;
+        document.getElementById('client-email').value = data.email;
+        document.getElementById('client-phone_prefix').value = data.pais_telefono;
+        document.getElementById('client-phone_number').value = data.telefono;
+        document.getElementById('client-id').value = data.id;
+    });
+
+    $('.waiter-select').select2({
+        placeholder: 'Buscar mesero',
+        ajax: {
+            url: '/app/venta/meseros_api/',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                console.log(data);
+                return {
+                    results: data.map(mesero => ({
+                        id: mesero.id,
+                        text: `${mesero.tipo_documento}: ${mesero.numero_documento} - ${mesero.nombre}`,
+                    }))
+                };
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+            },
+            cache: true
+        }
+    });
+
+    function prepareForm(event) {
+        event.preventDefault();
+        
+        if (!validateInputs()) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Por favor, corrija los errores antes de enviar el formulario.',
+                icon: 'error',
+            });
+            return;
+        }
+    
+        const detallesVenta = [];
+        document.querySelectorAll('#product-rows tr').forEach(row => {
+            const idProducto = $(row.querySelector('.product-select')).val();
+            const cantidadProducto = row.querySelector('.product-quantity').value;
+            const precioProducto = row.querySelector('.product-price').value;
+            const subtotalVenta = (cantidadProducto * precioProducto).toFixed(2);
+    
+            detallesVenta.push({
+                id_producto: idProducto,
+                cantidad_producto: cantidadProducto,
+                subtotal_venta: subtotalVenta,
+            });
+        });
+    
+        const cuentasData = [];
+        document.querySelectorAll('#dish-rows tr').forEach(row => {
+            const idPlato = $(row.querySelector('.dish-select')).val();
+            const cantidadPlato = row.querySelector('.dish-quantity').value;
+            const precioPlato = row.querySelector('.dish-price').value;
+            const subtotalPlato = (cantidadPlato * precioPlato).toFixed(2);
+            const idCliente = $('#client-select').val();
+            const idMesero = $('#waiter-select').val();
+    
+            cuentasData.push({
+                id_plato: idPlato,
+                cantidad_plato: cantidadPlato,
+                subtotal_plato: subtotalPlato,
+                id_cliente: idCliente,
+                id_mesero: idMesero,
+            });
+        });
+    
+        // Agregar detalles al formulario
+        document.getElementById('detalles_venta').value = JSON.stringify(detallesVenta);
+        document.getElementById('cuentas').value = JSON.stringify(cuentasData);
+    
+        // Enviar el formulario
+        event.target.submit();
+    }
+    
+    dineroRecibidoInput.addEventListener('input', calculateChange);
+    document.querySelector('form').addEventListener('submit', prepareForm);
+    productRows.addEventListener('input', validateInputs);
+    dishRows.addEventListener('input', validateInputs);
+
+    addProductRow();
+    addDishRow();
+
+    window.addProductRow = addProductRow;
+    window.addDishRow = addDishRow;
+});
+
+// VENTA DE CAJA //
+document.addEventListener('DOMContentLoaded', function () {
+    const productRows = document.getElementById('product-sale-rows');
+    const subtotalElement = document.getElementById('subtotal_sale');
+    const dineroRecibidoInput = document.getElementById('money_received_sale');
+    const cambioElement = document.getElementById('change_sale');
+    let validationTimeout = null;
+
+    function addProductSaleRow() {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="product-sale-column">
+                <input class="product-id product-select" style="width: 100%;" required />
+            </td>
+            <td class="quantity-sale-column"><input type="number" class="product-quantity" min="1" required></td>
+            <td class="price-sale-column"><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
+            <td class="stock-sale-column"><span class="product-stock">0</span></td>
+            <td class="delete-sale-column">
+                <i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
+                    onmouseover="this.style.color='#ff0000';"
+                    onmouseout="this.style.color='#04644B';"></i>
+            </td>
+            <td><span class="product-total">$0.00</span></td>
+        `;
+
+        $(row.querySelector('.product-select')).select2({
+            placeholder: 'Seleccione un producto',
+            ajax: {
+                url: '/app/venta/productos_api/', 
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(producto => ({
+                            id: producto.id,
+                            text: producto.producto,
+                            valor: producto.valor,
+                            cantidad: producto.cantidad
+                        }))
+                    };
+                },
+                cache: true
+            }
+        }).on('select2:select', function (e) {
+            const data = e.params.data;
+            const priceInput = row.querySelector('.product-price');
+            const stockSpan = row.querySelector('.product-stock');
+            const quantityInput = row.querySelector('.product-quantity');
+            
+            priceInput.value = data.valor || 0;
+            stockSpan.textContent = data.cantidad || 0;
+            quantityInput.max = data.cantidad || 0;
+            quantityInput.value = 1; 
+
+            $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+
+            validateInputs();
+        });
+
+        productRows.appendChild(row);
+
+        row.querySelector('.product-quantity').addEventListener('input', function() {
+            clearTimeout(validationTimeout);
+            validationTimeout = setTimeout(validateInputs, 500);
+        });
+        row.querySelector('.product-price').addEventListener('input', validateInputs);
+        row.querySelector('.delete-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+        });
+
         validateInputs();
     }
 
@@ -193,8 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let subtotal = 0;
         let duplicateError = false;
 
-        // Productos
-        document.querySelectorAll('#product-rows tr').forEach(row => {
+        document.querySelectorAll('#product-sale-rows tr').forEach(row => {
             const select = $(row.querySelector('.product-select')).val();
             const quantityInput = row.querySelector('.product-quantity');
             const priceInput = row.querySelector('.product-price');
@@ -240,46 +557,12 @@ document.addEventListener('DOMContentLoaded', function () {
             subtotal += parseFloat(total);
         });
 
-        // Platos
-        document.querySelectorAll('#dish-rows tr').forEach(row => {
-            const select = $(row.querySelector('.dish-select')).val();
-            const quantityInput = row.querySelector('.dish-quantity');
-            const priceInput = row.querySelector('.dish-price');
-
-            const quantity = Number(quantityInput.value);
-            const price = Number(priceInput.value);
-
-            if (ids.has(select)) {
-                $(row.querySelector('.dish-select')).next().addClass('error');
-                isValid = false;
-                duplicateError = true;
-            } else {
-                $(row.querySelector('.dish-select')).next().removeClass('error');
-                ids.add(select);
-            }
-
-            if (price < 0) {
-                priceInput.classList.add('error');
-                isValid = false;
-            } else {
-                priceInput.classList.remove('error');
-            }
-
-            const total = (quantity * price).toFixed(2);
-            row.querySelector('.dish-total').textContent = `$${total}`;
-
-            subtotal += parseFloat(total);
-        });
-
         subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-        if (totalVentaField) {
-            totalVentaField.value = subtotal.toFixed(2);
-        }
 
         if (duplicateError) {
             Swal.fire({
                 title: 'Error!',
-                text: 'No se pueden guardar productos o platillos duplicados.',
+                text: 'No se pueden guardar productos duplicados.',
                 icon: 'error',
             });
         }
@@ -317,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const detallesVenta = [];
         let productosLista = '';
 
-        document.querySelectorAll('#product-rows tr').forEach(row => {
+        document.querySelectorAll('#product-sale-rows tr').forEach(row => {
             const idProducto = $(row.querySelector('.product-select')).val();
             const productoText = $(row.querySelector('.product-select')).text();
             const cantidadProducto = row.querySelector('.product-quantity').value;
@@ -330,21 +613,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
-        });
-
-        document.querySelectorAll('#dish-rows tr').forEach(row => {
-            const idPlato = $(row.querySelector('.dish-select')).val();
-            const platoText = $(row.querySelector('.dish-select')).text();
-            const cantidadPlato = row.querySelector('.dish-quantity').value;
-            const subtotalPlato = row.querySelector('.dish-total').textContent.replace('$', '').trim();
-
-            detallesVenta.push({
-                id_plato: idPlato,
-                cantidad_plato: cantidadPlato,
-                subtotal_venta: parseFloat(subtotalPlato.replace('$', '')) || 0
-            });
-
-            productosLista += `<li>${platoText} - Cantidad: ${cantidadPlato} - Subtotal: $${subtotalPlato}</li>`;
         });
 
         const detallesVentaJSON = JSON.stringify(detallesVenta);
@@ -368,242 +636,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     dineroRecibidoInput.addEventListener('input', calculateChange);
-    document.querySelector('form').addEventListener('submit', prepareForm);
-    productRows.addEventListener('input', validateInputs);
-    dishRows.addEventListener('input', validateInputs);
 
-    addProductRow();
-    addDishRow();
-
-    window.addProductRow = addProductRow;
-    window.addDishRow = addDishRow;
-});
-
-// PRODUCTOS //
-document.addEventListener('DOMContentLoaded', function () {
-    const productRows = document.getElementById('product-rows');
-    const subtotalElement = document.getElementById('subtotal');
-    const totalVentaField = document.getElementById('total_venta');
-    const dineroRecibidoInput = document.getElementById('dinero_recibido');
-    const cambioElement = document.getElementById('cambio');
-    let validationTimeout = null;
-
-        function addProductRow() {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="product-column">
-                    <input class="product-id product-select" style="width: 100%;" required />
-                </td>
-                <td class="quantity-column"><input type="number" class="product-quantity" min="1" required></td>
-                <td class="price-column"><input type="number" class="product-price" min="0" step="0.01" required readonly></td>
-                <td class="stock-column"><span class="product-stock">0</span></td>
-                <td class="delete-column">
-                    <i type="button" class="delete-row fas fa-trash-alt" style="color: #04644B; font-size: 25px;"
-                        onmouseover="this.style.color='#ff0000';"
-                        onmouseout="this.style.color='#04644B';"></i>
-                </td>
-                <td><span class="product-total">$0.00</span></td>
-            `;
-        
-            $(row.querySelector('.product-select')).select2({
-                placeholder: 'Seleccione un producto',
-                ajax: {
-                    url: '/app/venta/productos_api/', 
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            term: params.term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.map(producto => ({
-                                id: producto.id,
-                                text: producto.producto,
-                                valor: producto.valor,
-                                cantidad: producto.cantidad
-                            }))
-                        };
-                    },
-                    cache: true
-                }
-            }).on('select2:select', function (e) {
-                const data = e.params.data;
-                const priceInput = row.querySelector('.product-price');
-                const stockSpan = row.querySelector('.product-stock');
-                const quantityInput = row.querySelector('.product-quantity');
-                
-                priceInput.value = data.valor || 0;
-                stockSpan.textContent = data.cantidad || 0;
-                quantityInput.max = data.cantidad || 0;
-                quantityInput.value = 1; 
-
-                $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
-
-                validateInputs();
-            });
-
-            productRows.appendChild(row);
-
-            row.querySelector('.product-quantity').addEventListener('input', function() {
-                clearTimeout(validationTimeout);
-                validationTimeout = setTimeout(validateInputs, 500);
-            });
-            row.querySelector('.product-price').addEventListener('input', validateInputs);
-            row.querySelector('.delete-row').addEventListener('click', function () {
-                if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                    row.remove();
-                    validateInputs();
-                }
-            });
-
-            validateInputs();
-        }
-
-    function validateInputs() {
-        let isValid = true;
-        let ids = new Set();
-        let subtotal = 0;
-        let duplicateError = false;
-    
-        document.querySelectorAll('#product-rows tr').forEach(row => {
-            const select = $(row.querySelector('.product-select')).val();
-            const quantityInput = row.querySelector('.product-quantity');
-            const priceInput = row.querySelector('.product-price');
-            const stockSpan = row.querySelector('.product-stock');
-    
-            const quantity = Number(quantityInput.value);
-            const price = Number(priceInput.value);
-            const maxQuantity = Number(quantityInput.max);
-    
-            if (ids.has(select)) {
-                $(row.querySelector('.product-select')).next().addClass('error');
-                isValid = false;
-                duplicateError = true;
-            } else {
-                $(row.querySelector('.product-select')).next().removeClass('error');
-                ids.add(select);
-            }
-    
-            if (quantity <= 0 || quantity > maxQuantity) {
-                quantityInput.classList.add('error');
-                if (quantity > maxQuantity) {
-                    Swal.fire({
-                        title: 'Advertencia!',
-                        text: `La cantidad ingresada (${quantity}) supera el stock disponible (${maxQuantity}).`,
-                        icon: 'warning',
-                    });
-                }
-                isValid = false;
-            } else {
-                quantityInput.classList.remove('error');
-            }
-    
-            if (price < 0) {
-                priceInput.classList.add('error');
-                isValid = false;
-            } else {
-                priceInput.classList.remove('error');
-            }
-    
-            const total = (quantity * price).toFixed(2);
-            row.querySelector('.product-total').textContent = `$${total}`;
-    
-            subtotal += parseFloat(total);
-        });
-    
-        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-        if (totalVentaField) {
-            totalVentaField.value = subtotal.toFixed(2);
-        }
-    
-        if (duplicateError) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'No se pueden guardar productos duplicados.',
-                icon: 'error',
-            });
-        }
-    
-        return isValid && !duplicateError;
-    }
-
-    function calculateChange() {
-        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
-        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
-        const cambio = dineroRecibido - subtotal;
-
-            cambioElement.value = cambio.toFixed(2);
-        
-    }
-
-    function prepareForm(event) {
-        if (!validateInputs()) {
-            event.preventDefault();
-            return;
-        }
-    
-        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
-        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
-    
-        if (dineroRecibido < subtotal) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Error!',
-                text: 'El dinero recibido no puede ser menor al total de la venta.',
-                icon: 'error',
-            });
-            return;
-        }
-    
-        const detallesVenta = [];
-        let productosLista = '';
-    
-        document.querySelectorAll('#product-rows tr').forEach(row => {
-            const idProducto = $(row.querySelector('.product-select')).val();
-            const productoText = $(row.querySelector('.product-select')).text();
-            const cantidadProducto = row.querySelector('.product-quantity').value;
-            const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
-    
-            detallesVenta.push({
-                id_producto: idProducto,
-                cantidad_producto: cantidadProducto,
-                subtotal_venta: parseFloat(subtotalVenta.replace('$', '')) || 0
-            });
-    
-            productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
-        });
-    
-        const detallesVentaJSON = JSON.stringify(detallesVenta);
-        document.getElementById('detalles_venta').value = detallesVentaJSON;
-    
-        Swal.fire({
-            title: 'Venta Generada',
-            html: `<ul>${productosLista}</ul>`,
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.querySelector('form').submit();
-            }
-        });
-    
-        console.log("Detalles de Venta JSON:", detallesVentaJSON);
-    }
-    
-    dineroRecibidoInput.addEventListener('input', calculateChange);
-    
     document.querySelector('form').addEventListener('submit', prepareForm);
 
     productRows.addEventListener('input', validateInputs);
 
-    addProductRow();
+    addProductSaleRow();
 
-    window.addProductRow = addProductRow;
+    window.addProductSaleRow = addProductSaleRow;
 });
 
 // CLIENTES //
@@ -633,43 +673,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
             xhr.setRequestHeader('X-CSRFToken', csrftoken);
         }
-    });
-
-
-    $('.client-select').select2({
-        placeholder: 'Buscar cliente',
-        ajax: {
-            url: '/app/venta/clientes_api/',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return { term: params.term };
-            },
-            processResults: function (data) {
-                return {
-                    results: data.map(cliente => ({
-                        id: cliente.id,
-                        text: `${cliente.tipo_documento}: ${cliente.numero_documento} - ${cliente.nombre}`,
-                        nombre: cliente.nombre,
-                        tipo_documento: cliente.tipo_documento,
-                        numero_documento: cliente.numero_documento,
-                        email: cliente.email,
-                        pais_telefono: cliente.pais_telefono,
-                        telefono: cliente.telefono
-                    }))
-                };
-            },
-            cache: true
-        }
-    }).on('select2:select', function (e) {
-        const data = e.params.data;
-        console.log('Cliente seleccionado:', data);
-        document.getElementById('client-name').value = data.nombre;
-        document.getElementById('client-document_type').value = data.tipo_documento;
-        document.getElementById('client-document_number').value = data.numero_documento;
-        document.getElementById('client-email').value = data.email;
-        document.getElementById('client-phone_prefix').value = data.pais_telefono;
-        document.getElementById('client-phone_number').value = data.telefono;
     });
 
     $('#save-client').on('click', function() {

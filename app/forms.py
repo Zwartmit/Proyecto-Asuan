@@ -231,6 +231,12 @@ class MeseroForm(ModelForm):
                 attrs={
                     "placeholder": "Teléfono",
                 }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado del plato",
+                },
             )
         }
 
@@ -516,7 +522,12 @@ class CuentaForm(ModelForm):
                 attrs={
                     "class": "client-select"
                 }
-            )
+            ),
+            "id_mesero": Select2Widget(
+                attrs={
+                    "class": "client-select"
+                }
+            ),
         }
         
 class FacturaForm(ModelForm):

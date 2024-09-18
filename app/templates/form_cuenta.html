@@ -21,6 +21,7 @@
                     </div>
                     <div class="details-section">
                         <div class="company-details">
+                            <label for="details-company" style="font-size: 20px;">Detalles de la Empresa:</label><br><br>
                             <label for="company-name">Nombre de la Empresa:</label>
                             <input type="text" id="company-name" value="Asuan parque eco-turistico" readonly>
         
@@ -82,6 +83,7 @@
                     <main id="combined-sale">
                         <!-- Productos -->
                         <div class="div-tablas">
+                            <label for="details-products" style="font-size: 20px;">Agregar Productos:</label><br>
                             <table class="product-table">
                                 <thead>
                                     <tr>
@@ -101,6 +103,7 @@
                         </div>
                         <!-- Platos -->
                         <div class="div-tablas">
+                            <label for="details-dishes" style="font-size: 20px;">Agregar Platos:</label><br>
                             <table class="dish-table">
                                 <thead>
                                     <tr>
@@ -129,16 +132,21 @@
                                 <input type="text" id="cambio" name="cambio" class="form-control" readonly>
                             </div>
                         </div>
+                        <div class="form-group"></div>
+                            <input class="waiter-id waiter-select" id="waiter-select" required />
+                        </div>
+                        <div class="form-group"></div>
+                            <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
+                            {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
+                        </div>
                     </main>
-                    <div class="form-group">
-                        <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
-                        {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
-                    </div>
                 </header>
             </div>
         </div>
     </div>
     <input type="hidden" id="detalles_venta" name="detalles_venta">
+    <input type="hidden" id="cuentas" name="cuentas">
+    <input type="hidden" id="client-id" name="client_id">
     <div class="card-footer">
         <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
         <a href="{{ listar_url }}" class="btn btn-danger btn-flat">
