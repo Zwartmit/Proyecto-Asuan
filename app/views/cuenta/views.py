@@ -68,83 +68,92 @@ class CuentaCreateView(CreateView):
         context['cuenta_form'] = CuentaForm()
         return context
 
-def form_valid(self, form):
-    try:
-        venta = form.save(commit=False)
-        detalles_venta_json = self.request.POST.get('detalles_venta')
-        cuentas_json = self.request.POST.get('cuentas')
-        dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
-        
-        if detalles_venta_json:
-            try:
-                detalles_venta = json.loads(detalles_venta_json)
-            except json.JSONDecodeError:
+    def form_valid(self, form):
+        try:
+            venta = form.save(commit=False)
+            detalles_venta_json = self.request.POST.get('detalles_venta')
+            cuentas_json = self.request.POST.get('cuentas')
+            dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
+            
+            # Parse detalles_venta JSON
+            if detalles_venta_json:
+                try:
+                    detalles_venta = json.loads(detalles_venta_json)
+                except json.JSONDecodeError:
+                    detalles_venta = []
+            else:
                 detalles_venta = []
-        else:
-            detalles_venta = []
 
-        if cuentas_json:
-            try:
-                cuentas_data = json.loads(cuentas_json)
-            except json.JSONDecodeError:
+            # Parse cuentas JSON
+            if cuentas_json:
+                try:
+                    cuentas_data = json.loads(cuentas_json)
+                except json.JSONDecodeError:
+                    cuentas_data = []
+            else:
                 cuentas_data = []
-        else:
-            cuentas_data = []
 
-        total_productos = sum(float(d['subtotal_venta']) for d in detalles_venta)
-        total_platos = sum(float(c['subtotal_plato']) for c in cuentas_data)
-        venta.total_venta = total_productos + total_platos
-        
-        venta.dinero_recibido = dinero_recibido
-        venta.cambio = dinero_recibido - venta.total_venta
+            # Calculate totals
+            total_productos = sum(float(d['subtotal_venta']) for d in detalles_venta)
+            total_platos = sum(float(c['subtotal_plato']) for c in cuentas_data)
+            venta.total_venta = total_productos + total_platos
+            venta.dinero_recibido = dinero_recibido
+            venta.cambio = dinero_recibido - venta.total_venta
 
-        venta.save()
+            # Save Venta
+            venta.save()
 
-        for detalle in detalles_venta:
-            id_producto = detalle.get('id_producto')
-            cantidad_producto = detalle.get('cantidad_producto')
-            subtotal_venta = detalle.get('subtotal_venta')
+            # Save Detalles de Venta
+            for detalle in detalles_venta:
+                id_producto = detalle.get('id_producto')
+                cantidad_producto = detalle.get('cantidad_producto')
+                subtotal_venta = detalle.get('subtotal_venta')
 
-            try:
-                producto_instance = Producto.objects.get(pk=id_producto)
-            except Producto.DoesNotExist:
-                continue
+                try:
+                    producto_instance = Producto.objects.get(pk=id_producto)
+                except Producto.DoesNotExist:
+                    continue
 
-            producto_instance.cantidad -= int(cantidad_producto)
-            producto_instance.save()
+                # Update stock
+                producto_instance.cantidad -= int(cantidad_producto)
+                producto_instance.save()
 
-            Detalle_venta.objects.create(
-                id_venta=venta,
-                id_producto=producto_instance, 
-                cantidad_producto=cantidad_producto,
-                subtotal_venta=subtotal_venta
-            )
-        
-        for cuenta in cuentas_data:
-            id_plato = cuenta.get('id_plato')
-            cantidad_plato = cuenta.get('cantidad_plato')
-            subtotal_plato = cuenta.get('subtotal_plato')
-            id_cliente = cuenta.get('id_cliente')
-            id_mesero = cuenta.get('id_mesero')
+                # Create Detalle_venta instance
+                Detalle_venta.objects.create(
+                    id_venta=venta,
+                    id_producto=producto_instance, 
+                    cantidad_producto=cantidad_producto,
+                    subtotal_venta=subtotal_venta
+                )
 
-            try:
-                plato_instance = Plato.objects.get(pk=id_plato) 
-            except Plato.DoesNotExist:
-                continue
+            # Save Cuentas
+            for cuenta in cuentas_data:
+                id_plato = cuenta.get('id_plato')
+                cantidad_plato = cuenta.get('cantidad_plato')
+                subtotal_plato = cuenta.get('subtotal_plato')
+                id_cliente = cuenta.get('id_cliente')
+                id_mesero = cuenta.get('id_mesero')
 
-            Cuenta.objects.create(
-                id_venta=venta,
-                id_plato=plato_instance, 
-                cantidad_plato=cantidad_plato,
-                subtotal_plato=subtotal_plato,
-                id_cliente_id=id_cliente,  
-                id_mesero_id=id_mesero
-            )
+                try:
+                    plato_instance = Plato.objects.get(pk=id_plato) 
+                except Plato.DoesNotExist:
+                    continue
 
-        return super().form_valid(form)
-    except Exception as e:
-        print(f"Error al guardar la venta: {e}")    
-        return self.form_invalid(form)
+                # Create Cuenta instance
+                Cuenta.objects.create(
+                    id_venta=venta,
+                    id_plato=plato_instance, 
+                    cantidad_plato=cantidad_plato,
+                    subtotal_plato=subtotal_plato,
+                    id_cliente_id=id_cliente,  
+                    id_mesero_id=id_mesero
+                )
+
+            return super().form_valid(form)
+
+        except Exception as e:
+            print(f"Error al guardar la venta: {e}")    
+            return self.form_invalid(form)
     
 ###### ELIMINAR ######
 
