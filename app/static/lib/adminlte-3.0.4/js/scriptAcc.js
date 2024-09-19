@@ -10,6 +10,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let productRowCounter = 1;
     let dishRowCounter = 1;
+
+    function updateStockColor(stockElement, stockQuantity) {
+        if (stockQuantity === 0) {
+            stockElement.style.backgroundColor = 'red';
+            stockElement.style.color = 'white';
+        } else if (stockQuantity > 0 && stockQuantity <= 10) {
+            stockElement.style.backgroundColor = '#ffce33';
+            stockElement.style.color = 'white';
+        } else if (stockQuantity > 10) {
+            stockElement.style.backgroundColor = '#2b88c9';
+            stockElement.style.color = 'white';
+        } else {
+            stockElement.style.backgroundColor = 'transparent';
+            stockElement.style.color = 'black';
+        }
+    }
+
     function addProductRow() {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -66,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
             stockSpan.textContent = data.cantidad || 0;
             quantityInput.max = data.cantidad || 0;
             quantityInput.value = 1; 
+
+            updateStockColor(stockSpan, data.cantidad);
 
             $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
 
@@ -323,11 +342,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 return { term: params.term };
             },
             processResults: function (data) {
-                console.log(data);
                 return {
                     results: data.map(mesero => ({
                         id: mesero.id,
-                        text: `${mesero.tipo_documento}: ${mesero.numero_documento} - ${mesero.nombre}`,
+                        text: `${mesero.nombre} - ${mesero.tipo_documento}: ${mesero.numero_documento}`,
                     }))
                 };
             },
@@ -336,10 +354,46 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             cache: true
         }
+    }).on('select2:select', function (e) {
+        const data = e.params.data;
+        $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
     });
 
     function prepareForm(event) {
         event.preventDefault();
+
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+
+        if (dineroRecibido < subtotal) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Error!',
+                text: 'El dinero recibido no puede ser menor al total de la venta.',
+                icon: 'error',
+            });
+            return;
+        }
+
+        const clientId = $('#client-select').val();
+        if (!clientId) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Debes agregar un cliente.',
+                icon: 'error',
+            });
+            return;
+        }
+
+        const waiterId = $('#waiter-select').val();
+        if (!waiterId) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Debes seleccionar un mesero.',
+                icon: 'error',
+            });
+            return;
+        }
         
         if (!validateInputs()) {
             Swal.fire({
@@ -410,6 +464,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const cambioElement = document.getElementById('change_sale');
     let validationTimeout = null;
 
+    function updateStockColor(stockElement, stockQuantity) {
+        if (stockQuantity === 0) {
+            stockElement.style.backgroundColor = 'red';
+            stockElement.style.color = 'white';
+        } else if (stockQuantity > 0 && stockQuantity <= 10) {
+            stockElement.style.backgroundColor = '#ffce33';
+            stockElement.style.color = 'white';
+        } else if (stockQuantity > 10) {
+            stockElement.style.backgroundColor = '#2b88c9';
+            stockElement.style.color = 'white';
+        } else {
+            stockElement.style.backgroundColor = 'transparent';
+            stockElement.style.color = 'black';
+        }
+    }
+
     function addProductSaleRow() {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -462,6 +532,8 @@ document.addEventListener('DOMContentLoaded', function () {
             quantityInput.value = 1; 
 
             $(this).data('select2').$container.find('.select2-selection__placeholder').text(data.text);
+
+            updateStockColor(stockSpan, data.cantidad);
 
             validateInputs();
         });

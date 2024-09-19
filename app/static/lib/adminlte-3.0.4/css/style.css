@@ -265,12 +265,6 @@ h1 {
     margin-right: 5px;
 }
 
-.dark-mode .product-table th {
-    background-color: #414141;
-    border-color: #c4c4c4;
-    color: #ffffff;
-}
-
 /*    */
 
 .dark-mode {
@@ -336,6 +330,21 @@ h1 {
 .dark-mode .asw-filter {
     background: #6d6d6d;
     color: #ffffff;
+}
+
+.dark-mode .div-tablas {
+    background: #6d6d6d;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
+    background-color: #04644B;
+    color: black;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
+    background-color: #04644B;
+    color: #fff;
 }
 
 .logout-menu {

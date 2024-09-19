@@ -61,9 +61,13 @@ def platos_api(request):
     return JsonResponse(list(platos), safe=False)
 
 def clientes_api(request):
-    term = request.GET.get('term', '') 
-    clientes = Cliente.objects.filter(Q(nombre__icontains=term) & Q(estado=True)
-    ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
+    term = request.GET.get('term', '')
+    clientes = Cliente.objects.filter(
+        Q(nombre__icontains=term) | Q(numero_documento__icontains=term),
+        estado=True
+    ).values(
+        'id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono'
+    )
     return JsonResponse(list(clientes), safe=False)
 
 def meseros_api(request):

@@ -42,7 +42,7 @@
                             <div class="client-options">
                                 <div class="options">
                                     <label for="client-select">Buscar cliente:</label><br>
-                                    <input class="client-id client-select" id="client-select" required />
+                                    <input class="client-id client-select" id="client-select"/>
                                 </div>
                                 <div class="options">
                                     <label for="add-client">Agregar:</label>
@@ -132,14 +132,15 @@
                                 <input type="text" id="cambio" name="cambio" class="form-control" readonly>
                             </div>
                         </div>
-                        <div class="form-group"></div>
-                            <input class="waiter-id waiter-select" id="waiter-select" required />
+                        <div class="form-group">
+                            <label for="waiter-select">Buscar mesero:</label><br>
+                            <input class="waiter-id waiter-select" id="waiter-select">
                         </div>
-                        <div class="form-group"></div>
+                    </main>
+                        <div class="form-group">
                             <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
                             {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
                         </div>
-                    </main>
                 </header>
             </div>
         </div>
