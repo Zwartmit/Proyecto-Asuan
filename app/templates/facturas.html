@@ -3,12 +3,12 @@
 {% block head %}
 {% endblock %}
 {% block contenido %}
-<div class="containerReport">
+<div class="containerInvoice">
     <div class="containerTitle">
         <h1>{{ titulo }}</h1>
-        <img class="img_rep" src="{% static 'img/reporte.png' %}" alt="Logo database" style="width: 100px; height: 100px">
+        <img class="img_rep" src="{% static 'img/factura.png' %}" alt="Logo database" style="width: 100px; height: 100px">
     </div>
-    <div class="report-section">
+    <div class="invoice-section">
         <div class="format-section">
             <form method="post" class="mt-3">
                 {% csrf_token %}

@@ -49,7 +49,7 @@ class VentaListView(ListView):
 def productos_api(request):
     term = request.GET.get('term', '') 
     productos = Producto.objects.filter(Q(producto__icontains=term) & Q(estado=True)
-    ).values('id', 'producto', 'valor', 'cantidad')
+    ).values('id', 'producto', 'valor', 'cantidad','id_presentacion__presentacion','id_presentacion__unidad_medida')
     return JsonResponse(list(productos), safe=False)
 
 def platos_api(request):
@@ -161,94 +161,6 @@ class VentaCreateView(CreateView):
         except Exception as e:
             print(f"Error al guardar la venta: {e}")    
             return self.form_invalid(form) 
-    
-###### CUENTA ######
-
-@method_decorator(never_cache, name='dispatch')
-class CuentaCreateView(CreateView):
-    model = Venta
-    form_class = VentaForm
-    template_name = 'venta/cuenta.html'
-    success_url = reverse_lazy('app:venta_lista')
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Registrar venta'
-        context['entidad'] = 'Registrar venta'
-        context['error'] = 'Esta venta ya existe'
-        context['listar_url'] = reverse_lazy('app:venta_lista')
-        context['cliente_form'] = ClienteForm()
-        context['detalleventa_form'] = DetalleVentaForm()
-        context['cuenta_form'] = CuentaForm()
-        return context
-    
-    def form_valid(self, form):
-        try:
-            venta = form.save(commit=False)
-            detalles_venta_json = self.request.POST.get('detalles_venta')
-            dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
-
-            if detalles_venta_json:
-                try:
-                    detalles_venta = json.loads(detalles_venta_json)
-                except json.JSONDecodeError:
-                    detalles_venta = []
-            else:
-                detalles_venta = []
-
-            venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
-            venta.dinero_recibido = dinero_recibido
-            venta.cambio = dinero_recibido - venta.total_venta
-            venta.save()
-
-            for detalle in detalles_venta:
-                id_producto = detalle.get('id_producto')
-                cantidad_producto = detalle.get('cantidad_producto')
-                subtotal_venta = detalle.get('subtotal_venta')
-
-                try:
-                    producto_instance = Producto.objects.get(pk=id_producto)
-                except Producto.DoesNotExist:
-                    continue
-
-                producto_instance.cantidad -= int(cantidad_producto)
-                producto_instance.save()
-
-                Detalle_venta.objects.create(
-                    id_venta=venta,
-                    id_producto=producto_instance,
-                    cantidad_producto=cantidad_producto,
-                    subtotal_venta=subtotal_venta
-                )
-
-            for detalle in detalles_venta:
-                id_plato = detalle.get('id_plato')
-                cantidad_plato = detalle.get('cantidad_plato')
-                subtotal_plato = detalle.get('subtotal_plato')
-
-                if id_plato:
-                    try:
-                        plato_instance = Plato.objects.get(pk=id_plato)
-                    except Plato.DoesNotExist:
-                        continue
-
-                    Cuenta.objects.create(
-                        id_venta=venta,
-                        id_plato=plato_instance,
-                        cantidad_plato=cantidad_plato,
-                        subtotal_plato=subtotal_plato,
-                        id_cliente=self.request.POST.get('client_id'),
-                        id_mesero=self.request.POST.get('id_mesero')
-                    )
-
-            return super().form_valid(form)
-        except Exception as e:
-            print(f"Error al guardar la venta: {e}")
-            return self.form_invalid(form)
         
 ###### EDITAR ######
 

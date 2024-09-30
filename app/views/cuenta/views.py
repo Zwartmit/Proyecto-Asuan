@@ -75,7 +75,6 @@ class CuentaCreateView(CreateView):
             cuentas_json = self.request.POST.get('cuentas')
             dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
             
-            # Parse detalles_venta JSON
             if detalles_venta_json:
                 try:
                     detalles_venta = json.loads(detalles_venta_json)
@@ -84,7 +83,6 @@ class CuentaCreateView(CreateView):
             else:
                 detalles_venta = []
 
-            # Parse cuentas JSON
             if cuentas_json:
                 try:
                     cuentas_data = json.loads(cuentas_json)
@@ -93,17 +91,14 @@ class CuentaCreateView(CreateView):
             else:
                 cuentas_data = [] 
 
-            # Calculate totals
             total_productos = sum(float(d['subtotal_venta']) for d in detalles_venta)
             total_platos = sum(float(c['subtotal_plato']) for c in cuentas_data)
             venta.total_venta = total_productos + total_platos
             venta.dinero_recibido = dinero_recibido
             venta.cambio = dinero_recibido - venta.total_venta
 
-            # Save Venta
             venta.save()
 
-            # Save Detalles de Venta
             for detalle in detalles_venta:
                 id_producto = detalle.get('id_producto')
                 cantidad_producto = detalle.get('cantidad_producto')
@@ -114,11 +109,9 @@ class CuentaCreateView(CreateView):
                 except Producto.DoesNotExist:
                     continue
 
-                # Update stock
                 producto_instance.cantidad -= int(cantidad_producto)
                 producto_instance.save()
 
-                # Create Detalle_venta instance
                 Detalle_venta.objects.create(
                     id_venta=venta,
                     id_producto=producto_instance, 
@@ -126,7 +119,6 @@ class CuentaCreateView(CreateView):
                     subtotal_venta=subtotal_venta
                 )
 
-            # Save Cuentas
             for cuenta in cuentas_data:
                 id_plato = cuenta.get('id_plato')
                 cantidad_plato = cuenta.get('cantidad_plato')
@@ -139,7 +131,6 @@ class CuentaCreateView(CreateView):
                 except Plato.DoesNotExist:
                     continue
 
-                # Create Cuenta instance
                 Cuenta.objects.create(
                     id_venta=venta,
                     id_plato=plato_instance, 

@@ -217,31 +217,12 @@
                 </li>
                 {% endif %}
                 <li class="nav-itemm">
-                    <a href="#submenu6" class="nav-link d-flex justify-content-between align-items-center"
-                        data-toggle="collapse" aria-expanded="false" style="color: white; font-size: 13px;">
+                    <a href="{% url 'app:factura_lista' %}" class="nav-link d-flex justify-content-between align-items-center" style="color: white; font-size: 13px;">
                         <div class="d-flex align-items-center">
                             <i class="nav-icon fas fa-file-invoice" style="font-size: 25px; margin-right: 10px;"></i>
                             <p class="mb-0" style="font-size: 19px;">Gestión de facturas</p>
                         </div>
                     </a>
-                    <ul class="collapse list-unstyled pl-4" id="submenu6">
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_lista' %}"
-                                style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-list"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
-                                <span>Lista de facturas</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="{% url 'app:factura_crear' %}"
-                                style="font-size: 19px; color: white;">
-                                <i class="nav-icon fas fa-plus"
-                                    style="font-size: 20px; margin-right: 10px; color: white;"></i>
-                                <span>Generar factura</span>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-itemm">
                     <a href="{% url 'app:gestion_reportes' %}" class="nav-link d-flex justify-content-between align-items-center" style="color: white; font-size: 13px;">
