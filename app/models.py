@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.core.validators import MinLengthValidator
 
-class Categoria (models.Model):
+class Categoria(models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
@@ -21,7 +21,7 @@ class Categoria (models.Model):
     
 ########################################################################################################################################
     
-class Marca (models.Model):
+class Marca(models.Model):
     marca = models.CharField(max_length=50, verbose_name="Marca", unique=True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
@@ -67,7 +67,7 @@ class Producto(models.Model):
     id_presentacion = models.ForeignKey(Presentacion, on_delete=models.PROTECT, verbose_name="Presentación")
 
     def __str__(self):
-        return f"{self.producto}"
+        return f"{self.producto}-{self.id_presentacion.presentacion}({self.id_presentacion.unidad_medida})"
 
     class Meta:
         verbose_name= "producto"
@@ -97,6 +97,7 @@ class Mesero(models.Model):
     email = models.EmailField(max_length=50, verbose_name="Email", validators=[validate_email])
     pais_telefono = models.CharField(max_length=50, choices=[(pais, pais) for pais in codigos_telefonicos_paises], default='Colombia (+57)', verbose_name="Prefijo telefónico")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
         return f"{self.nombre}"
@@ -129,9 +130,10 @@ class Cliente(models.Model):
     email = models.EmailField(max_length=50, verbose_name="Email", validators=[validate_email])
     pais_telefono = models.CharField(max_length=50, choices=[(pais, pais) for pais in codigos_telefonicos_paises], default='Colombia (+57)', verbose_name="Prefijo telefónico")
     telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
-        return f"{self.nombre}"
+        return f"{self.nombre} - {self.tipo_documento}: {self.numero_documento}"
     
     class Meta:
         verbose_name= "cliente"
@@ -248,18 +250,19 @@ class Venta(models.Model):
         EF = 'EF', 'Efectivo'
         TF = 'TF', 'Transferencia'
 
-    fecha_venta = models.DateTimeField(auto_now=True)
-    total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta")
+    fecha_venta = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la venta")
+    total_venta = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total de la venta", null=True, blank=True)
+    dinero_recibido = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Dinero recibido", null=True, blank=True)
+    cambio = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Cambio", null=True, blank=True)
     metodo_pago = models.CharField(max_length=3, choices=MedotoPago.choices, default=MedotoPago.EF, verbose_name="Metodo de Pago")
 
-    def _str_(self):
+    def __str__(self):
         return str(self.id)
 
     class Meta:
         verbose_name= "venta"
         verbose_name_plural ='ventas'
-        order_with_respect_to = 'fecha_venta'
-        db_table ='Venta'
+        db_table ='Venta' 
 
 ########################################################################################################################################
 
@@ -268,10 +271,11 @@ class Detalle_venta(models.Model):
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
     id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
+    subtotal_venta = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
 
 
-    def _str_(self):
-        return self.id_producto
+    def __str__(self):
+        return str(self.id_producto)
 
     class Meta:
         verbose_name= "detalle_de_venta"
@@ -280,18 +284,17 @@ class Detalle_venta(models.Model):
 
 ########################################################################################################################################
 
-class Detalle_venta_cuenta(models.Model):
+class Cuenta(models.Model):
 
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
-    id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
-    cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
     id_plato = models.ForeignKey(Plato,on_delete=models.PROTECT)
     cantidad_plato = models.PositiveIntegerField(verbose_name="Cantidad")
+    subtotal_plato = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
     id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
-    id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT)
+    id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT) 
 
-    def _str_(self):
-        return self.id_producto
+    def __str__(self):
+        return str(self.id_plato)
 
     class Meta:
         verbose_name= "detalle_venta_cuenta"
@@ -301,7 +304,7 @@ class Detalle_venta_cuenta(models.Model):
 ########################################################################################################################################
 
 class Factura(models.Model):
-    fecha_emision_factura = models.DateTimeField(null=False, blank=True, verbose_name="Fecha de emisión de la factura")
+    fecha_emision_factura = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la venta")
     id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
 
     def __str__(self):

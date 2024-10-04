@@ -37,6 +37,12 @@ def reporte_selector(request):
                 return export_administradores_excel(request)
             elif tipo_reporte == 'operador':
                 return export_operadores_excel(request)
+            elif tipo_reporte == 'venta':
+                return export_ventas_excel(request)
+            elif tipo_reporte == 'detalle_venta':
+                return export_detalle_ventas_excel(request)
+            elif tipo_reporte == 'cuenta':
+                return export_cuentas_excel(request)
         elif formato == 'pdf':
             if tipo_reporte == 'categoria':
                 return export_categorias_pdf(request)
@@ -56,6 +62,12 @@ def reporte_selector(request):
                 return export_administradores_pdf(request)
             elif tipo_reporte == 'operador':
                 return export_operadores_pdf(request)
+            elif tipo_reporte == 'venta':
+                return export_ventas_pdf(request)
+            elif tipo_reporte == 'detalle_venta':
+                return export_detalle_ventas_pdf(request)
+            elif tipo_reporte == 'cuenta':
+                return export_cuentas_pdf(request)
     else:
         form = ReporteForm() 
 

@@ -140,28 +140,60 @@ class ClienteForm(ModelForm):
         widgets = {
             "nombre": TextInput(
                 attrs={
+                    'id': 'nombre',
                     "placeholder": "Nombre del cliente",
+                    'class': 'form-control',
+                    'name': "nombre",
                 }
             ),
             "tipo_documento": Select(
                 attrs={
+                    'id': 'tipo_documento',
                     "placeholder": "Tipo de documento",
+                    'class': 'form-control',
+                    'name': "tipo_documento",
                 }
             ),
             "numero_documento": NumberInput(
                 attrs={
+                    'id': 'numero_documento',
                     "placeholder": "Número de documento",
+                    'class': 'form-control',
+                    'name': "numero_documento",
                 }
             ),
             "email": EmailInput(
                 attrs={
+                    'id': 'email',
                     "placeholder": "Email",
+                    'class': 'form-control',
+                    'name': "email",
+                }
+            ),
+            "pais_telefono": Select(
+                attrs={
+                    'id': 'pais_telefono',
+                    "placeholder": "Tipo de documento",
+                    'class': 'form-control',
+                    'name': "pais_telefono",
                 }
             ),
             "telefono": NumberInput(
                 attrs={
+                    'id': 'telefono',
                     "placeholder": "Teléfono",
+                    'class': 'form-control',
+                    'name': "telefono",
                 }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    'id': 'estado',
+                    "placeholder": "Estado del cliente",
+                    'class': 'form-control',
+                    'name': "estado",
+                },
             )
         }
 
@@ -199,6 +231,12 @@ class MeseroForm(ModelForm):
                 attrs={
                     "placeholder": "Teléfono",
                 }
+            ),
+            "estado": Select(
+                choices=[(True, "Activo"), (False, "Inactivo")],
+                attrs={
+                    "placeholder": "Estado del plato",
+                },
             )
         }
 
@@ -444,17 +482,12 @@ class OperadorForm(ModelForm):
 class VentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["total_venta"].widget.attrs["autofocus"] = True
 
     class Meta:
         model = Venta
         fields = "__all__"
-        widgets = {
-            "total_venta": NumberInput(
-                attrs={
-                    "placeholder": "Total",
-                }
-            ),
+        exclude = ['fecha_venta']
+        widgets = { 
             "metodo_pago": Select(
                 attrs={
                     "placeholder": "Metodo de pago",
@@ -481,26 +514,37 @@ class DetalleVentaForm(ModelForm):
                 attrs={
                     "class": "product-select"
                 }
-            )
+            ),
         }
         
-class DetalleVentaCuentaForm(ModelForm):
+class CuentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["cantidad_producto"].widget.attrs["autofocus"] = True
+        self.fields["cantidad_plato"].widget.attrs["autofocus"] = True
+        self.fields['id_plato'].queryset = Producto.objects.all()
 
     class Meta:
-        model = Detalle_venta_cuenta
+        model = Cuenta
         fields = "__all__"
         widgets = {
-            "cantidad_producto": NumberInput(
+            "cantidad_plato": NumberInput(
                 attrs={
                     "placeholder": "Cantidad"
                 }
             ),
-            "cantidad_plato": NumberInput(
+            "id_plato": Select2Widget(
                 attrs={
-                    "placeholder": "Cantidad"
+                    "class": "product-select"
+                }
+            ),
+            "id_cliente": Select2Widget(
+                attrs={
+                    "class": "client-select"
+                }
+            ),
+            "id_mesero": Select2Widget(
+                attrs={
+                    "class": "client-select"
                 }
             ),
         }
