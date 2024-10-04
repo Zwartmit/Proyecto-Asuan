@@ -3,6 +3,7 @@
 {% block contenido %}
 {% load static %}
 <form method="post" action=".">
+    {% csrf_token %}
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
@@ -11,14 +12,11 @@
             </h3>
         </div>
         <div class="card-body">
-            {% csrf_token %}
             <div class="invoice-container">
                 <header>
                     <div class="header-section">
                         <img src="{% static 'img/logo_asuan2.png' %}" alt="Logo de la Empresa" class="company-logo">
-                        <div class="inv oice-info">
-                            <p>Número de Factura: <span id="invoice-number">001</span></p>
-                        </div>
+                        <div id="fechaHora"></div>
                     </div>
                     <div class="details-section">
                         <div class="company-details">
@@ -37,53 +35,47 @@
                             <label for="company-phone">Teléfono:</label>
                             <input type="tel" id="company-phone" value="+57 3209668241" readonly>
                         </div>
-                        <!-- <div class="client-details">
-                            {% for field in cliente_form.visible_fields %}
-                            <div class="form-group">
-                                <label for="text">{{ field.label }}:</label>
-                                {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                        <main id="product-sale">
+                            <table class="product-sale-table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-sale-column">Producto</th>
+                                        <th class="quantity-sale-column">Cantidad</th>
+                                        <th class="price-sale-column">Precio</th>
+                                        <th class="stock-sale-column">Stock</th>
+                                        <th class="delete-sale-column">Eliminar</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-sale-rows">
+                                    <!-- Tabla de productos-->
+                                </tbody>
+                            </table>
+                            <button onclick="addProductSaleRow()">Agregar Producto</button>
+                            <div class="totals">
+                                <p>Total: <span id="subtotal_sale" style="font-size: 35px; font-weight: bold;">$0</span></p>
+                                <div class="form-group">
+                                    <label for="money_received">Dinero Recibido:</label>
+                                    <input type="number" id="money_received_sale" name="money_received" class="form-control" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="change">Cambio:</label>
+                                    <input type="text" id="change_sale" name="change" class="form-control" readonly>
+                                </div>
                             </div>
-                            {% endfor %}
-                            <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
-                        </div> -->
+                        </main>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}:</label>
+                        {{ form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
                     </div>
                 </header>
-                <main>
-                    <table class="product-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Eliminar</th>
-                                <th>Precio Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="product-rows">
-                            <!-- tabla de productos-->
-                        </tbody>
-                    </table>
-                    <button onclick="addProductRow()">Agregar Producto</button>
-                    <div class="totals">
-                        <p>Total: <span id="subtotal">$0</span></p>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label for="total_venta">{{ venta_form.total_venta.label }}:</label>
-                        {{ venta_form.total_venta|add_class:'form-control'|attr:'readonly:true, autocomplete:off, id:subtotal' }}
-                    </div> -->
-                    <div class="form-group">
-                        <label for="metodo_pago">{{ venta_form.metodo_pago.label }}:</label>
-                        {{ venta_form.metodo_pago|add_class:'form-control'|attr:'autocomplete:off' }}
-                    </div>
-                </main>
-                <div class="buttons">
-                    <button onclick="printInvoice()">Imprimir PDF</button>           
-                </div>
             </div>
         </div>
     </div>
+    <input type="hidden" id="detalles_venta" name="detalles_venta">
     <div class="card-footer">
-        <button class="btn btn-info btn-flat" onclick="printInvoice()"><i class="fas fa-plus"></i> Guardar</button>
+        <button class="btn btn-info btn-flat"><i class="fas fa-plus"></i> Guardar</button>
         <a href="{{ listar_url }}" class="btn btn-danger btn-flat">
             <i class="fas fa-times"></i> Cancelar
         </a>
@@ -106,4 +98,21 @@
     });
     {% endif %}
 </script>
+<script>
+    function mostrarFechaHora() {
+      const fechaHoraDiv = document.getElementById('fechaHora');
+      const fechaActual = new Date();
+      const opciones = {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      };
+      
+      const fechaHoraFormateada = fechaActual.toLocaleDateString('es-ES', opciones).replace(',', '');
+      fechaHoraDiv.textContent = fechaHoraFormateada;
+    }
+
+    mostrarFechaHora();
+
+    setInterval(mostrarFechaHora, 1000);
+  </script>
 {% endblock %}
