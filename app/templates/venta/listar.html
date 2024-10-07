@@ -4,10 +4,8 @@
 <tr>
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
-    <th scope="col">Total</th>
-    <th scope="col">Dinero ingresado</th>
-    <th scope="col">Cambio</th>
     <th scope="col">Metodo de pago</th>
+    <th scope="col">Detalle de venta</th>
 </tr>
 {% endblock %}
 
@@ -16,10 +14,34 @@
     <tr>
         <td>{{ v.id }}</td>
         <td>{{ v.fecha_venta }}</td>
-        <td>{{ v.total_venta }}</td>
-        <td>{{ v.dinero_recibido }}</td>
-        <td>{{ v.cambio }}</td>
         <td>{{ v.metodo_pago }}</td>
+        <td>
+            <button id="detalle-venta-{{ v.id }}" type="button" data-toggle="modal" data-target="#modal-{{v.id}}">
+                <i class="fas fa-search"></i>
+            </button>
+            <div class="modal fade" id="modal-{{ v.id }}" tabindex="-1" role="dialog" aria-labelledby="ventaModalLabel-{{ v.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered modal-fullscreen" style="margin:auto;" role="document">   
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ventaModalLabel-{{ v.id }}">Detalles de Venta #{{ v.id }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Fecha de Venta: {{ v.fecha_venta }}</p>
+                            <p>Total Venta: {{ v.total_venta }}</p>
+                            <p>Dinero Recibido: {{ v.dinero_recibido }}</p>
+                            <p>Cambio: {{ v.cambio }}</p>
+                            <p>Método de Pago: {{ v.metodo_pago }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
     </tr>
     {% endfor %}
 {% endblock %}
