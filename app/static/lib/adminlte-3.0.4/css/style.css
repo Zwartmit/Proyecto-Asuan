@@ -337,6 +337,10 @@ h1 {
     color: #ffffff;
 }
 
+.dark-mode .modal-header{
+    background-attachment: #414141;
+}
+
 .select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
     background-color: #04644B;
     color: black;

@@ -486,13 +486,13 @@ class VentaForm(ModelForm):
     class Meta:
         model = Venta
         fields = "__all__"
-        exclude = ['fecha_venta']
+        exclude = ['fecha_venta', 'tipo_venta']
         widgets = { 
             "metodo_pago": Select(
                 attrs={
                     "placeholder": "Metodo de pago",
                 }
-            )
+            ),
         }
 
 class DetalleVentaForm(ModelForm):

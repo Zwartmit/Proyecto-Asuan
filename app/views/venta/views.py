@@ -64,7 +64,7 @@ def productos_api(request):
 def platos_api(request):
     term = request.GET.get('term', '')
     platos = Plato.objects.filter(
-        Q(plato__icontains=term) & Q(estado=True)
+        Q(plato__icontains=term) & Q(estado=True) 
     ).values('id', 'plato', 'valor')
     
     return JsonResponse(list(platos), safe=False)
@@ -129,6 +129,7 @@ class VentaCreateView(CreateView):
     def form_valid(self, form):
         try:
             venta = form.save(commit=False)
+            venta.tipo_venta = Venta.TipoVenta.Caja
             detalles_venta_json = self.request.POST.get('detalles_venta')
             dinero_recibido = float(self.request.POST.get('money_received', 0))
             
@@ -169,7 +170,7 @@ class VentaCreateView(CreateView):
             return super().form_valid(form)
         except Exception as e:
             print(f"Error al guardar la venta: {e}")    
-            return self.form_invalid(form) 
+            return self.form_invalid(form)  
         
 ###### EDITAR ######
 

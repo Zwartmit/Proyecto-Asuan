@@ -5,6 +5,7 @@
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
     <th scope="col">Metodo de pago</th>
+    <th scope="col">Tipo de venta</th>
     <th scope="col">Detalle de venta</th>
 </tr>
 {% endblock %}
@@ -15,6 +16,7 @@
         <td>{{ item.venta.id }}</td>
         <td>{{ item.venta.fecha_venta }}</td>
         <td>{{ item.venta.metodo_pago }}</td>
+        <td>{{ item.venta.tipo_venta }}</td>
         <td>
             <button id="detalle-venta-{{ item.venta.id }}" type="button" data-toggle="modal" data-target="#modal-{{ item.venta.id }}">
                 <i class="fas fa-search"></i>
@@ -28,7 +30,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" id="captura">
                             <div class="header-section">
                                 <img src="{% static 'img/logo_asuan2.png' %}" alt="Logo de la Empresa" class="company-logo-invoice">
                             </div>
@@ -40,37 +42,43 @@
                                 <p><b>Teléfono:</b><br> +57 3209668241</p>
                             </div>
                             <hr>
+                            <p><b>ID Venta:</b><br> {{ item.venta.id }}</p>
                             <p><b>Fecha de Venta:</b><br> {{ item.venta.fecha_venta }}</p>
                             <hr>
-                            <p><b>Cliente:</b><br></p>
-                            {% for cuenta in item.cuentas %}
-                                <p>{{ cuenta.id_cliente }}</p>
-                            {% endfor %}
-                            <p><b>Mesero:</b><br></p>
-                            {% for cuenta in item.cuentas %}
-                                <p>{{ cuenta.id_mesero }}</p>
-                            {% endfor %}
-                            <hr>
+                            {% if item.venta.tipo_venta != 'Caja' %}
+                                <p><b>Cliente:</b><br></p>
+                                {% for cuenta in item.cuentas %}
+                                    <p>{{ cuenta.id_cliente }}</p>
+                                {% endfor %}
+                                <p><b>Mesero:</b><br></p>
+                                {% for cuenta in item.cuentas %}
+                                    <p>{{ cuenta.id_mesero }}</p>
+                                {% endfor %}
+                                <hr>
+                            {% else %}
+                            {% endif %}
+                            {% if item.venta.tipo_venta != 'Caja' %} 
                             <h5><b>Platos:</b></h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Plato</th>
-                                        <th>Cantidad</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for cuenta in item.cuentas %}
-                                    <tr>
-                                        <td>{{ cuenta.id_plato }}</td>
-                                        <td>{{ cuenta.cantidad_plato }}</td>
-                                        <td>{{ cuenta.subtotal_plato }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>    
-                            </table>
-            
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Plato</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cuenta in item.cuentas %}
+                                        <tr>
+                                            <td>{{ cuenta.id_plato }}</td>
+                                            <td>{{ cuenta.cantidad_plato }}</td>
+                                            <td>{{ cuenta.subtotal_plato }}</td> 
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>    
+                                </table>
+                            {% else %}
+                            {% endif %}
                             <h5><b>Productos:</b></h5>
                             <table class="table table-bordered">
                                 <thead>
@@ -92,15 +100,17 @@
                             </table>
                             <br>
                             <div class="totales_factura">
-                                <p><b>Total:</b><br><b>= $</b>{{ item.venta.total_venta }}</p>
+                                <p><b>Total:</b><br><b> $</b>{{ item.venta.total_venta }}</p>
+                                <hr>
                                 <p><b>Dinero Recibido: $</b>{{ item.venta.dinero_recibido }}</p>
                                 <p><b>Cambio: <br>$</b>{{ item.venta.cambio }}</p>
                             </div>
                             <hr>
                             <p><b>Método de Pago:</b><br> {{ item.venta.metodo_pago }}</p>
+                            <p><b>Tipo de Venta:</b><br> {{ item.venta.tipo_venta }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button id="generarPDF" onclick="imprimirFactura({{ item.venta.id }})">Imprimir PDF</button>
                         </div>
                     </div>
                 </div>
@@ -110,6 +120,54 @@
     {% endfor %}
 {% endblock %}
 {% block javascript %}
+<script type="application/javascript">
+    function imprimirFactura(idVenta) {
+        const contenido = document.querySelector(`#modal-${idVenta} .modal-body`).innerHTML;
+        
+        const nuevaVentana = window.open('', '_blank');
+        
+        nuevaVentana.document.write(`
+            <html>
+            <head>
+                <title>Factura #${idVenta}</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                    }
+                    .header-section {
+                        text-align: center;
+                    }
+                    .totales_factura {
+                        margin-top: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                    }
+                    th, td {
+                        padding: 10px 20px;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    .table-bordered th, .table-bordered td {
+                        border: 1px solid #ddd; 
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                <div>${contenido}</div>
+            </body>
+            </html>
+        `);
+    
+        nuevaVentana.document.close();
+    }
+</script>
+
 <script type="application/javascript">
     $(document).ready(function () {
         $("#tabla").DataTable({
@@ -158,5 +216,4 @@
         });
     });
 </script>
- {% endblock %}
-
+{% endblock %}
