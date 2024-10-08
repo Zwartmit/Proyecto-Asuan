@@ -1,25 +1,111 @@
 {% extends 'listar.html' %}
-
+{%load static %}
 {% block columnas %}
 <tr>
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
-    <th scope="col">Total</th>
-    <th scope="col">Dinero ingresado</th>
-    <th scope="col">Cambio</th>
     <th scope="col">Metodo de pago</th>
+    <th scope="col">Detalle de venta</th>
 </tr>
 {% endblock %}
 
 {% block filas %}
-    {% for v in object_list %}
+    {% for item in ventas_con_detalles %}
     <tr>
-        <td>{{ v.id }}</td>
-        <td>{{ v.fecha_venta }}</td>
-        <td>{{ v.total_venta }}</td>
-        <td>{{ v.dinero_recibido }}</td>
-        <td>{{ v.cambio }}</td>
-        <td>{{ v.metodo_pago }}</td>
+        <td>{{ item.venta.id }}</td>
+        <td>{{ item.venta.fecha_venta }}</td>
+        <td>{{ item.venta.metodo_pago }}</td>
+        <td>
+            <button id="detalle-venta-{{ item.venta.id }}" type="button" data-toggle="modal" data-target="#modal-{{ item.venta.id }}">
+                <i class="fas fa-search"></i>
+            </button>
+            <div class="modal fade" id="modal-{{ item.venta.id }}" tabindex="-1" role="dialog" aria-labelledby="ventaModalLabel-{{ item.venta.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered custom-width-modal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ventaModalLabel-{{ item.venta.id }}">Factura de Venta <b>#{{ item.venta.id }}</b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="header-section">
+                                <img src="{% static 'img/logo_asuan2.png' %}" alt="Logo de la Empresa" class="company-logo-invoice">
+                            </div>
+                            <div class="datos-factura">
+                                <h5><b>Asuan parque eco-turistico</b></h5>
+                                <p><b>NIT:</b><br> 900583340</p>
+                                <p><b>Dirección:</b><br> Vereda Bellavista, KM3 via Monterrey-Yopal</p>
+                                <p><b>Correo:</b><br> asuanparque@gmail.com</p>
+                                <p><b>Teléfono:</b><br> +57 3209668241</p>
+                            </div>
+                            <hr>
+                            <p><b>Fecha de Venta:</b><br> {{ item.venta.fecha_venta }}</p>
+                            <hr>
+                            <p><b>Cliente:</b><br></p>
+                            {% for cuenta in item.cuentas %}
+                                <p>{{ cuenta.id_cliente }}</p>
+                            {% endfor %}
+                            <p><b>Mesero:</b><br></p>
+                            {% for cuenta in item.cuentas %}
+                                <p>{{ cuenta.id_mesero }}</p>
+                            {% endfor %}
+                            <hr>
+                            <h5><b>Platos:</b></h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Plato</th>
+                                        <th>Cantidad</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cuenta in item.cuentas %}
+                                    <tr>
+                                        <td>{{ cuenta.id_plato }}</td>
+                                        <td>{{ cuenta.cantidad_plato }}</td>
+                                        <td>{{ cuenta.subtotal_plato }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>    
+                            </table>
+            
+                            <h5><b>Productos:</b></h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for detalle in item.detalles_venta %}
+                                    <tr>
+                                        <td>{{ detalle.id_producto }}</td>
+                                        <td>{{ detalle.cantidad_producto }}</td>
+                                        <td>{{ detalle.subtotal_venta }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>                                
+                            </table>
+                            <br>
+                            <div class="totales_factura">
+                                <p><b>Total:</b><br><b>= $</b>{{ item.venta.total_venta }}</p>
+                                <p><b>Dinero Recibido: $</b>{{ item.venta.dinero_recibido }}</p>
+                                <p><b>Cambio: <br>$</b>{{ item.venta.cambio }}</p>
+                            </div>
+                            <hr>
+                            <p><b>Método de Pago:</b><br> {{ item.venta.metodo_pago }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </td>
     </tr>
     {% endfor %}
 {% endblock %}
@@ -28,10 +114,12 @@
     $(document).ready(function () {
         $("#tabla").DataTable({
             responsive: true,
+            columnDefs: [
+                { targets: '_all', visible: true }
+            ],
             initComplete: function () {
                 var api = this.api();
-                var columnNames = ['id', 'Fecha', 'Total', 'Dinero ingresado', 'Cambio', 'Metodo de pago'];
-                var excludedColumnIndex = columnNames.indexOf('Opciones');
+                var columnNames = ['id', 'Fecha', 'Metodo de pago', 'Detalle de venta'];
                 api.columns().every(function (index) {
                     var column = this;
                     var header = $(column.header());

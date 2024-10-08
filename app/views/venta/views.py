@@ -37,13 +37,22 @@ class VentaListView(ListView):
         return JsonResponse(nombre)
 
     def get_context_data(self, **kwargs):
+        ventas = Venta.objects.all()
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Listado de ventas'
         context['entidad'] = 'Listado de ventas'
         context['listar_url'] = reverse_lazy('app:venta_lista')
         context['crear_url'] = reverse_lazy('app:venta_crear')
+        context['ventas_con_detalles'] = [
+            {'venta': venta, 
+            'cuentas': Cuenta.objects.filter(id_venta=venta),
+            'detalles_venta': Detalle_venta.objects.filter(id_venta=venta)
+            }
+            for venta in ventas
+        ]
+        
         return context
-
+    
 ###### API'S ######
     
 def productos_api(request):
@@ -60,7 +69,7 @@ def platos_api(request):
     
     return JsonResponse(list(platos), safe=False)
 
-def clientes_api(request):
+def clientes_api(request):  
     term = request.GET.get('term', '')
     clientes = Cliente.objects.filter(
         Q(nombre__icontains=term) | Q(numero_documento__icontains=term),

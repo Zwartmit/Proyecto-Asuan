@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.core.validators import MinLengthValidator
 
-class Categoria (models.Model):
+class Categoria(models.Model):
     categoria = models.CharField(max_length=50, verbose_name="Categoría", unique=True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
@@ -21,7 +21,7 @@ class Categoria (models.Model):
     
 ########################################################################################################################################
     
-class Marca (models.Model):
+class Marca(models.Model):
     marca = models.CharField(max_length=50, verbose_name="Marca", unique=True)
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
@@ -133,7 +133,7 @@ class Cliente(models.Model):
     estado = models.BooleanField(default=True, verbose_name="Estado")
 
     def __str__(self):
-        return f"{self.numero_documento}"
+        return f"{self.nombre} - {self.tipo_documento}: {self.numero_documento}"
     
     class Meta:
         verbose_name= "cliente"
