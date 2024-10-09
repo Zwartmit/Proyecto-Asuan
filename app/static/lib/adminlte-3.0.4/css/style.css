@@ -333,12 +333,16 @@ h1 {
 }
 
 .dark-mode .div-tablas {
-    background: #6d6d6d;
+    background: #414141;
     color: #ffffff;
 }
 
 .dark-mode .modal-header{
     background-attachment: #414141;
+}
+.dark-mode .product-rows{
+    background-color: #414141;
+
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {

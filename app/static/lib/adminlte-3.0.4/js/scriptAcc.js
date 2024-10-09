@@ -98,11 +98,28 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+        
         row.querySelector('.delete-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
-            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
 
         productRowCounter++;
@@ -169,11 +186,39 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.dish-price').addEventListener('input', validateInputs);
+
         row.querySelector('.delete-dish-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
+          
+            const rows = document.querySelectorAll('#dish-rows tr');
+            if (rows.length === 1) {
+                Swal.fire({
+                    title: 'Advertencia!',
+                    text: 'No puedes eliminar la última fila.',
+                    icon: 'warning',
+                });
+                return;
             }
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
     
         dishRowCounter++;
@@ -545,11 +590,39 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+        
         row.querySelector('.delete-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
+            const rows = document.querySelectorAll('#product-sale-rows tr');
+
+            if (rows.length === 1) {
+                Swal.fire({
+                    title: 'Advertencia!',
+                    text: 'No puedes eliminar la última fila.',
+                    icon: 'warning',
+                });
+                return;
             }
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
 
         validateInputs();
