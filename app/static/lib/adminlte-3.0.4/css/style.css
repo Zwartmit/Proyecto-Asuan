@@ -337,6 +337,25 @@ h1 {
     color: #ffffff;
 }
 
+.dark-mode .modal-header{
+    background-attachment: #414141;
+}
+
+.dark-mode .modal-header{
+    background: #414141;
+    color: #ffffff;
+}
+
+.dark-mode .modal-body{
+    background: #c5c5c5;
+    color: #000000;
+}
+
+.dark-mode .modal-footer{
+    background: #414141;
+    color: #ffffff;
+}
+
 .select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
     background-color: #04644B;
     color: black;
@@ -765,6 +784,44 @@ tr:hover td {
 }
 
 /* ACABA CSS VENTAS */
+
+/* CSS FACTURA */
+
+.custom-width-modal{
+    max-width: 600px;
+    margin: auto;
+}
+
+.company-logo-invoice{
+    width: 180px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.datos-factura{
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.table-bordered{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    width: 33.33%;
+}
+
+.totales_factura{
+    margin-left: 68%;
+}
 
 button {
     display: inline-block;

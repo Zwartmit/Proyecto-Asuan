@@ -24,7 +24,7 @@ def lista_cuenta(request):
 ###### LISTAR ######
 
 @method_decorator(never_cache, name='dispatch')
-class CuentaListView(ListView):
+class CuentaListView(ListView): 
     model = Cuenta
     template_name = 'cuenta/listar.html'
     
@@ -71,6 +71,7 @@ class CuentaCreateView(CreateView):
     def form_valid(self, form):
         try:
             venta = form.save(commit=False)
+            venta.tipo_venta = Venta.TipoVenta.Cuenta
             detalles_venta_json = self.request.POST.get('detalles_venta')
             cuentas_json = self.request.POST.get('cuentas')
             dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))

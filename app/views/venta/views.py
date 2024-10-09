@@ -37,13 +37,22 @@ class VentaListView(ListView):
         return JsonResponse(nombre)
 
     def get_context_data(self, **kwargs):
+        ventas = Venta.objects.all()
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Listado de ventas'
         context['entidad'] = 'Listado de ventas'
         context['listar_url'] = reverse_lazy('app:venta_lista')
         context['crear_url'] = reverse_lazy('app:venta_crear')
+        context['ventas_con_detalles'] = [
+            {'venta': venta, 
+            'cuentas': Cuenta.objects.filter(id_venta=venta),
+            'detalles_venta': Detalle_venta.objects.filter(id_venta=venta)
+            }
+            for venta in ventas
+        ]
+        
         return context
-
+    
 ###### API'S ######
     
 def productos_api(request):
@@ -55,12 +64,12 @@ def productos_api(request):
 def platos_api(request):
     term = request.GET.get('term', '')
     platos = Plato.objects.filter(
-        Q(plato__icontains=term) & Q(estado=True)
+        Q(plato__icontains=term) & Q(estado=True) 
     ).values('id', 'plato', 'valor')
     
     return JsonResponse(list(platos), safe=False)
 
-def clientes_api(request):
+def clientes_api(request):  
     term = request.GET.get('term', '')
     clientes = Cliente.objects.filter(
         Q(nombre__icontains=term) | Q(numero_documento__icontains=term),
@@ -120,6 +129,7 @@ class VentaCreateView(CreateView):
     def form_valid(self, form):
         try:
             venta = form.save(commit=False)
+            venta.tipo_venta = Venta.TipoVenta.Caja
             detalles_venta_json = self.request.POST.get('detalles_venta')
             dinero_recibido = float(self.request.POST.get('money_received', 0))
             
@@ -160,7 +170,7 @@ class VentaCreateView(CreateView):
             return super().form_valid(form)
         except Exception as e:
             print(f"Error al guardar la venta: {e}")    
-            return self.form_invalid(form) 
+            return self.form_invalid(form)  
         
 ###### EDITAR ######
 
