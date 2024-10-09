@@ -4,15 +4,32 @@
 <tr>
     <th scope="col">id</th>
     <th scope="col">Fecha</th> 
+<<<<<<< HEAD
     <th scope="col">Metodo de pago</th>
     <th scope="col">Tipo de venta</th>
     <th scope="col">Detalle de venta</th>
+=======
+<<<<<<< HEAD
+    <th scope="col">Metodo de pago</th>
+    <th scope="col">Tipo de venta</th>
+    <th scope="col">Detalle de venta</th>
+=======
+    <th scope="col">Total</th>
+    <th scope="col">Dinero ingresado</th>
+    <th scope="col">Cambio</th>
+    <th scope="col">Metodo de pago</th>
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 </tr>
 {% endblock %}
 
 {% block filas %}
     {% for item in ventas_con_detalles %}
     <tr>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         <td>{{ item.venta.id }}</td>
         <td>{{ item.venta.fecha_venta }}</td>
         <td>{{ item.venta.metodo_pago }}</td>
@@ -116,11 +133,23 @@
                 </div>
             </div>            
         </td>
+=======
+        <td>{{ v.id }}</td>
+        <td>{{ v.fecha_venta }}</td>
+        <td>{{ v.total_venta }}</td>
+        <td>{{ v.dinero_recibido }}</td>
+        <td>{{ v.cambio }}</td>
+        <td>{{ v.metodo_pago }}</td>
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
     </tr>
     {% endfor %}
 {% endblock %}
 {% block javascript %}
 <script type="application/javascript">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     function imprimirFactura(idVenta) {
         const contenido = document.querySelector(`#modal-${idVenta} .modal-body`).innerHTML;
         
@@ -178,6 +207,18 @@
             initComplete: function () {
                 var api = this.api();
                 var columnNames = ['id', 'Fecha', 'Metodo de pago', 'Detalle de venta'];
+<<<<<<< HEAD
+=======
+=======
+    $(document).ready(function () {
+        $("#tabla").DataTable({
+            responsive: true,
+            initComplete: function () {
+                var api = this.api();
+                var columnNames = ['id', 'Fecha', 'Total', 'Dinero ingresado', 'Cambio', 'Metodo de pago'];
+                var excludedColumnIndex = columnNames.indexOf('Opciones');
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
                 api.columns().every(function (index) {
                     var column = this;
                     var header = $(column.header());
@@ -216,4 +257,13 @@
         });
     });
 </script>
+<<<<<<< HEAD
 {% endblock %}
+=======
+<<<<<<< HEAD
+{% endblock %}
+=======
+ {% endblock %}
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3

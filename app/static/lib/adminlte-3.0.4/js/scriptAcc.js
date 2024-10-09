@@ -98,6 +98,10 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         
         row.querySelector('.delete-row').addEventListener('click', function () {
             Swal.fire({
@@ -120,6 +124,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     );
                 }
             });
+<<<<<<< HEAD
+=======
+=======
+        row.querySelector('.delete-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         });
 
         productRowCounter++;
@@ -186,6 +200,10 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.dish-price').addEventListener('input', validateInputs);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 
         row.querySelector('.delete-dish-row').addEventListener('click', function () {
           
@@ -219,6 +237,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     );
                 }
             });
+<<<<<<< HEAD
+=======
+=======
+        row.querySelector('.delete-dish-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         });
     
         dishRowCounter++;
@@ -406,11 +434,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function prepareForm(event) {
         event.preventDefault();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     
         const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
         const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
     
         if (dineroRecibido < subtotal) {
+<<<<<<< HEAD
+=======
+=======
+
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+
+        if (dineroRecibido < subtotal) {
+            event.preventDefault();
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             Swal.fire({
                 title: 'Error!',
                 text: 'El dinero recibido no puede ser menor al total de la venta.',
@@ -418,7 +461,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         const clientId = $('#client-select').val();
         if (!clientId) {
             Swal.fire({
@@ -428,7 +479,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         const waiterId = $('#waiter-select').val();
         if (!waiterId) {
             Swal.fire({
@@ -438,7 +497,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+    
+=======
+        
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         if (!validateInputs()) {
             Swal.fire({
                 title: 'Error!',
@@ -480,6 +547,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         const form = document.querySelector('form');
         const formData = new FormData(form);
         formData.append('detalles_venta', JSON.stringify(detallesVenta));
@@ -521,6 +592,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirmButtonText: 'Aceptar'
             });
         });
+<<<<<<< HEAD
+=======
+=======
+        // Agregar detalles al formulario
+        document.getElementById('detalles_venta').value = JSON.stringify(detallesVenta);
+        document.getElementById('cuentas').value = JSON.stringify(cuentasData);
+    
+        // Enviar el formulario
+        event.target.submit();
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     }
     
     dineroRecibidoInput.addEventListener('input', calculateChange);
@@ -624,6 +706,10 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         
         row.querySelector('.delete-row').addEventListener('click', function () {
             const rows = document.querySelectorAll('#product-sale-rows tr');
@@ -657,6 +743,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     );
                 }
             });
+<<<<<<< HEAD
+=======
+=======
+        row.querySelector('.delete-row').addEventListener('click', function () {
+            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
+                row.remove();
+                validateInputs();
+            }
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         });
 
         validateInputs();
@@ -736,6 +832,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function prepareForm(event) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         event.preventDefault();
     
         if (!validateInputs()) {
@@ -746,6 +846,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
     
         if (dineroRecibido < subtotal) {
+<<<<<<< HEAD
+=======
+=======
+        if (!validateInputs()) {
+            event.preventDefault();
+            return;
+        }
+
+        const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
+
+        if (dineroRecibido < subtotal) {
+            event.preventDefault();
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             Swal.fire({
                 title: 'Error!',
                 text: 'El dinero recibido no puede ser menor al total de la venta.',
@@ -753,21 +868,46 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     
         const detallesVenta = [];
         let productosLista = '';
     
+<<<<<<< HEAD
+=======
+=======
+
+        const detallesVenta = [];
+        let productosLista = '';
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         document.querySelectorAll('#product-sale-rows tr').forEach(row => {
             const idProducto = $(row.querySelector('.product-select')).val();
             const productoText = $(row.querySelector('.product-select')).text();
             const cantidadProducto = row.querySelector('.product-quantity').value;
             const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             detallesVenta.push({
                 id_producto: idProducto,
                 cantidad_producto: cantidadProducto,
                 subtotal_venta: parseFloat(subtotalVenta.replace('$', '')) || 0
             });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     
             productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
         });
@@ -816,6 +956,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
+<<<<<<< HEAD
+=======
+=======
+
+            productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
+        });
+
+        const detallesVentaJSON = JSON.stringify(detallesVenta);
+        document.getElementById('detalles_venta').value = detallesVentaJSON;
+
+        Swal.fire({
+            title: 'Venta Generada',
+            html: `<ul>${productosLista}</ul>`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelector('form').submit();
+            }
+        });
+
+        console.log("Detalles de Venta JSON:", detallesVentaJSON);
+    }
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     dineroRecibidoInput.addEventListener('input', calculateChange);
 
     document.querySelector('form').addEventListener('submit', prepareForm);

@@ -333,6 +333,10 @@ h1 {
 }
 
 .dark-mode .div-tablas {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     background: #414141;
     color: #ffffff;
 }
@@ -358,6 +362,12 @@ h1 {
 
 .dark-mode .modal-footer{
     background: #414141;
+<<<<<<< HEAD
+=======
+=======
+    background: #6d6d6d;
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
     color: #ffffff;
 }
 
@@ -790,6 +800,10 @@ tr:hover td {
 
 /* ACABA CSS VENTAS */
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 /* CSS FACTURA */
 
 .custom-width-modal{
@@ -828,6 +842,11 @@ tr:hover td {
     margin-left: 68%;
 }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 button {
     display: inline-block;
     padding: 12px 20px;

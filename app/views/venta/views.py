@@ -9,8 +9,16 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
+<<<<<<< HEAD
 from django.urls import reverse
 from django.contrib import messages
+=======
+<<<<<<< HEAD
+from django.urls import reverse
+from django.contrib import messages
+=======
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta, Plato, Mesero
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm, MeseroForm
 import json
@@ -105,6 +113,60 @@ def crear_cliente_ajax(request):
                 'errors': form.errors
             })
     return JsonResponse({'success': False}, status=400)
+<<<<<<< HEAD
+=======
+
+###### API'S ######
+    
+def productos_api(request):
+    term = request.GET.get('term', '') 
+    productos = Producto.objects.filter(Q(producto__icontains=term) & Q(estado=True)
+    ).values('id', 'producto', 'valor', 'cantidad','id_presentacion__presentacion','id_presentacion__unidad_medida')
+    return JsonResponse(list(productos), safe=False)
+
+def platos_api(request):
+    term = request.GET.get('term', '')
+    platos = Plato.objects.filter(
+        Q(plato__icontains=term) & Q(estado=True)
+    ).values('id', 'plato', 'valor')
+    
+    return JsonResponse(list(platos), safe=False)
+
+def clientes_api(request):
+    term = request.GET.get('term', '')
+    clientes = Cliente.objects.filter(
+        Q(nombre__icontains=term) | Q(numero_documento__icontains=term),
+        estado=True
+    ).values(
+        'id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono'
+    )
+    return JsonResponse(list(clientes), safe=False)
+
+def meseros_api(request):
+    term = request.GET.get('term', '') 
+    meseros = Mesero.objects.filter(Q(nombre__icontains=term) & Q(estado=True)
+    ).values('id', 'nombre', 'tipo_documento', 'numero_documento', 'email', 'pais_telefono', 'telefono')
+    return JsonResponse(list(meseros), safe=False)
+
+###### GUARDAR CLIENTE ######
+
+def crear_cliente_ajax(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            cliente = form.save()
+            return JsonResponse({
+                'success': True,
+                'cliente_id': cliente.id,
+                'cliente_nombre': cliente.nombre,
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            })
+    return JsonResponse({'success': False}, status=400)
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
 
 ###### CREAR ######
 
@@ -131,10 +193,22 @@ class VentaCreateView(CreateView):
     def form_valid(self, form):
         try:
             venta = form.save(commit=False)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             venta.tipo_venta = Venta.TipoVenta.Caja
             detalles_venta_json = self.request.POST.get('detalles_venta')
             dinero_recibido = float(self.request.POST.get('money_received', 0))
 
+<<<<<<< HEAD
+=======
+=======
+            detalles_venta_json = self.request.POST.get('detalles_venta')
+            dinero_recibido = float(self.request.POST.get('money_received', 0))
+            
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             if detalles_venta_json:
                 try:
                     detalles_venta = json.loads(detalles_venta_json)
@@ -146,6 +220,13 @@ class VentaCreateView(CreateView):
             venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
             venta.dinero_recibido = dinero_recibido
             venta.cambio = dinero_recibido - venta.total_venta
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
             venta.save()
 
             for detalle in detalles_venta:
@@ -167,11 +248,25 @@ class VentaCreateView(CreateView):
                     cantidad_producto=cantidad_producto,
                     subtotal_venta=subtotal_venta
                 )
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
                 
             return JsonResponse({'success': True, 'message': 'Venta generada exitosamente'})
         except Exception as e:
             print(f"Error al guardar la venta: {e}")
             return JsonResponse({'success': False, 'message': 'Error al generar la venta'})
+<<<<<<< HEAD
+=======
+=======
+
+            return super().form_valid(form)
+        except Exception as e:
+            print(f"Error al guardar la venta: {e}")    
+            return self.form_invalid(form) 
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
+>>>>>>> f2e7338d6fa3fa4a48ad1c81be95609e68ddfaa3
         
 ###### EDITAR ######
 
