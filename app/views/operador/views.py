@@ -1,39 +1,18 @@
-import django
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import never_cache
-import os
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.http import JsonResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.shortcuts import render, redirect
-
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render
+from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 from app.models import Operador
 from app.forms import OperadorForm
+from django.db.models import ProtectedError
 
-@method_decorator(never_cache, name='dispatch')
-def lista_operador(request):
-    nombre = {
-        'titulo': 'Listado de operadores',
-        'operador': Operador.objects.all()
-    }
-    return render(request, 'operador/listar.html',nombre)
-
-###### LISTAR ######
-
-@method_decorator(never_cache, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class OperadorListView(ListView):
     model = Operador
     template_name = 'operador/listar.html'
-    
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        nombre = {'nombre': 'Juan'}
-        return JsonResponse(nombre)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,65 +20,87 @@ class OperadorListView(ListView):
         context['entidad'] = 'Listado de operadores'
         context['listar_url'] = reverse_lazy('app:operador_lista')
         context['crear_url'] = reverse_lazy('app:operador_crear')
+        context['has_permission'] = self.request.user.has_perm('app.view_operador')
+
+        if self.request.user.groups.filter(name='Operador').exists():
+            context['can_add'] = False
+        else:
+            context['can_add'] = self.request.user.has_perm('app.add_operador')
+
         return context
 
-###### CREAR ######
-
-@method_decorator(never_cache, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class OperadorCreateView(CreateView):
     model = Operador
     form_class = OperadorForm
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Registrar operador'
         context['entidad'] = 'Registrar operador'
-        context['error'] = 'Este operador ya existe'
         context['listar_url'] = reverse_lazy('app:operador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.add_operador')
         return context
-    
-###### EDITAR ######
 
-@method_decorator(never_cache, name='dispatch')
+    def form_valid(self, form):
+        try:
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Operador creado exitosamente.'})
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
+
+@method_decorator(login_required, name='dispatch')
 class OperadorUpdateView(UpdateView):
     model = Operador
     form_class = OperadorForm
     template_name = 'operador/crear.html'
     success_url = reverse_lazy('app:operador_lista')
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Editar operador'
         context['entidad'] = 'Editar operador'
-        context['error'] = 'Esta operador ya existe'
         context['listar_url'] = reverse_lazy('app:operador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.change_operador')
         return context
-    
-###### ELIMINAR ######
 
-@method_decorator(never_cache, name='dispatch')
+    def form_valid(self, form):
+        try:
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Operador editado exitosamente.'})
+        except ValidationError as e:
+            form.add_error(None, e)
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({'success': False, 'errors': errors})
+
+@method_decorator(login_required, name='dispatch')
 class OperadorDeleteView(DeleteView):
     model = Operador
     template_name = 'operador/eliminar.html'
     success_url = reverse_lazy('app:operador_lista')
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar operador'
         context['entidad'] = 'Eliminar operador'
         context['listar_url'] = reverse_lazy('app:operador_lista')
+        context['has_permission'] = not self.request.user.groups.filter(name='Operador').exists() and self.request.user.has_perm('app.delete_operador')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Operador eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el operador.'})

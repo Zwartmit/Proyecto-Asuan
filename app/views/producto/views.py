@@ -1,13 +1,15 @@
+from django.contrib import messages
 import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
+from django.db.models import ProtectedError
 from app.models import Producto
 from app.forms import ProductoForm
 
@@ -67,10 +69,12 @@ class ProductoCreateView(CreateView):
         producto = form.cleaned_data.get('producto').lower()
         
         if Producto.objects.filter(producto__iexact=producto).exists():
-            form.add_error('producto', 'Ya existe un producto con este nombre.')
+            form.add_error('producto', 'Ya existe un producto registrado con ese nombre.')
             return self.form_invalid(form)
         
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        success_url = reverse('app:producto_crear') + '?created=True'
+        return redirect(success_url)
     
 ###### EDITAR ######
 
@@ -93,6 +97,12 @@ class ProductoUpdateView(UpdateView):
         context['listar_url'] = reverse_lazy('app:producto_lista')
         return context
     
+    def form_valid(self, form):
+        producto = form.cleaned_data.get('producto').lower()
+        response = super().form_valid(form)
+        success_url = reverse('app:producto_crear') + '?updated=True'
+        return redirect(success_url)
+
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -111,3 +121,11 @@ class ProductoDeleteView(DeleteView):
         context['entidad'] = 'Eliminar producto'
         context['listar_url'] = reverse_lazy('app:producto_lista')
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Producto eliminado con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar el producto.'})

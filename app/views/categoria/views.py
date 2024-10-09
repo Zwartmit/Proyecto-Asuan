@@ -1,14 +1,15 @@
+from django.contrib import messages
 import django
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
+from django.db.models import ProtectedError
 from app.models import Categoria
 from app.forms import CategoriaForm
 
@@ -62,16 +63,20 @@ class CategoriaCreateView(CreateView):
         context['entidad'] = 'Registrar categoría'
         context['error'] = 'Esta categoría ya existe'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
+        context['created'] = self.request.session.pop('created', False) 
         return context
-    
+        
     def form_valid(self, form):
         categoria = form.cleaned_data.get('categoria').lower()
-        
+
         if Categoria.objects.filter(categoria__iexact=categoria).exists():
-            form.add_error('categoria', 'Ya existe una categoría con este nombre.')
+            form.add_error('categoria', 'Ya existe una categoría registrada con este nombre.')
             return self.form_invalid(form)
-        return super().form_valid(form)
-    
+
+        response = super().form_valid(form)
+        success_url = reverse('app:categoria_crear') + '?created=True'
+        return redirect(success_url)
+
 ###### EDITAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -92,15 +97,13 @@ class CategoriaUpdateView(UpdateView):
         context['error'] = 'Esta categoría ya existe'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         return context
-    
+
     def form_valid(self, form):
         categoria = form.cleaned_data.get('categoria').lower()
-        
-        if Categoria.objects.filter(categoria__iexact=categoria).exists():
-            form.add_error('categoria', 'Ya existe una categoría con este nombre.')
-            return self.form_invalid(form)
-        return super().form_valid(form)
-    
+        response = super().form_valid(form)
+        success_url = reverse('app:categoria_crear') + '?updated=True'
+        return redirect(success_url)
+
 ###### ELIMINAR ######
 
 @method_decorator(never_cache, name='dispatch')
@@ -112,12 +115,18 @@ class CategoriaDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar categoría'
         context['entidad'] = 'Eliminar categoría'
         context['listar_url'] = reverse_lazy('app:categoria_lista')
         return context
-    
-    
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({'success': True, 'message': 'Categoría eliminada con éxito.'})
+        except ProtectedError:
+            return JsonResponse({'success': False, 'message': 'No se puede eliminar la categoría porque está asociada a un producto.'})
