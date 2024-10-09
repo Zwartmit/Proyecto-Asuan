@@ -141,11 +141,10 @@ class CuentaCreateView(CreateView):
                     id_mesero_id=id_mesero
                 )
 
-            return super().form_valid(form)
-
+            return JsonResponse({'success': True, 'message': 'Venta generada exitosamente'})
         except Exception as e:
-            print(f"Error al guardar la venta: {e}")    
-            return self.form_invalid(form)
+            print(f"Error al guardar la venta: {e}")
+            return JsonResponse({'success': False, 'message': 'Error al generar la venta'})
     
 ###### ELIMINAR ######
 
