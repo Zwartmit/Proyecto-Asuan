@@ -19,12 +19,17 @@
     <div class="card-body">
         <table class="table" id="tabla" style="width: 100%">
             <thead>
-                {% block columnas %} {% endblock %}
+                {% block columnas %}
+                {% endblock %}
             </thead>
             <tbody>
-                {% block filas %} {% endblock %}
+                {% block filas %}
+                {% endblock %}
             </tbody>
         </table>
+    </div>
+    <div class="card-footer">
+        <a href="{{ crear_url }}" class="btn btn-primary btn-flat"><i class="fas fa-plus"></i> Agregar</a>
     </div>
     </div>
 </div>

@@ -477,17 +477,6 @@ section {
   position: relative;
 }
 
-.section-title h2::after {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 50px;
-  height: 3px;
-  background: #04644b;
-  bottom: 0;
-  left: 0;
-}
-
 .section-title p {
   margin-bottom: 0;
 }
@@ -936,7 +925,7 @@ section {
 # Team
 --------------------------------------------------------------*/
 .team {
-  background: #fff;
+  background: #f6f6f7;
 }
 
 .team .member {
@@ -1227,8 +1216,10 @@ section {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-#footer {
-  background-color: #f0f0f0; 
+.footer {
+  background: #04644b;
+  background-color: #04644b;
+  color: white;
   padding: 20px 0; 
 }
 
@@ -1251,4 +1242,202 @@ section {
 .footer2 img {
   max-width: 100%;
   height: auto;
+}
+
+/*--------------------------------------------------------------
+# dark-mode
+--------------------------------------------------------------*/
+
+.dark-mode {
+  background: #242424;
+  border-color: #414141;
+  color: #ffffff;
+}
+
+.btn-dark {
+  cursor: pointer;
+}
+
+.dark-mode #header .header-container {
+  background-color: #242424;
+  border-color: #242424;
+  color: #ffffff;
+}
+
+#header.header-scrolled {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.dark-mode #header.header-scrolled {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.dark-mode #header .logo, .dark-mode #header .logo img {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode a {
+  color: #ffffff;
+}
+
+.dark-mode .navbar ul {
+  background-color: #242424;
+  border-color: #242424;
+  color: #ffffff;
+}
+
+.dark-mode .navbar a:hover, .navbar .active, .navbar .active:focus {
+  color: #04644b;
+}
+
+.dark-mode .navbar .getstarted {
+  background-color: #414141;
+  border-color: #414141;
+  color: #ffffff;
+}
+
+.about .content h3, .about .content p:last-child, .section-title h2, .section-title p {
+  text-align: center;
+}
+
+.dark-mode .about {
+  color: #ffffff;
+}
+
+.dark-mode .counts {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .why-us .icon-boxes .icon-box {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .why-us .icon-boxes .icon-box p {
+  color: #ffffff;
+}
+
+.dark-mode .section-bg {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.services .icon-box, .why-us .icon-boxes .icon-box, .portfolio .portfolio-wrap {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.dark-mode .services .icon-box {
+  background-color: #242424;
+  border-color: #242424;
+  color: #ffffff;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.dark-mode .services .icon-box h4 a {
+  color: #ffffff;
+}
+
+.dark-mode .portfolio .portfolio-wrap {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.dark-mode .team {
+  background-color: #414141;
+  border-color: #414141;
+  color: #ffffff;
+}
+
+.dark-mode .team .member {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .team .member h4 {
+  color: #ffffff;
+}
+
+.dark-mode .contact .info {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .contact .info h4, .dark-mode .contact .info p {
+  color: #ffffff;
+}
+
+.dark-mode .contact .php-email-form {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-mode .contact .php-email-form input {
+  background-color: #777777;
+  border-color: #777777;
+  color: #ffffff;
+}
+
+.dark-mode .footer {
+  background-color: #414141;
+  border-color: #414141;
+  color: #ffffff;
+}
+
+.dark-mode .contact .php-email-form textarea {
+  background-color: #777777;
+  border-color: #777777;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu-btn {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-menu-header {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-card {
+  background: #6d6d6d;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-adjust-font {
+  background: #313131;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.dark-mode .asw-filter {
+  background: #313131;
+  color: #ffffff;
+}
+
+.dark-mode #header {
+  background: #242424;
+  color: #ffffff;
 }
