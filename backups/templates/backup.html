@@ -11,7 +11,7 @@
     <div class="backup-section">
         <div class="generate-section">
             <h2>Crear copia de seguridad</h2>
-            <form id="backupForm" method="post" action="{% url 'app:gestionar_backups' %}">
+            <form id="backupForm" method="post" action="{% url 'app:gestionar_backups' %}"> 
                 {% csrf_token %}
                 <button class="btn_generate fas fa-download" type="submit"></button>
             </form>

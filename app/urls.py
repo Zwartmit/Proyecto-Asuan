@@ -10,6 +10,8 @@ from app.views.plato.views import *
 from app.views.administrador.views import *
 from app.views.operador.views import *
 from app.views.venta.views import *
+from app.views.detalle_venta.views import *
+from app.views.cuenta.views import *
 from app.views.factura.views import *
 from app.views.reportes.viewsExcel import *
 from app.views.reportes.viewsPDF import *
@@ -78,13 +80,17 @@ urlpatterns = [
     path('venta/editar/<int:pk>/', VentaUpdateView.as_view(), name='venta_editar'),
     path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='venta_eliminar'),
     path('venta/opciones/', ventas_view, name='venta_opciones'),
-    path('venta/productos_api/', productos_api, name='productos_api'),
 
-    ### CRUD FACTURA ###
+    ### DETALLE VENTA ###
+    path('detalle_venta/listar/', DetalleVentaListView.as_view(), name='detalle_venta_lista'),
+    path('detalleventa/eliminar/<int:pk>/', DetalleVentaDeleteView.as_view(), name='detalle_venta_eliminar'),
+
+    ### CUENTA ###
+    path('cuenta/listar/', CuentaListView.as_view(), name='cuenta_lista'),
+    path('cuenta/crear/', CuentaCreateView.as_view(), name='cuenta'),
+
+    ### FACTURA ###
     path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
-    path('factura/crear/', FacturaCreateView.as_view(), name='factura_crear'),
-    path('factura/editar/<int:pk>/', FacturaUpdateView.as_view(), name='factura_editar'),
-    path('factura/eliminar/<int:pk>/', FacturaDeleteView.as_view(), name='factura_eliminar'),
 
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),
@@ -112,4 +118,11 @@ urlpatterns = [
     path('reportes/clientes/pdf/', export_clientes_pdf, name='export_clientes_pdf'),
     path('reportes/administradores/pdf/', export_administradores_pdf, name='export_administradores_pdf'),
     path('reportes/operadores/pdf/', export_operadores_pdf, name='export_operadores_pdf'),
+
+        ### API´S ###
+    path('venta/productos_api/', productos_api, name='productos_api'),
+    path('venta/platos_api/', platos_api, name='platos_api'),
+    path('venta/clientes_api/', clientes_api, name='clientes_api'),
+    path('venta/meseros_api/', meseros_api, name='meseros_api'),
+    path('venta/crear_cliente_ajax/', crear_cliente_ajax, name='crear_cliente_ajax'),
 ]
