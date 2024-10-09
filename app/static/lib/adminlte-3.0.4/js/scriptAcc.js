@@ -98,11 +98,28 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+        
         row.querySelector('.delete-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
-            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
 
         productRowCounter++;
@@ -169,11 +186,39 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.dish-price').addEventListener('input', validateInputs);
+
         row.querySelector('.delete-dish-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
+          
+            const rows = document.querySelectorAll('#dish-rows tr');
+            if (rows.length === 1) {
+                Swal.fire({
+                    title: 'Advertencia!',
+                    text: 'No puedes eliminar la última fila.',
+                    icon: 'warning',
+                });
+                return;
             }
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
     
         dishRowCounter++;
@@ -361,12 +406,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function prepareForm(event) {
         event.preventDefault();
-
+    
         const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
         const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
-
+    
         if (dineroRecibido < subtotal) {
-            event.preventDefault();
             Swal.fire({
                 title: 'Error!',
                 text: 'El dinero recibido no puede ser menor al total de la venta.',
@@ -374,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-
+    
         const clientId = $('#client-select').val();
         if (!clientId) {
             Swal.fire({
@@ -384,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-
+    
         const waiterId = $('#waiter-select').val();
         if (!waiterId) {
             Swal.fire({
@@ -394,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-        
+    
         if (!validateInputs()) {
             Swal.fire({
                 title: 'Error!',
@@ -436,12 +480,47 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     
-        // Agregar detalles al formulario
-        document.getElementById('detalles_venta').value = JSON.stringify(detallesVenta);
-        document.getElementById('cuentas').value = JSON.stringify(cuentasData);
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+        formData.append('detalles_venta', JSON.stringify(detallesVenta));
+        formData.append('cuentas', JSON.stringify(cuentasData));
     
-        // Enviar el formulario
-        event.target.submit();
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/app/venta/listar/';
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Ocurrió un error al intentar generar la venta.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        });
     }
     
     dineroRecibidoInput.addEventListener('input', calculateChange);
@@ -545,11 +624,39 @@ document.addEventListener('DOMContentLoaded', function () {
             validationTimeout = setTimeout(validateInputs, 500);
         });
         row.querySelector('.product-price').addEventListener('input', validateInputs);
+        
         row.querySelector('.delete-row').addEventListener('click', function () {
-            if (window.confirm('¿Estás seguro de que quieres eliminar esta fila?')) {
-                row.remove();
-                validateInputs();
+            const rows = document.querySelectorAll('#product-sale-rows tr');
+
+            if (rows.length === 1) {
+                Swal.fire({
+                    title: 'Advertencia!',
+                    text: 'No puedes eliminar la última fila.',
+                    icon: 'warning',
+                });
+                return;
             }
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    row.remove();
+                    validateInputs();
+                    Swal.fire(
+                        'Eliminado!',
+                        'La fila ha sido eliminada.',
+                        'success'
+                    );
+                }
+            });
         });
 
         validateInputs();
@@ -629,16 +736,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function prepareForm(event) {
+        event.preventDefault();
+    
         if (!validateInputs()) {
-            event.preventDefault();
             return;
         }
-
+    
         const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
         const subtotal = parseFloat(subtotalElement.textContent.replace('$', '')) || 0;
-
+    
         if (dineroRecibido < subtotal) {
-            event.preventDefault();
             Swal.fire({
                 title: 'Error!',
                 text: 'El dinero recibido no puede ser menor al total de la venta.',
@@ -646,45 +753,69 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-
+    
         const detallesVenta = [];
         let productosLista = '';
-
+    
         document.querySelectorAll('#product-sale-rows tr').forEach(row => {
             const idProducto = $(row.querySelector('.product-select')).val();
             const productoText = $(row.querySelector('.product-select')).text();
             const cantidadProducto = row.querySelector('.product-quantity').value;
             const subtotalVenta = row.querySelector('.product-total').textContent.replace('$', '').trim();
-
+    
             detallesVenta.push({
                 id_producto: idProducto,
                 cantidad_producto: cantidadProducto,
                 subtotal_venta: parseFloat(subtotalVenta.replace('$', '')) || 0
             });
-
+    
             productosLista += `<li>${productoText} - Cantidad: ${cantidadProducto} - Subtotal: $${subtotalVenta}</li>`;
         });
-
+    
         const detallesVentaJSON = JSON.stringify(detallesVenta);
         document.getElementById('detalles_venta').value = detallesVentaJSON;
-
-        Swal.fire({
-            title: 'Venta Generada',
-            html: `<ul>${productosLista}</ul>`,
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.querySelector('form').submit();
+    
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+    
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
             }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/app/venta/listar/';
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Ocurrió un error al intentar generar la venta.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         });
-
-        console.log("Detalles de Venta JSON:", detallesVentaJSON);
     }
-
+    
     dineroRecibidoInput.addEventListener('input', calculateChange);
 
     document.querySelector('form').addEventListener('submit', prepareForm);

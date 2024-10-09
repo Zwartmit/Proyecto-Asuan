@@ -9,6 +9,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.urls import reverse
+from django.contrib import messages
 from app.models import Venta, Producto, Detalle_venta, Cliente, Cuenta, Plato, Mesero
 from app.forms import VentaForm, ClienteForm, DetalleVentaForm, CuentaForm, MeseroForm
 import json
@@ -132,7 +134,7 @@ class VentaCreateView(CreateView):
             venta.tipo_venta = Venta.TipoVenta.Caja
             detalles_venta_json = self.request.POST.get('detalles_venta')
             dinero_recibido = float(self.request.POST.get('money_received', 0))
-            
+
             if detalles_venta_json:
                 try:
                     detalles_venta = json.loads(detalles_venta_json)
@@ -144,7 +146,6 @@ class VentaCreateView(CreateView):
             venta.total_venta = sum(float(d['subtotal_venta']) for d in detalles_venta)
             venta.dinero_recibido = dinero_recibido
             venta.cambio = dinero_recibido - venta.total_venta
-
             venta.save()
 
             for detalle in detalles_venta:
@@ -166,11 +167,11 @@ class VentaCreateView(CreateView):
                     cantidad_producto=cantidad_producto,
                     subtotal_venta=subtotal_venta
                 )
-
-            return super().form_valid(form)
+                
+            return JsonResponse({'success': True, 'message': 'Venta generada exitosamente'})
         except Exception as e:
-            print(f"Error al guardar la venta: {e}")    
-            return self.form_invalid(form)  
+            print(f"Error al guardar la venta: {e}")
+            return JsonResponse({'success': False, 'message': 'Error al generar la venta'})
         
 ###### EDITAR ######
 
