@@ -71,7 +71,10 @@ class CuentaCreateView(CreateView):
     def form_valid(self, form):
         try:
             venta = form.save(commit=False)
+<<<<<<< HEAD
             venta.tipo_venta = Venta.TipoVenta.Cuenta
+=======
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
             detalles_venta_json = self.request.POST.get('detalles_venta')
             cuentas_json = self.request.POST.get('cuentas')
             dinero_recibido = float(self.request.POST.get('dinero_recibido', 0))
@@ -141,10 +144,18 @@ class CuentaCreateView(CreateView):
                     id_mesero_id=id_mesero
                 )
 
+<<<<<<< HEAD
             return JsonResponse({'success': True, 'message': 'Venta generada exitosamente'})
         except Exception as e:
             print(f"Error al guardar la venta: {e}")
             return JsonResponse({'success': False, 'message': 'Error al generar la venta'})
+=======
+            return super().form_valid(form)
+
+        except Exception as e:
+            print(f"Error al guardar la venta: {e}")    
+            return self.form_invalid(form)
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
     
 ###### ELIMINAR ######
 

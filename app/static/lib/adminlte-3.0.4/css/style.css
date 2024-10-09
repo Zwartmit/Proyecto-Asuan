@@ -333,6 +333,7 @@ h1 {
 }
 
 .dark-mode .div-tablas {
+<<<<<<< HEAD
     background: #414141;
     color: #ffffff;
 }
@@ -358,6 +359,9 @@ h1 {
 
 .dark-mode .modal-footer{
     background: #414141;
+=======
+    background: #6d6d6d;
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
     color: #ffffff;
 }
 
@@ -790,6 +794,7 @@ tr:hover td {
 
 /* ACABA CSS VENTAS */
 
+<<<<<<< HEAD
 /* CSS FACTURA */
 
 .custom-width-modal{
@@ -828,6 +833,8 @@ tr:hover td {
     margin-left: 68%;
 }
 
+=======
+>>>>>>> fb3d462b52cab771cc10907fdf90a549e2431c89
 button {
     display: inline-block;
     padding: 12px 20px;
