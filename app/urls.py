@@ -12,7 +12,6 @@ from app.views.operador.views import *
 from app.views.venta.views import *
 from app.views.detalle_venta.views import *
 from app.views.cuenta.views import *
-from app.views.factura.views import *
 from app.views.reportes.viewsExcel import *
 from app.views.reportes.viewsPDF import *
 from app.views.reportes.views import *
@@ -88,9 +87,6 @@ urlpatterns = [
     ### CUENTA ###
     path('cuenta/listar/', CuentaListView.as_view(), name='cuenta_lista'),
     path('cuenta/crear/', CuentaCreateView.as_view(), name='cuenta'),
-
-    ### FACTURA ###
-    path('factura/listar/', FacturaListView.as_view(), name='factura_lista'),
 
     ### COPIA DE SEGURIDAD DE BASE DE DATOS ###
     path('gestionar_backups/', BackupDatabaseView.as_view(), name='gestionar_backups'),

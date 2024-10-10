@@ -303,22 +303,8 @@ class Cuenta(models.Model):
         return str(self.id_plato)
 
     class Meta:
-        verbose_name= "detalle_venta_cuenta"
-        verbose_name_plural ='detalles_venta_cuentas'
-        db_table ='Detalle_venta_cuenta'
-
-########################################################################################################################################
-
-class Factura(models.Model):
-    fecha_emision_factura = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la venta")
-    id_venta = models.ForeignKey(Venta, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return f"{self.fecha_emision_factura}"
-
-    class Meta:
-        verbose_name= "factura"
-        verbose_name_plural ='facturas'
-        db_table ='Factura'
+        verbose_name= "cuenta"
+        verbose_name_plural ='cuentas'
+        db_table = 'Cuenta'
 
 ########################################################################################################################################
