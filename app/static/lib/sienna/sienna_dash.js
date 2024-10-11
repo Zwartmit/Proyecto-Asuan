@@ -62,9 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .asw-menu-btn { bottom: 20px; background: ${options.buttonColor}; box-shadow: 0 5px 15px 0 rgb(37 44 97 / 15%), 0 2px 4px 0 rgb(93 100 148 / 20%); border-radius: 50%; align-items: center; justify-content: center; transform: translateY(0); width: 50px; height: 50px; display: flex; fill: ${options.buttonIconColor} !important; cursor: pointer; }
         .asw-menu-btn svg { width: 30px; height: 30px; min-height: 30px; min-width: 30px; max-width: 30px; max-height: 30px; background: 0 0 !important; }
         .asw-menu-btn:hover { transform: scale(1.05); }
-        .asw-menu { display: none; top: 450px; border-radius: 8px; box-shadow: -1px 0 20px -14px #000; opacity: 1; overflow: hidden; background: ${options.menuBackgroundColor}; width: 550px; line-height: 1; font-size: 14px; height: 400px; letter-spacing: .015em; color: ${options.menuTextColor}; }
+        .asw-menu { display: none; top: 20px; border-radius: 8px; box-shadow: -1px 0 20px -14px #000; opacity: 1; background: ${options.menuBackgroundColor}; width: 500px; line-height: 1; font-size: 14px; height: calc(100vh - 40px - 75px); letter-spacing: .015em; color: ${options.menuTextColor}; }
         .asw-btn, .asw-footer a { font-size: 14px !important; }
-        .asw-menu-header { display: flex; align-items: center; justify-content: space-between; background: #04644b; color: #fff; padding-left: 12px; font-weight: 600; font-size: 15px; }
+        .asw-menu-header { display: flex; align-items: center; justify-content: space-between; background: #04644b; color: #fff; padding-left: 12px; font-weight: 600; }
         .asw-menu-header > div { display: flex; }
         .asw-menu-header div[role=button] { padding: 12px; cursor: pointer; }
         .asw-menu-header div[role=button]:hover, .asw-minus:hover, .asw-plus:hover { opacity: .8; }
@@ -73,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .asw-btn .material-icons { margin-bottom: 16px; }
         .asw-btn:hover { border-color: ${options.highlightColor}; }
         .asw-btn.asw-selected { background: ${options.highlightColor}; color: #fff; border-color: ${options.highlightColor}; }
-        .asw-footer { position: absolute; bottom: 0; left: 0; right: 0; background: #0334b1; padding: 16px; text-align: center; color: #fff; }
+        .asw-footer { position: absolute; bottom: 0; left: 0; left: 0; background: #04644b; padding: 16px; text-align: center; color: #fff; }
         .asw-footer a { text-decoration: underline; color: #fff; background: 0 0 !important; }
         .asw-card { margin: 0 15px 30px; }
         .asw-card-title { font-size: 18px; padding: 15px 0; }
-        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; border-radius: 8px; }
+        .asw-adjust-font { background: #ecf3ff; padding: 20px 25px; margin-bottom: 16px; }
         .asw-adjust-font .label { display: flex; align-items: center; }
         .asw-adjust-font > div { display: flex; justify-content: space-between; margin-top: 20px; align-items: center; font-size: 16px; font-weight: 700; }
         .asw-adjust-font div[role=button] { background: #04644b; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
             css: "outline: 2px solid " + options.highlightColor + " !important;outline-offset: 2px !important;"
         }, {
             id: "readable-font",
-            childrenSelector: ["", "h1", "h2", "h3", "h4", "h5", "h6", "img", "p", "i", "svg", "a", "button", "label", "li", "ol"],
+            childrenSelector: ["", "h2", "h3", "h4", "h5", "h6", "img", "p", "i", "svg", "a", "button", "label", "li", "ol"],
             css: "font-family: OpenDyslexic3,Comic Sans MS,Arial,Helvetica,sans-serif !important;"
         }], s = "";
         for (var a = e.length; a--;) {
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     const h = function (e, s) {
         let a = !1;
-        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.7), s = Math.min(s, 1.3), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h1,h2,h3,h4,h5,h6,dl,dt,li,ol,th,td").forEach((function (t) {
+        !s && e && (a = e.currentTarget, s = parseFloat(t.states.fontSize) || 1, a.classList.contains("asw-minus") ? s -= .1 : s += .1, s = Math.max(s, 0.7), s = Math.min(s, 1.3), s = parseFloat(s.toFixed(2))), document.querySelectorAll("h2,h3,h4,h5,h6,dl,dt,li,ol,th,td").forEach((function (t) {
             if (!t.classList.contains("material-icons")) {
                 let e = t.getAttribute("data-asw-orgFontSize");
                 e || (e = parseInt(window.getComputedStyle(t, null).getPropertyValue("font-size")), t.setAttribute("data-asw-orgFontSize", e));

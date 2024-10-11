@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     
         $(row.querySelector('.dish-select')).select2({
-            placeholder: 'Seleccione un platillo',
+            placeholder: 'Seleccione un plato',
             ajax: {
                 url: '/app/venta/platos_api/', 
                 dataType: 'json',
@@ -189,16 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         row.querySelector('.delete-dish-row').addEventListener('click', function () {
           
-            const rows = document.querySelectorAll('#dish-rows tr');
-            if (rows.length === 1) {
-                Swal.fire({
-                    title: 'Advertencia!',
-                    text: 'No puedes eliminar la última fila.',
-                    icon: 'warning',
-                });
-                return;
-            }
-
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Esta acción no se puede deshacer.",
@@ -232,8 +222,21 @@ document.addEventListener('DOMContentLoaded', function () {
         let subtotal = 0;
         let duplicateError = false;
     
+        const productRows = document.querySelectorAll('#product-rows tr');
+        const dishRows = document.querySelectorAll('#dish-rows tr');
+    
+        // Validación de filas vacías
+        if (productRows.length === 0 && dishRows.length === 0) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'No se puede guardar la venta sin al menos un producto o plato.',
+                icon: 'error',
+            });
+            isValid = false;
+        }
+    
         // Calcular subtotal de los productos
-        document.querySelectorAll('#product-rows tr').forEach(row => {
+        productRows.forEach(row => {
             const select = $(row.querySelector('.product-select')).val();
             const quantityInput = row.querySelector('.product-quantity');
             const priceInput = row.querySelector('.product-price');
@@ -254,13 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
             if (quantity <= 0 || quantity > maxQuantity) {
                 quantityInput.classList.add('error');
-                if (quantity > maxQuantity) {
-                    Swal.fire({
-                        title: 'Advertencia!',
-                        text: `La cantidad ingresada (${quantity}) supera el stock disponible (${maxQuantity}).`,
-                        icon: 'warning',
-                    });
-                }
                 isValid = false;
             } else {
                 quantityInput.classList.remove('error');
@@ -280,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     
         // Calcular subtotal de los platos
-        document.querySelectorAll('#dish-rows tr').forEach(row => {
+        dishRows.forEach(row => {
             const select = $(row.querySelector('.dish-select')).val();
             const quantityInput = row.querySelector('.dish-quantity');
             const priceInput = row.querySelector('.dish-price');
@@ -310,15 +306,8 @@ document.addEventListener('DOMContentLoaded', function () {
             subtotal += parseFloat(total);
         });
     
-        // Actualizar el subtotal y el total de la venta
         subtotal = subtotal.toFixed(2);
-        let subtotalElement = document.getElementById('subtotal');
         subtotalElement.textContent = `$${subtotal}`;
-    
-        let totalVentaField = document.querySelector('input[name="total_venta"]');
-        if (totalVentaField) {
-            totalVentaField.value = subtotal;
-        }
     
         if (duplicateError) {
             Swal.fire({
@@ -326,10 +315,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: 'No se pueden guardar productos o platillos duplicados.',
                 icon: 'error',
             });
+            isValid = false;
         }
     
         return isValid && !duplicateError;
     }
+    
     
     function calculateChange() {
         const dineroRecibido = parseFloat(dineroRecibidoInput.value) || 0;
@@ -438,11 +429,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-    
+
+
         if (!validateInputs()) {
             Swal.fire({
                 title: 'Error!',
-                text: 'Por favor, corrija los errores antes de enviar el formulario.',
+                text: 'No se puede guardar la venta sin al menos un producto o plato.',
                 icon: 'error',
             });
             return;
@@ -873,7 +865,7 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function(response) {
                 if (response.success) {
                     Swal.fire({
-                        title: 'Nuevo cliente',
+                        title: 'Registro exitoso',
                         text: 'Cliente creado existosamente.',
                         icon: 'success',
                     });
