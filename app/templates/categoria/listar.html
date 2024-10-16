@@ -3,8 +3,9 @@
 {% block columnas %}
 <tr>
     <th scope="col">id</th>
-    <th scope="col">Categoría</a></th>
+    <th scope="col">Categoría</th>
     <th scope="col">Estado</th>
+    <th scope="col">Fecha de Registro</th>
     <th scope="col">Opciones</th>
 </tr>
 {% endblock %}
@@ -15,6 +16,7 @@
     <td>{{ c.id }}</td>
     <td>{{ c.categoria }}</td>
     <td>{{ c.estado | yesno:"Activo,Inactivo" }}</td>
+    <td>{{ c.fecha_registro|date:"d/m/Y" }}</td>
     <td>
         <a href="{% url 'app:categoria_editar' c.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
         <a href="{% url 'app:categoria_eliminar' c.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
@@ -22,6 +24,7 @@
 </tr>
 {% endfor %}
 {% endblock %}
+
 {% block javascript %}
 <script type="application/javascript">
     $(document).ready(function () {
@@ -29,27 +32,50 @@
             responsive: true,
             initComplete: function () {
                 var api = this.api();
-                var columnNames = ['id', 'Categoría', 'Estado', 'Opciones'];
+                var columnNames = ['id', 'Categoría', 'Estado', 'Fecha de Registro', 'Opciones'];
                 var excludedColumnIndex = columnNames.indexOf('Opciones');
+                
                 api.columns().every(function (index) {
                     var column = this;
                     var header = $(column.header());
+                    
                     if (index !== excludedColumnIndex) {
                         var filterContainer = $('<div class="filter-container"></div>').appendTo(header.empty());
                         $('<label>' + columnNames[index] + '</label>').appendTo(filterContainer);
-                        var select = $('<select><option value="">Todos</option></select>')
-                            .appendTo(filterContainer)
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
+                        
+                        if (columnNames[index] === 'Fecha de Registro') {
+                            // Filtro de rango de fechas
+                            var inputFrom = $('<input type="date" placeholder="Desde" class="date-filter">').appendTo(filterContainer);
+                            var inputTo = $('<input type="date" placeholder="Hasta" class="date-filter">').appendTo(filterContainer);
+                            
+                            $.fn.dataTable.ext.search.push(function(settings, data) {
+                                var min = new Date(inputFrom.val());
+                                var max = new Date(inputTo.val());
+                                var date = new Date(data[index]);
+                                
+                                if ((isNaN(min.getTime()) && isNaN(max.getTime())) ||
+                                    (isNaN(min.getTime()) && date <= max) ||
+                                    (min <= date && isNaN(max.getTime())) ||
+                                    (min <= date && date <= max)) {
+                                    return true;
+                                }
+                                return false;
                             });
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>');
-                        });
+                            
+                            $('.date-filter').on('change', function () {
+                                api.draw();
+                            });
+                        } else {
+                            var select = $('<select><option value="">Todos</option></select>')
+                                .appendTo(filterContainer)
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                });
+                            column.data().unique().sort().each(function (d) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }
                     } else {
                         $('<label>' + columnNames[index] + '</label>').appendTo(header.empty());
                     }

@@ -7,7 +7,7 @@ from app.views.reportes.viewsPDF import *
 
 def get(self, request, *args, **kwargs):
     contexto = {
-        'titulo': 'Gestión de bases de datos'
+        'titulo': 'Generar reportes',
     }
     return render(request, 'backup.html', contexto)
 
