@@ -4,6 +4,7 @@ from django.shortcuts import render
 from app.forms import ReporteForm
 from app.views.reportes.viewsExcel import *
 from app.views.reportes.viewsPDF import *
+from django.utils.dateparse import parse_date
 
 def get(self, request, *args, **kwargs):
     contexto = {
@@ -17,6 +18,15 @@ def reporte_selector(request):
     if request.method == 'POST':
         tipo_reporte = request.POST.get('tipo_reporte')
         formato = request.POST.get('formato')
+
+        fecha_inicio = request.POST.get('fecha_inicio')
+        fecha_fin = request.POST.get('fecha_fin')
+        
+        fecha_inicio = parse_date(fecha_inicio) if fecha_inicio else None
+        fecha_fin = parse_date(fecha_fin) if fecha_fin else None
+
+        print("Fecha de inicio:", fecha_inicio)
+        print("Fecha de fin:", fecha_fin)
         
         if formato == 'excel':
             if tipo_reporte == 'categoria':
@@ -38,7 +48,7 @@ def reporte_selector(request):
             elif tipo_reporte == 'operador':
                 return export_operadores_excel(request)
             elif tipo_reporte == 'venta':
-                return export_ventas_excel(request)
+                return export_ventas_excel(request, fecha_inicio, fecha_fin)
             # elif tipo_reporte == 'detalle_venta':
             #     return export_detalle_ventas_excel(request)
             # elif tipo_reporte == 'cuenta':
@@ -63,7 +73,7 @@ def reporte_selector(request):
             elif tipo_reporte == 'operador':
                 return export_operadores_pdf(request)
             elif tipo_reporte == 'venta':
-                return export_ventas_pdf(request)
+                return export_ventas_pdf(request, fecha_inicio, fecha_fin)
             # elif tipo_reporte == 'detalle_venta':
             #     return export_detalle_ventas_pdf(request)
             # elif tipo_reporte == 'cuenta':

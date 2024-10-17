@@ -5,7 +5,6 @@
     <th scope="col">id</th>
     <th scope="col">Categoría</th>
     <th scope="col">Estado</th>
-    <th scope="col">Fecha de Registro</th>
     <th scope="col">Opciones</th>
 </tr>
 {% endblock %}
@@ -16,7 +15,6 @@
     <td>{{ c.id }}</td>
     <td>{{ c.categoria }}</td>
     <td>{{ c.estado | yesno:"Activo,Inactivo" }}</td>
-    <td>{{ c.fecha_registro|date:"d/m/Y" }}</td>
     <td>
         <a href="{% url 'app:categoria_editar' c.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
         <a href="{% url 'app:categoria_eliminar' c.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
@@ -32,7 +30,7 @@
             responsive: true,
             initComplete: function () {
                 var api = this.api();
-                var columnNames = ['id', 'Categoría', 'Estado', 'Fecha de Registro', 'Opciones'];
+                var columnNames = ['id', 'Categoría', 'Estado', 'Opciones'];
                 var excludedColumnIndex = columnNames.indexOf('Opciones');
                 
                 api.columns().every(function (index) {

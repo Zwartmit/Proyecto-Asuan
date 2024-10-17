@@ -504,6 +504,7 @@ class DetalleVentaForm(ModelForm):
     class Meta:
         model = Detalle_venta
         fields = "__all__"
+        # exclude = ['fecha_detalle']
         widgets = {
             "cantidad_producto": NumberInput(
                 attrs={
@@ -526,6 +527,7 @@ class CuentaForm(ModelForm):
     class Meta:
         model = Cuenta
         fields = "__all__"
+        # exclude = ['fecha_cuenta']
         widgets = {
             "cantidad_plato": NumberInput(
                 attrs={
@@ -547,23 +549,6 @@ class CuentaForm(ModelForm):
                     "class": "client-select"
                 }
             ),
-        }
-        
-class FacturaForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["fecha_emision_factura"].widget.attrs["autofocus"] = True
-
-    class Meta:
-        model = Venta
-        fields = "__all__"
-        widgets = {
-            "fecha_emision_factura": DateInput(
-                attrs={
-                    "type": "date",
-                    "placeholder": "Fecha de la venta",
-                }
-            )
         }
 
 class ReporteForm(forms.Form):

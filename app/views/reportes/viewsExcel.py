@@ -736,7 +736,13 @@ def export_operadores_excel(request):
 ################################################## Ventas ##################################################
 @login_required
 @never_cache
-def export_ventas_excel(request):
+def export_ventas_excel(request, fecha_inicio=None, fecha_fin=None):
+
+    ventas = Venta.objects.all()
+
+    if fecha_inicio and fecha_fin:
+        ventas = ventas.filter(fecha_venta__range=[fecha_inicio, fecha_fin])
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Reporte de ventas"

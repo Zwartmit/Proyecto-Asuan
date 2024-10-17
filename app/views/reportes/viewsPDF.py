@@ -192,13 +192,15 @@ def export_operadores_pdf(request):
 ################################################## Ventas ##################################################
 @login_required
 @never_cache
-def export_ventas_pdf(request):
-    headers = ['ID', 'Fecha Venta', 'Total Venta', 'Dinero Recibido', 'Cambio', 'Metodo de pago']
-    data_rows = [
-        [venta.id, venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), venta.total_venta, venta.dinero_recibido, venta.cambio, venta.metodo_pago]
-        for venta in Venta.objects.all()
-    ]
-    return generate_pdf_report("Reporte de Ventas", headers, data_rows, "Reporte de ventas")
+def export_ventas_pdf(request, fecha_inicio=None, fecha_fin=None):
+    if fecha_inicio and fecha_fin:
+        ventas = ventas.filter(fecha_venta__range=[fecha_inicio, fecha_fin])
+        headers = ['ID', 'Fecha Venta', 'Total Venta', 'Dinero Recibido', 'Cambio', 'Metodo de pago']
+        data_rows = [
+            [venta.id, venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), venta.total_venta, venta.dinero_recibido, venta.cambio, venta.metodo_pago]
+            for venta in Venta.objects.all()
+        ]
+        return generate_pdf_report("Reporte de Ventas", headers, data_rows, "Reporte de ventas")
 
 # ################################################## Detalles ##################################################
 # @login_required

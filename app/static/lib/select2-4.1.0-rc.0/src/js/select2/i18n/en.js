@@ -35,7 +35,7 @@ define(function () {
       return message;
     },
     noResults: function () {
-      return 'No results found';
+      return 'No se encontaron resultados';
     },
     searching: function () {
       return 'Searching…';
