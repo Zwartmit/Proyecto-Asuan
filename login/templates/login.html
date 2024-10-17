@@ -109,130 +109,19 @@
             color: #ffffff;
         }
 
-        /* Estilos generales */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        html {
-            width: 1200px;
-            /* Ajusta este valor según el tamaño deseado */
-            height: 800px;
-            /* Ajusta este valor según el tamaño deseado */
-            overflow: auto;
-            /* Activa las barras de desplazamiento */
-        }
-
+        html,
         body {
-            width: 1200px;
-            /* Tamaño fijo */
-            height: 800px;
-            /* Tamaño fijo */
-            background: #F1F1F1;
-            overflow: auto;
-            position: relative;
-        }
-
-        /* Animations */
-        @keyframes scale_header {
-            /* Mantiene las animaciones sin cambios */
-        }
-
-        /* Formulario de Inicio de Sesión */
-        .login-container {
-            width: 340px;
-            height: auto;
-            padding: 5px;
-            box-sizing: border-box;
-            overflow: auto;
-            /* Permite desplazamiento interno si el contenido supera el tamaño */
-        }
-
-        .login-container img {
-            width: 200px;
-        }
-
-        .login {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 3px;
-            background: #FAFAFA;
-            overflow: hidden;
-            animation: input_opacity 0.2s cubic-bezier(.55, 0, .1, 1);
-        }
-
-        .login>header {
-            width: 100%;
-            padding: 10px;
-            background: #009688;
-            font-size: 1.3rem;
-            color: #FAFAFA;
-            animation: scale_header 0.6s cubic-bezier(.55, 0, .1, 1), text_opacity 1s cubic-bezier(.55, 0, .1, 1);
-        }
-
-        .login>header:before {
-            /* Conserva la animación y el estilo del encabezado en error */
-        }
-
-        .login>header h2,
-        .login>header h4 {
-            /* Mantén los estilos del encabezado */
-        }
-
-        /* Formulario */
-        .login-form {
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        /* Inputs */
-        .login-input {
-            width: 100%;
-            padding: 10px 5px;
-            margin-bottom: 25px;
-            border: none;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-            background: transparent;
-            font-size: 1rem;
-            font-family: 'Roboto', sans-serif;
-            transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1);
-        }
-
-        .login-input:focus {
-            border-bottom: 2px solid #E37F00;
-        }
-
-        /* Botón de envío */
-        .submit-container {
-            padding: 10px;
-            margin: 35px -25px -25px -25px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .login-button {
-            padding: 10px;
-            border-radius: 3px;
-            background: transparent;
-            color: #E37F00;
-            cursor: pointer;
-            transition: background 0.2s ease-in-out;
-        }
-
-        .login-button.raised {
-            padding: 5px 10px;
-            color: #FAFAFA;
-            background: #E37F00;
-        }
-
-        .login-button:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .login-button.raised:hover {
-            background: #FDAB43;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
