@@ -736,7 +736,13 @@ def export_operadores_excel(request):
 ################################################## Ventas ##################################################
 @login_required
 @never_cache
-def export_ventas_excel(request):
+def export_ventas_excel(request, fecha_inicio=None, fecha_fin=None):
+
+    ventas = Venta.objects.all()
+
+    if fecha_inicio and fecha_fin:
+        ventas = ventas.filter(fecha_venta__range=[fecha_inicio, fecha_fin])
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Reporte de ventas"
@@ -815,174 +821,174 @@ def export_ventas_excel(request):
     wb.save(response)
     return response
 
-################################################## Detalle ##################################################
-@login_required
-@never_cache
-def export_detalle_ventas_excel(request):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Reporte de Detalles de Venta"
+# ################################################## Detalle ##################################################
+# @login_required
+# @never_cache
+# def export_detalle_ventas_excel(request):
+#     wb = Workbook()
+#     ws = wb.active
+#     ws.title = "Reporte de Detalles de Venta"
     
-    bold_font = Font(bold=True)
-    center_alignment = Alignment(horizontal="center", vertical="center")
-    green_fill = PatternFill(start_color="04644B", end_color="04644B", fill_type="solid")
-    white_font = Font(color="FFFFFF")
-    medium_border = Border(left=Side(style='medium'), 
-                         right=Side(style='medium'), 
-                         top=Side(style='medium'), 
-                         bottom=Side(style='medium'))
+#     bold_font = Font(bold=True)
+#     center_alignment = Alignment(horizontal="center", vertical="center")
+#     green_fill = PatternFill(start_color="04644B", end_color="04644B", fill_type="solid")
+#     white_font = Font(color="FFFFFF")
+#     medium_border = Border(left=Side(style='medium'), 
+#                          right=Side(style='medium'), 
+#                          top=Side(style='medium'), 
+#                          bottom=Side(style='medium'))
 
-    column_width = 20  
-    for col in range(2, 8):
-        column_letter = get_column_letter(col)
-        ws.column_dimensions[column_letter].width = column_width
+#     column_width = 20  
+#     for col in range(2, 8):
+#         column_letter = get_column_letter(col)
+#         ws.column_dimensions[column_letter].width = column_width
 
-    ws.column_dimensions['E'].width = 30
+#     ws.column_dimensions['E'].width = 30
 
-    ws.row_dimensions[2].height = 38
-    ws.row_dimensions[3].height = 23  
-    ws.row_dimensions[5].height = 20
+#     ws.row_dimensions[2].height = 38
+#     ws.row_dimensions[3].height = 23  
+#     ws.row_dimensions[5].height = 20
 
-    img = Image('app/views/reportes/logo_asuan.png') 
-    img.width = 140  
-    img.height = 50  
-    ws.add_image(img, 'D2')
+#     img = Image('app/views/reportes/logo_asuan.png') 
+#     img.width = 140  
+#     img.height = 50  
+#     ws.add_image(img, 'D2')
 
-    ws.merge_cells('B2:G2')
-    for row in ws['B2:G2']:
-        for cell in row:
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#     ws.merge_cells('B2:G2')
+#     for row in ws['B2:G2']:
+#         for cell in row:
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    ws.merge_cells('B3:G3')
-    ws['B3'] = "Reporte de Detalles de Venta"
-    for row in ws['B3:G3']:
-        for cell in row:
-            cell.font = Font(size=14, bold=True)
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#     ws.merge_cells('B3:G3')
+#     ws['B3'] = "Reporte de Detalles de Venta"
+#     for row in ws['B3:G3']:
+#         for cell in row:
+#             cell.font = Font(size=14, bold=True)
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    ws.merge_cells('B4:G4')
-    ws['B4'].value = f"Fecha: {fecha}"
-    ws['B4'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-    for row in ws['B4:G4']:
-        for cell in row:
-            cell.border = medium_border
+#     fecha = datetime.now().strftime("%d/%m/%Y")
+#     ws.merge_cells('B4:G4')
+#     ws['B4'].value = f"Fecha: {fecha}"
+#     ws['B4'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+#     for row in ws['B4:G4']:
+#         for cell in row:
+#             cell.border = medium_border
 
-    headers = ['ID Detalle', 'ID Venta', 'Fecha y Hora de Venta', 'Producto', 'Cantidad', 'Subtotal']
-    for col_num, header in enumerate(headers, 2):
-        cell = ws.cell(row=5, column=col_num)
-        cell.value = header
-        cell.fill = green_fill
-        cell.font = white_font
-        cell.alignment = center_alignment
-        cell.border = medium_border
+#     headers = ['ID Detalle', 'ID Venta', 'Fecha y Hora de Venta', 'Producto', 'Cantidad', 'Subtotal']
+#     for col_num, header in enumerate(headers, 2):
+#         cell = ws.cell(row=5, column=col_num)
+#         cell.value = header
+#         cell.fill = green_fill
+#         cell.font = white_font
+#         cell.alignment = center_alignment
+#         cell.border = medium_border
 
-    detalles_ventas = Detalle_venta.objects.all()
-    for row_num, detalle in enumerate(detalles_ventas, 6):  
-        ws.cell(row=row_num, column=2, value=detalle.id)
-        ws.cell(row=row_num, column=3, value=detalle.id_venta.id)
-        ws.cell(row=row_num, column=4, value=detalle.id_venta.fecha_venta.replace(tzinfo=None))
-        producto_info = f"{detalle.id_producto.producto}-{detalle.id_producto.id_presentacion.presentacion}({detalle.id_producto.id_presentacion.unidad_medida})"
-        ws.cell(row=row_num, column=5, value=producto_info)
-        ws.cell(row=row_num, column=6, value=detalle.cantidad_producto)
-        ws.cell(row=row_num, column=7, value=detalle.subtotal_venta)
+#     detalles_ventas = Detalle_venta.objects.all()
+#     for row_num, detalle in enumerate(detalles_ventas, 6):  
+#         ws.cell(row=row_num, column=2, value=detalle.id)
+#         ws.cell(row=row_num, column=3, value=detalle.id_venta.id)
+#         ws.cell(row=row_num, column=4, value=detalle.id_venta.fecha_venta.replace(tzinfo=None))
+#         producto_info = f"{detalle.id_producto.producto}-{detalle.id_producto.id_presentacion.presentacion}({detalle.id_producto.id_presentacion.unidad_medida})"
+#         ws.cell(row=row_num, column=5, value=producto_info)
+#         ws.cell(row=row_num, column=6, value=detalle.cantidad_producto)
+#         ws.cell(row=row_num, column=7, value=detalle.subtotal_venta)
 
-        for col_num in range(2, 8):
-            cell = ws.cell(row=row_num, column=col_num)
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#         for col_num in range(2, 8):
+#             cell = ws.cell(row=row_num, column=col_num)
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_detalle_ventas.xlsx'
-    wb.save(response)
-    return response
+#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+#     response['Content-Disposition'] = 'attachment; filename=Reporte_detalle_ventas.xlsx'
+#     wb.save(response)
+#     return response
 
-################################################## Cuenta ##################################################
-@login_required
-@never_cache
-def export_cuentas_excel(request):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Reporte de Cuentas"
+# ################################################## Cuenta ##################################################
+# @login_required
+# @never_cache
+# def export_cuentas_excel(request):
+#     wb = Workbook()
+#     ws = wb.active
+#     ws.title = "Reporte de Cuentas"
     
-    bold_font = Font(bold=True)
-    center_alignment = Alignment(horizontal="center", vertical="center")
-    green_fill = PatternFill(start_color="04644B", end_color="04644B", fill_type="solid")
-    white_font = Font(color="FFFFFF")
-    medium_border = Border(left=Side(style='medium'), 
-                         right=Side(style='medium'), 
-                         top=Side(style='medium'), 
-                         bottom=Side(style='medium'))
+#     bold_font = Font(bold=True)
+#     center_alignment = Alignment(horizontal="center", vertical="center")
+#     green_fill = PatternFill(start_color="04644B", end_color="04644B", fill_type="solid")
+#     white_font = Font(color="FFFFFF")
+#     medium_border = Border(left=Side(style='medium'), 
+#                          right=Side(style='medium'), 
+#                          top=Side(style='medium'), 
+#                          bottom=Side(style='medium'))
 
-    column_width = 20  
-    for col in range(2, 8):
-        column_letter = get_column_letter(col)
-        ws.column_dimensions[column_letter].width = column_width
+#     column_width = 20  
+#     for col in range(2, 8):
+#         column_letter = get_column_letter(col)
+#         ws.column_dimensions[column_letter].width = column_width
 
-    ws.column_dimensions['H'].width = 30
-    ws.column_dimensions['I'].width = 25  
+#     ws.column_dimensions['H'].width = 30
+#     ws.column_dimensions['I'].width = 25  
 
-    ws.row_dimensions[2].height = 38
-    ws.row_dimensions[3].height = 23  
-    ws.row_dimensions[5].height = 20
+#     ws.row_dimensions[2].height = 38
+#     ws.row_dimensions[3].height = 23  
+#     ws.row_dimensions[5].height = 20
 
-    img = Image('app/views/reportes/logo_asuan.png') 
-    img.width = 140  
-    img.height = 50  
-    ws.add_image(img, 'F2')
+#     img = Image('app/views/reportes/logo_asuan.png') 
+#     img.width = 140  
+#     img.height = 50  
+#     ws.add_image(img, 'F2')
 
-    ws.merge_cells('B2:I2')
-    for row in ws['B2:I2']:
-        for cell in row:
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#     ws.merge_cells('B2:I2')
+#     for row in ws['B2:I2']:
+#         for cell in row:
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    ws.merge_cells('B3:I3')
-    ws['B3'] = "Reporte de Cuentas"
-    for row in ws['B3:I3']:
-        for cell in row:
-            cell.font = Font(size=14, bold=True)
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#     ws.merge_cells('B3:I3')
+#     ws['B3'] = "Reporte de Cuentas"
+#     for row in ws['B3:I3']:
+#         for cell in row:
+#             cell.font = Font(size=14, bold=True)
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    fecha = datetime.now().strftime("%d/%m/%Y")
-    ws.merge_cells('B4:I4')
-    ws['B4'].value = f"Fecha: {fecha}"
-    ws['B4'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-    for row in ws['B4:I4']:
-        for cell in row:
-            cell.border = medium_border
+#     fecha = datetime.now().strftime("%d/%m/%Y")
+#     ws.merge_cells('B4:I4')
+#     ws['B4'].value = f"Fecha: {fecha}"
+#     ws['B4'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+#     for row in ws['B4:I4']:
+#         for cell in row:
+#             cell.border = medium_border
 
-    headers = ['ID Cuenta', 'ID Venta', 'Fecha y Hora de Venta', 'Plato', 'Cantidad', 'Subtotal', 'Cliente', 'Mesero']
-    for col_num, header in enumerate(headers, 2):
-        cell = ws.cell(row=5, column=col_num)
-        cell.value = header
-        cell.fill = green_fill
-        cell.font = white_font
-        cell.alignment = center_alignment
-        cell.border = medium_border
+#     headers = ['ID Cuenta', 'ID Venta', 'Fecha y Hora de Venta', 'Plato', 'Cantidad', 'Subtotal', 'Cliente', 'Mesero']
+#     for col_num, header in enumerate(headers, 2):
+#         cell = ws.cell(row=5, column=col_num)
+#         cell.value = header
+#         cell.fill = green_fill
+#         cell.font = white_font
+#         cell.alignment = center_alignment
+#         cell.border = medium_border
 
-    detalles_ventas = Cuenta.objects.all()
-    for row_num, cuenta in enumerate(detalles_ventas, 6):  
-        ws.cell(row=row_num, column=2, value=cuenta.id)
-        ws.cell(row=row_num, column=3, value=cuenta.id_venta.id)
-        ws.cell(row=row_num, column=4, value=cuenta.id_venta.fecha_venta.replace(tzinfo=None))
-        ws.cell(row=row_num, column=5, value=cuenta.id_plato.plato)
-        ws.cell(row=row_num, column=6, value=cuenta.cantidad_plato)
-        ws.cell(row=row_num, column=7, value=cuenta.subtotal_plato)
-        cliente_cell = ws.cell(row=row_num, column=8, value=str(cuenta.id_cliente.numero_documento))
-        cliente_cell.number_format = '@'
-        ws.cell(row=row_num, column=9, value=cuenta.id_mesero.nombre)
+#     detalles_ventas = Cuenta.objects.all()
+#     for row_num, cuenta in enumerate(detalles_ventas, 6):  
+#         ws.cell(row=row_num, column=2, value=cuenta.id)
+#         ws.cell(row=row_num, column=3, value=cuenta.id_venta.id)
+#         ws.cell(row=row_num, column=4, value=cuenta.id_venta.fecha_venta.replace(tzinfo=None))
+#         ws.cell(row=row_num, column=5, value=cuenta.id_plato.plato)
+#         ws.cell(row=row_num, column=6, value=cuenta.cantidad_plato)
+#         ws.cell(row=row_num, column=7, value=cuenta.subtotal_plato)
+#         cliente_cell = ws.cell(row=row_num, column=8, value=str(cuenta.id_cliente.numero_documento))
+#         cliente_cell.number_format = '@'
+#         ws.cell(row=row_num, column=9, value=cuenta.id_mesero.nombre)
 
 
-        for col_num in range(2, 10):
-            cell = ws.cell(row=row_num, column=col_num)
-            cell.alignment = center_alignment
-            cell.border = medium_border
+#         for col_num in range(2, 10):
+#             cell = ws.cell(row=row_num, column=col_num)
+#             cell.alignment = center_alignment
+#             cell.border = medium_border
 
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Reporte_cuentas.xlsx'
-    wb.save(response)
-    return response
+#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+#     response['Content-Disposition'] = 'attachment; filename=Reporte_cuentas.xlsx'
+#     wb.save(response)
+#     return response

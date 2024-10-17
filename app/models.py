@@ -278,6 +278,7 @@ class Detalle_venta(models.Model):
     id_producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad_producto = models.PositiveIntegerField(verbose_name="Cantidad de productos")
     subtotal_venta = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
+    fecha_detalle = models.DateTimeField(auto_now_add=True, verbose_name="Fecha detalle")
 
 
     def __str__(self):
@@ -286,7 +287,7 @@ class Detalle_venta(models.Model):
     class Meta:
         verbose_name= "detalle_de_venta"
         verbose_name_plural ='detalles_de_ventas'
-        db_table ='Detalle_venta'
+        db_table ='Detalle_venta' 
 
 ########################################################################################################################################
 
@@ -298,6 +299,7 @@ class Cuenta(models.Model):
     subtotal_plato = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Subtotal", default="0")
     id_cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
     id_mesero = models.ForeignKey(Mesero, on_delete=models.PROTECT) 
+    fecha_cuenta = models.DateTimeField(auto_now_add=True, verbose_name="Fecha cuentas")
 
     def __str__(self):
         return str(self.id_plato)

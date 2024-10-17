@@ -192,34 +192,36 @@ def export_operadores_pdf(request):
 ################################################## Ventas ##################################################
 @login_required
 @never_cache
-def export_ventas_pdf(request):
-    headers = ['ID', 'Fecha Venta', 'Total Venta', 'Dinero Recibido', 'Cambio', 'Metodo de pago']
-    data_rows = [
-        [venta.id, venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), venta.total_venta, venta.dinero_recibido, venta.cambio, venta.metodo_pago]
-        for venta in Venta.objects.all()
-    ]
-    return generate_pdf_report("Reporte de Ventas", headers, data_rows, "Reporte de ventas")
+def export_ventas_pdf(request, fecha_inicio=None, fecha_fin=None):
+    if fecha_inicio and fecha_fin:
+        ventas = ventas.filter(fecha_venta__range=[fecha_inicio, fecha_fin])
+        headers = ['ID', 'Fecha Venta', 'Total Venta', 'Dinero Recibido', 'Cambio', 'Metodo de pago']
+        data_rows = [
+            [venta.id, venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), venta.total_venta, venta.dinero_recibido, venta.cambio, venta.metodo_pago]
+            for venta in Venta.objects.all()
+        ]
+        return generate_pdf_report("Reporte de Ventas", headers, data_rows, "Reporte de ventas")
 
-################################################## Detalles ##################################################
-@login_required
-@never_cache
-def export_detalle_ventas_pdf(request):
-    headers = ['ID', 'ID Venta', 'Fecha Venta', 'Producto', 'Cantidad', 'Subtotal Venta']
-    data_rows = [
-        [detalle.id, detalle.id_venta, detalle.id_venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), 
-         f"{detalle.id_producto.producto}-{detalle.id_producto.id_presentacion.presentacion}({detalle.id_producto.id_presentacion.unidad_medida})", 
-         detalle.cantidad_producto, detalle.subtotal_venta]
-        for detalle in Detalle_venta.objects.all()
-    ]
-    return generate_pdf_report("Reporte de Detalles de Ventas", headers, data_rows, "Reporte de detalles de ventas")
+# ################################################## Detalles ##################################################
+# @login_required
+# @never_cache
+# def export_detalle_ventas_pdf(request):
+#     headers = ['ID', 'ID Venta', 'Fecha Venta', 'Producto', 'Cantidad', 'Subtotal Venta']
+#     data_rows = [
+#         [detalle.id, detalle.id_venta, detalle.id_venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), 
+#          f"{detalle.id_producto.producto}-{detalle.id_producto.id_presentacion.presentacion}({detalle.id_producto.id_presentacion.unidad_medida})", 
+#          detalle.cantidad_producto, detalle.subtotal_venta]
+#         for detalle in Detalle_venta.objects.all()
+#     ]
+#     return generate_pdf_report("Reporte de Detalles de Ventas", headers, data_rows, "Reporte de detalles de ventas")
 
-################################################## Cuentas ##################################################
-@login_required
-@never_cache
-def export_cuentas_pdf(request):
-    headers = ['ID', 'ID Venta', 'Fecha Venta', 'Plato', 'Cantidad', 'Subtotal Venta', 'Cliente', 'Mesero']
-    data_rows = [
-        [cuenta.id, cuenta.id_venta, cuenta.id_venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), cuenta.id_plato.plato, cuenta.cantidad_plato, cuenta.subtotal_plato, cuenta.id_cliente.numero_documento, cuenta.id_mesero.nombre]
-        for cuenta in Cuenta.objects.all()
-    ]
-    return generate_pdf_report("Reporte de Cuentas", headers, data_rows, "Reporte de cuentas")
+# ################################################## Cuentas ##################################################
+# @login_required
+# @never_cache
+# def export_cuentas_pdf(request):
+#     headers = ['ID', 'ID Venta', 'Fecha Venta', 'Plato', 'Cantidad', 'Subtotal Venta', 'Cliente', 'Mesero']
+#     data_rows = [
+#         [cuenta.id, cuenta.id_venta, cuenta.id_venta.fecha_venta.strftime("%Y-%m-%d %H:%M:%S"), cuenta.id_plato.plato, cuenta.cantidad_plato, cuenta.subtotal_plato, cuenta.id_cliente.numero_documento, cuenta.id_mesero.nombre]
+#         for cuenta in Cuenta.objects.all()
+#     ]
+#     return generate_pdf_report("Reporte de Cuentas", headers, data_rows, "Reporte de cuentas")

@@ -14,7 +14,7 @@
 {% for item in ventas_con_detalles %}
 <tr>
     <td>{{ item.venta.id }}</td>
-    <td>{{ item.venta.fecha_venta }}</td>
+    <td>{{ item.venta.fecha_venta|date:"Y-m-d" }} a las {{ item.venta.fecha_venta|date:"H:i" }}</td>
     <td>{{ item.venta.metodo_pago }}</td>
     <td>{{ item.venta.tipo_venta }}</td>
     <td>
@@ -27,8 +27,7 @@
             <div class="modal-dialog modal-xl modal-dialog-centered custom-width-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ventaModalLabel-{{ item.venta.id }}">Factura de Venta <b>#{{
-                                item.venta.id }}</b></h5>
+                        <h5 class="modal-title" id="ventaModalLabel-{{ item.venta.id }}">Factura de Venta <b>#{{item.venta.id }}</b></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -106,7 +105,7 @@
                         <div class="totales_factura">
                             <p><b>Total:</b><br><b> $</b>{{ item.venta.total_venta }}</p>
                             <hr>
-                            <p><b>Dinero Recibido: $</b>{{ item.venta.dinero_recibido }}</p>
+                            <p><b>Dinero Ingresado: <br>$</b>{{ item.venta.dinero_recibido }}</p>
                             <p><b>Cambio: <br>$</b>{{ item.venta.cambio }}</p>
                         </div>
                         <hr>
@@ -177,7 +176,7 @@
         var columnNames = ['id', 'Fecha', 'Metodo de pago', 'Tipo de venta', 'Detalle de venta'];
         var excludedColumnIndex = 4;
 
-        $("#tabla").DataTable({
+        var table = $("#tabla").DataTable({
             responsive: true,
             columnDefs: [
                 { targets: '_all', visible: true }
@@ -188,31 +187,55 @@
                     var column = this;
                     var header = $(column.header());
 
-                    if (index !== excludedColumnIndex) { 
+                    if (index !== excludedColumnIndex) {
                         var filterContainer = $('<div class="filter-container"></div>').appendTo(header.empty());
-
                         $('<label>' + columnNames[index] + '</label>').appendTo(filterContainer);
 
-                        var select = $('<select><option value="">Todos</option></select>')
-                            .appendTo(filterContainer)
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false) 
-                                    .draw();
-                            });
+                        if (index === 1) {
+                            $('<label>Fecha inicial:</label>').appendTo(filterContainer);
+                            var startDateInput = $('<input type="date" placeholder="Desde">').appendTo(filterContainer);
+                            
+                            $('<label>Fecha final:</label>').appendTo(filterContainer);
+                            var endDateInput = $('<input type="date" placeholder="Hasta">').appendTo(filterContainer);
 
-                        if (index === 1) { 
-                            var fechasUnicas = new Set();
-                            column.data().sort().each(function (d) {
-                                var fecha = d.split(' a las ')[0];
-                                fechasUnicas.add(fecha.trim());
-                            });
+                            // Filtrar por fecha
+                            startDateInput.add(endDateInput).on('change', function () {
+                                var startDate = startDateInput.val();
+                                var endDate = endDateInput.val();
 
-                            fechasUnicas.forEach(function (fecha) {
-                                select.append('<option value="' + fecha + '">' + fecha + '</option>');
+                                var start = startDate ? new Date(startDate + "T00:00:00") : null;
+                                var end = endDate ? new Date(endDate + "T23:59:59") : null; 
+
+                                // Limpiar filtros anteriores
+                                $.fn.dataTable.ext.search = [];
+                                
+                                // Añadir el nuevo filtro
+                                $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                                    var fechaVenta = data[1]; // Columna de fecha
+                                    var parts = fechaVenta.split(' a las ');
+                                    var fecha = parts[0];
+                                    var hora = parts[1];
+                                    var fechaCompleta = new Date(fecha + 'T' + hora + ':00');
+
+                                    if ((start && fechaCompleta < start) || (end && fechaCompleta > end)) {
+                                        return false;
+                                    }
+                                    return true;
+                                });
+
+                                // Redibujar la tabla
+                                table.draw();
                             });
-                        } else { 
+                        } else {
+                            var select = $('<select><option value="">Todos</option></select>')
+                                .appendTo(filterContainer)
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column
+                                        .search(val ? '^' + val : '', true, false)
+                                        .draw();
+                                });
+
                             column.data().unique().sort().each(function (d) {
                                 select.append('<option value="' + d.trim() + '">' + d + '</option>');
                             });
@@ -225,5 +248,4 @@
         });
     });
 </script>
-
 {% endblock %}
