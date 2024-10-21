@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-#)2fq1mqu(x)1^sscju-%vkq@x%^_ev2ahb7k)jkgtx%$!(&g&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['asuan.sogamosotecnologiadigital.pro']
 
 # Application definition
 
@@ -87,14 +86,13 @@ WSGI_APPLICATION = 'asuan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'asuan_db',
-        'USER': 'root',
-        'PASSWORD': 'admin',
+        'NAME': 'database-asuan',
+        'USER': 'user-asuan',
+        'PASSWORD': 'W0TLaS3jQ56uLFtOxe49',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '8094',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -130,6 +128,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
 
 # Default primary key field type
